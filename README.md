@@ -131,9 +131,9 @@ to re-skin everything.
 
 ## Contributing a template
 
-Pull requests are welcome. 🐾
+Pull requests are welcome — submit a **brand-new template you designed yourself**, or a variation (a new colour scheme or a different category) of an existing one. Both are equally welcome. 🐾
 
-1. Copy an existing file in `templates/` and restyle it.
+1. Add your design as a self-contained file in `templates/` — either an original report you built from scratch, or a copy of an existing one, restyled.
 2. Keep it **self-contained** (inline `<style>`; inline SVG, or Chart.js via CDN).
 3. Use clear `[placeholders]` and round sample numbers so AIs swap data cleanly.
 4. Add one entry — with `en` + `pt` title and description — to the `REPORTS`
