@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPI Scorecard — [Company Name]</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --accent: #2563eb;
+    --accent-soft: #eff6ff;
+    --accent-border: #bfdbfe;
+    --slate-900: #0f172a;
+    --slate-700: #334155;
+    --slate-500: #64748b;
+    --slate-400: #94a3b8;
+    --slate-300: #cbd5e1;
+    --slate-200: #e2e8f0;
+    --slate-100: #f1f5f9;
+    --slate-50:  #f8fafc;
+    --bg: #f4f6f9;
+    --card: #ffffff;
+    --border: #e6eaf0;
+    --up: #16a34a;
+    --up-soft: #f0fdf4;
+    --down: #dc2626;
+    --down-soft: #fef2f2;
+    --flat: #64748b;
+    --track: #eef1f6;
+    --shadow-sm: 0 1px 2px rgba(15,23,42,0.05), 0 1px 3px rgba(15,23,42,0.04);
+    --shadow: 0 4px 14px rgba(15,23,42,0.06);
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--slate-900);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 40px 32px 64px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding-bottom: 24px;
+    margin-bottom: 32px;
+    border-bottom: 2px solid var(--slate-900);
+  }
+  .head-left .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 8px;
+  }
+  .head-left h1 {
+    font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1.1;
+  }
+  .head-left h1 span { color: var(--slate-400); font-weight: 600; }
+  .head-left .subtitle { font-size: 13.5px; color: var(--slate-500); margin-top: 6px; }
+  .head-right {
+    text-align: right; font-size: 12.5px; color: var(--slate-500);
+  }
+  .head-right .period {
+    display: inline-block;
+    font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+    color: var(--accent); background: var(--accent-soft);
+    border: 1px solid var(--accent-border);
+    padding: 5px 12px; border-radius: 6px; margin-bottom: 8px;
+  }
+  .head-right .meta-line { display: block; line-height: 1.7; }
+  .head-right .meta-line strong { color: var(--slate-700); font-weight: 600; }
+
+  /* ── SECTION HEADINGS ── */
+  .sec-head {
+    display: flex; align-items: baseline; gap: 12px;
+    margin: 40px 0 18px;
+  }
+  .sec-head h2 {
+    font-size: 13px; font-weight: 800; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--slate-700);
+  }
+  .sec-head .rule { flex: 1; height: 1px; background: var(--border); }
+  .sec-head .count { font-size: 12px; color: var(--slate-400); font-weight: 600; }
+
+  /* ── KPI GRID ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 18px 16px;
+    box-shadow: var(--shadow-sm);
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--accent); opacity: 0.85;
+  }
+  .kpi-card.is-down::before { background: var(--down); }
+  .kpi-card.is-up::before { background: var(--up); }
+
+  .kpi-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.6px;
+    text-transform: uppercase; color: var(--slate-500);
+    margin-bottom: 12px; min-height: 28px;
+  }
+  .kpi-value {
+    font-size: 30px; font-weight: 800; letter-spacing: -1px;
+    line-height: 1; color: var(--slate-900);
+  }
+  .kpi-value .unit { font-size: 15px; font-weight: 600; color: var(--slate-400); margin-left: 2px; }
+
+  .kpi-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 12px;
+  }
+  .kpi-delta {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12.5px; font-weight: 700;
+    padding: 3px 8px; border-radius: 100px;
+  }
+  .kpi-delta.up { color: var(--up); background: var(--up-soft); }
+  .kpi-delta.down { color: var(--down); background: var(--down-soft); }
+  .kpi-delta.flat { color: var(--flat); background: var(--slate-100); }
+  .kpi-delta svg { width: 11px; height: 11px; }
+
+  .spark { display: block; }
+  .kpi-vs { font-size: 10.5px; color: var(--slate-400); margin-top: 8px; font-weight: 500; }
+
+  /* ── PROGRESS / TARGETS ── */
+  .target-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    padding: 8px 22px;
+  }
+  .target-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 88px;
+    align-items: center;
+    gap: 18px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--slate-100);
+  }
+  .target-row:last-child { border-bottom: none; }
+  .target-name { font-size: 13.5px; font-weight: 600; color: var(--slate-700); }
+  .target-name small { display: block; font-size: 11px; font-weight: 500; color: var(--slate-400); margin-top: 2px; }
+
+  .bar-wrap { position: relative; }
+  .bar-track {
+    height: 10px; border-radius: 100px; background: var(--track);
+    overflow: hidden; position: relative;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 100px;
+    background: linear-gradient(90deg, var(--accent), #3b82f6);
+  }
+  .bar-fill.good { background: linear-gradient(90deg, var(--up), #22c55e); }
+  .bar-fill.warn { background: linear-gradient(90deg, #d97706, #f59e0b); }
+  .bar-fill.bad  { background: linear-gradient(90deg, var(--down), #ef4444); }
+  .bar-target {
+    position: absolute; top: -3px; bottom: -3px; width: 2px;
+    background: var(--slate-700);
+  }
+  .bar-sub { font-size: 10.5px; color: var(--slate-400); margin-top: 5px; }
+
+  .target-pct {
+    text-align: right; font-size: 16px; font-weight: 800;
+    color: var(--slate-900); letter-spacing: -0.5px;
+  }
+  .target-pct small { display: block; font-size: 10px; font-weight: 600; color: var(--slate-400); letter-spacing: 0; }
+
+  /* ── SUMMARY TABLE ── */
+  .table-wrap {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-sm);
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    text-align: left; font-size: 10.5px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--slate-500);
+    padding: 12px 16px; background: var(--slate-50);
+    border-bottom: 1px solid var(--border);
+  }
+  thead th.num, tbody td.num { text-align: right; }
+  tbody td {
+    padding: 12px 16px; font-size: 13px; color: var(--slate-700);
+    border-bottom: 1px solid var(--slate-100);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--slate-50); }
+  tbody td.kpi-name { font-weight: 600; color: var(--slate-900); }
+  .tnum { font-variant-numeric: tabular-nums; font-weight: 700; }
+  .t-up { color: var(--up); font-weight: 700; }
+  .t-down { color: var(--down); font-weight: 700; }
+  .pill {
+    display: inline-block; font-size: 10.5px; font-weight: 700;
+    padding: 2px 9px; border-radius: 100px;
+  }
+  .pill.on { color: var(--up); background: var(--up-soft); border: 1px solid #bbf7d0; }
+  .pill.watch { color: #b45309; background: #fffbeb; border: 1px solid #fde68a; }
+  .pill.off { color: var(--down); background: var(--down-soft); border: 1px solid #fecaca; }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 48px; padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+    font-size: 12px; color: var(--slate-500);
+  }
+  footer strong { color: var(--slate-700); }
+  footer a { color: var(--accent); text-decoration: none; font-weight: 600; }
+  footer .credit { color: var(--slate-400); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 880px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .sheet { padding: 28px 18px 48px; }
+    .kpi-grid { grid-template-columns: 1fr; }
+    .target-row { grid-template-columns: 1fr; gap: 8px; }
+    .target-pct { text-align: left; }
+    header { flex-direction: column; align-items: flex-start; }
+    .head-right { text-align: left; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; }
+    .sheet { max-width: none; padding: 0; }
+    .kpi-card, .target-card, .table-wrap { box-shadow: none; }
+    .sec-head, .kpi-grid, .target-row, .table-wrap { break-inside: avoid; }
+    header { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <header>
+    <div class="head-left">
+      <div class="eyebrow">Executive Scorecard</div>
+      <h1>KPI Scorecard <span>— [Company Name]</span></h1>
+      <div class="subtitle">Performance snapshot across the core metrics that matter to the business.</div>
+    </div>
+    <div class="head-right">
+      <span class="period">[Q3 2026]</span>
+      <span class="meta-line">Owner: <strong>[Your Name]</strong></span>
+      <span class="meta-line">Prepared for: <strong>[Leadership Team]</strong></span>
+      <span class="meta-line">Updated: <strong>[Jun 2026]</strong></span>
+    </div>
+  </header>
+
+  <!-- KPI CARDS -->
+  <div class="sec-head">
+    <h2>Key Metrics</h2>
+    <div class="rule"></div>
+    <span class="count">[8] KPIs · vs. [prior period]</span>
+  </div>
+
+  <div class="kpi-grid">
+
+    <!-- KPI 1 -->
+    <div class="kpi-card is-up">
+      <div class="kpi-label">[Revenue]</div>
+      <div class="kpi-value">$[1.2]<span class="unit">M</span></div>
+      <svg class="spark" width="100%" height="34" viewBox="0 0 120 34" preserveAspectRatio="none" fill="none">
+        <polyline points="2,26 19,24 36,25 53,20 70,17 87,13 104,9 118,5" stroke="var(--up)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="118" cy="5" r="2.6" fill="var(--up)"/>
+      </svg>
+      <div class="kpi-meta">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+[12]%</span>
+      </div>
+      <div class="kpi-vs">vs. $[1.07]M last [period]</div>
+    </div>
+
+    <!-- KPI 2 -->
+    <div class="kpi-card is-up">
+      <div class="kpi-label">[Active Customers]</div>
+      <div class="kpi-value">[18.4]<span class="unit">k</span></div>
+      <svg class="spark" width="100%" height="34" viewBox="0 0 120 34" preserveAspectRatio="none" fill="none">
+        <polyline points="2,22 19,23 36,19 53,18 70,14 87,15 104,10 118,8" stroke="var(--up)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="118" cy="8" r="2.6" fill="var(--up)"/>
+      </svg>
+      <div class="kpi-meta">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+[6.5]%</span>
+      </div>
+      <div class="kpi-vs">vs. [17.3]k last [period]</div>
+    </div>
+
+    <!-- KPI 3 -->
+    <div class="kpi-card is-down">
+      <div class="kpi-label">[Customer Churn]</div>
+      <div class="kpi-value">[3.8]<span class="unit">%</span></div>
+      <svg class="spark" width="100%" height="34" viewBox="0 0 120 34" preserveAspectRatio="none" fill="none">
+        <polyline points="2,10 19,12 36,11 53,15 70,14 87,18 104,17 118,21" stroke="var(--down)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="118" cy="21" r="2.6" fill="var(--down)"/>
+      </svg>
+      <div class="kpi-meta">
+        <span class="kpi-delta down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12l7 7 7-7"/></svg>+[0.6]pp</span>
+      </div>
+      <div class="kpi-vs">vs. [3.2]% last [period]</div>
+    </div>
+
+    <!-- KPI 4 -->
+    <div class="kpi-card is-up">
+      <div class="kpi-label">[Net Revenue Retention]</div>
+      <div class="kpi-value">[112]<span class="unit">%</span></div>
+      <svg class="spark" width="100%" height="34" viewBox="0 0 120 34" preserveAspectRatio="none" fill="none">
+        <polyline points="2,24 19,21 36,22 53,18 70,16 87,14 104,11 118,9" stroke="var(--up)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="118" cy="9" r="2.6" fill="var(--up)"/>
+      </svg>
+      <div class="kpi-meta">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+[4]pp</span>
+      </div>
+      <div class="kpi-vs">vs. [108]% last [period]</div>
+    </div>
+
+    <!-- KPI 5 -->
+    <div class="kpi-card is-up">
+      <div class="kpi-label">[Gross Margin]</div>
+      <div class="kpi-value">[64]<span class="unit">%</span></div>
+      <svg class="spark" width="100%" height="34" viewBox="0 0 120 34" preserveAspectRatio="none" fill="none">
+        <polyline points="2,20 19,19 36,21 53,17 70,18 87,15 104,14 118,12" stroke="var(--up)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="118" cy="12" r="2.6" fill="var(--up)"/>
+      </svg>
+      <div class="kpi-meta">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+[2]pp</span>
+      </div>
+      <div class="kpi-vs">vs. [62]% last [period]</div>
+    </div>
+
+    <!-- KPI 6 -->
+    <div class="kpi-card is-down">
+      <div class="kpi-label">[Avg. Resolution Time]</div>
+      <div class="kpi-value">[6.2]<span class="unit">h</span></div>
+      <svg class="spark" width="100%" height="34" viewBox="0 0 120 34" preserveAspectRatio="none" fill="none">
+        <polyline points="2,12 19,14 36,13 53,16 70,15 87,19 104,18 118,22" stroke="var(--down)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="118" cy="22" r="2.6" fill="var(--down)"/>
+      </svg>
+      <div class="kpi-meta">
+        <span class="kpi-delta down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12l7 7 7-7"/></svg>+[0.8]h</span>
+      </div>
+      <div class="kpi-vs">vs. [5.4]h last [period]</div>
+    </div>
+
+    <!-- KPI 7 -->
+    <div class="kpi-card is-up">
+      <div class="kpi-label">[NPS]</div>
+      <div class="kpi-value">[52]</div>
+      <svg class="spark" width="100%" height="34" viewBox="0 0 120 34" preserveAspectRatio="none" fill="none">
+        <polyline points="2,23 19,20 36,21 53,19 70,15 87,16 104,12 118,10" stroke="var(--up)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="118" cy="10" r="2.6" fill="var(--up)"/>
+      </svg>
+      <div class="kpi-meta">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+[5] pts</span>
+      </div>
+      <div class="kpi-vs">vs. [47] last [period]</div>
+    </div>
+
+    <!-- KPI 8 -->
+    <div class="kpi-card">
+      <div class="kpi-label">[Pipeline Coverage]</div>
+      <div class="kpi-value">[3.1]<span class="unit">x</span></div>
+      <svg class="spark" width="100%" height="34" viewBox="0 0 120 34" preserveAspectRatio="none" fill="none">
+        <polyline points="2,17 19,16 36,18 53,16 70,17 87,16 104,17 118,16" stroke="var(--flat)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="118" cy="16" r="2.6" fill="var(--flat)"/>
+      </svg>
+      <div class="kpi-meta">
+        <span class="kpi-delta flat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14"/></svg>[0.0]x</span>
+      </div>
+      <div class="kpi-vs">vs. [3.1]x last [period]</div>
+    </div>
+
+  </div>
+
+  <!-- PROGRESS TOWARD TARGET -->
+  <div class="sec-head">
+    <h2>Progress Toward Target</h2>
+    <div class="rule"></div>
+    <span class="count">[FY2026] goals · ▏ marks target</span>
+  </div>
+
+  <div class="target-card">
+
+    <div class="target-row">
+      <div class="target-name">[Annual Revenue]<small>Goal: $[5.0]M</small></div>
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill good" style="width:78%"></div></div>
+        <div class="bar-sub">$[3.9]M of $[5.0]M booked</div>
+        <div class="bar-target" style="left:100%"></div>
+      </div>
+      <div class="target-pct">[78]%<small>OF TARGET</small></div>
+    </div>
+
+    <div class="target-row">
+      <div class="target-name">[New Customers]<small>Goal: [4,000]</small></div>
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill" style="width:64%"></div></div>
+        <div class="bar-sub">[2,560] of [4,000] acquired</div>
+        <div class="bar-target" style="left:100%"></div>
+      </div>
+      <div class="target-pct">[64]%<small>OF TARGET</small></div>
+    </div>
+
+    <div class="target-row">
+      <div class="target-name">[Gross Margin]<small>Goal: [66]%</small></div>
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill warn" style="width:91%"></div></div>
+        <div class="bar-sub">[64]% of [66]% target</div>
+        <div class="bar-target" style="left:100%"></div>
+      </div>
+      <div class="target-pct">[91]%<small>OF TARGET</small></div>
+    </div>
+
+    <div class="target-row">
+      <div class="target-name">[Churn Reduction]<small>Goal: ≤ [3.0]%</small></div>
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill bad" style="width:42%"></div></div>
+        <div class="bar-sub">Currently [3.8]% — above the [3.0]% ceiling</div>
+        <div class="bar-target" style="left:100%"></div>
+      </div>
+      <div class="target-pct">[42]%<small>OF TARGET</small></div>
+    </div>
+
+    <div class="target-row">
+      <div class="target-name">[CSAT]<small>Goal: [90]%</small></div>
+      <div class="bar-wrap">
+        <div class="bar-track"><div class="bar-fill good" style="width:97%"></div></div>
+        <div class="bar-sub">[87]% of [90]% target</div>
+        <div class="bar-target" style="left:100%"></div>
+      </div>
+      <div class="target-pct">[97]%<small>OF TARGET</small></div>
+    </div>
+
+  </div>
+
+  <!-- SUMMARY TABLE -->
+  <div class="sec-head">
+    <h2>Metric Summary</h2>
+    <div class="rule"></div>
+    <span class="count">Current vs. prior · [8] metrics</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th class="num">Current</th>
+          <th class="num">Prior</th>
+          <th class="num">Target</th>
+          <th class="num">Δ</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="kpi-name">[Revenue]</td>
+          <td class="num tnum">$[1.2]M</td>
+          <td class="num tnum">$[1.07]M</td>
+          <td class="num tnum">$[1.25]M</td>
+          <td class="num t-up">+[12]%</td>
+          <td><span class="pill on">On track</span></td>
+        </tr>
+        <tr>
+          <td class="kpi-name">[Active Customers]</td>
+          <td class="num tnum">[18.4]k</td>
+          <td class="num tnum">[17.3]k</td>
+          <td class="num tnum">[19.0]k</td>
+          <td class="num t-up">+[6.5]%</td>
+          <td><span class="pill on">On track</span></td>
+        </tr>
+        <tr>
+          <td class="kpi-name">[Customer Churn]</td>
+          <td class="num tnum">[3.8]%</td>
+          <td class="num tnum">[3.2]%</td>
+          <td class="num tnum">≤[3.0]%</td>
+          <td class="num t-down">+[0.6]pp</td>
+          <td><span class="pill off">Off track</span></td>
+        </tr>
+        <tr>
+          <td class="kpi-name">[Net Revenue Retention]</td>
+          <td class="num tnum">[112]%</td>
+          <td class="num tnum">[108]%</td>
+          <td class="num tnum">[110]%</td>
+          <td class="num t-up">+[4]pp</td>
+          <td><span class="pill on">On track</span></td>
+        </tr>
+        <tr>
+          <td class="kpi-name">[Gross Margin]</td>
+          <td class="num tnum">[64]%</td>
+          <td class="num tnum">[62]%</td>
+          <td class="num tnum">[66]%</td>
+          <td class="num t-up">+[2]pp</td>
+          <td><span class="pill watch">Watch</span></td>
+        </tr>
+        <tr>
+          <td class="kpi-name">[Avg. Resolution Time]</td>
+          <td class="num tnum">[6.2]h</td>
+          <td class="num tnum">[5.4]h</td>
+          <td class="num tnum">[5.0]h</td>
+          <td class="num t-down">+[0.8]h</td>
+          <td><span class="pill watch">Watch</span></td>
+        </tr>
+        <tr>
+          <td class="kpi-name">[NPS]</td>
+          <td class="num tnum">[52]</td>
+          <td class="num tnum">[47]</td>
+          <td class="num tnum">[50]</td>
+          <td class="num t-up">+[5]</td>
+          <td><span class="pill on">On track</span></td>
+        </tr>
+        <tr>
+          <td class="kpi-name">[Pipeline Coverage]</td>
+          <td class="num tnum">[3.1]x</td>
+          <td class="num tnum">[3.1]x</td>
+          <td class="num tnum">[3.5]x</td>
+          <td class="num">[0.0]x</td>
+          <td><span class="pill watch">Watch</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span><strong>[Company Name]</strong> · KPI Scorecard · [Q3 2026]</span>
+    <span class="credit">Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe</span>
+  </footer>
+
+</div>
+</body>
+</html>

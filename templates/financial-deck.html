@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Financial Review — [Company Name]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#eef1f8;
+  --surface:#ffffff;
+  --surface2:#f6f8fc;
+  --accent:#3949ab;
+  --accent-light:#e8eaf6;
+  --accent2:#1e3a8a;
+  --green:#16a34a;
+  --green-light:#f0fdf4;
+  --yellow:#d97706;
+  --yellow-light:#fffbeb;
+  --red:#dc2626;
+  --red-light:#fef2f2;
+  --text:#0f172a;
+  --text2:#334155;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --shadow-md:0 4px 6px -1px rgba(0,0,0,.08),0 2px 4px -2px rgba(0,0,0,.05);
+  --shadow-lg:0 10px 15px -3px rgba(0,0,0,.07),0 4px 6px -4px rgba(0,0,0,.05);
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;height:54px;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);z-index:100;
+  display:flex;align-items:center;padding:0 48px;gap:2px;
+  overflow-x:auto;box-shadow:var(--shadow);
+}
+.nav::-webkit-scrollbar{display:none}
+.nav-logo{
+  font-weight:800;font-size:14px;color:var(--accent);
+  margin-right:24px;white-space:nowrap;letter-spacing:-.01em;
+}
+.nav-divider{width:1px;height:20px;background:var(--border);margin:0 8px;flex-shrink:0}
+.nav-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:12px;font-weight:500;color:var(--muted);font-family:inherit;
+  padding:6px 12px;border-radius:8px;white-space:nowrap;transition:all .15s;
+}
+.nav-btn:hover{background:var(--accent-light);color:var(--accent);}
+
+/* ── SLIDES ── */
+.slide{
+  min-height:100vh;padding:88px 72px 72px;
+  border-bottom:1px solid var(--border);
+  max-width:1400px;margin:0 auto;
+}
+.slide-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:11px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);
+  background:var(--accent-light);padding:4px 10px;
+  border-radius:20px;margin-bottom:12px;
+}
+.slide-h{font-size:30px;font-weight:800;margin-bottom:6px;line-height:1.2;color:var(--text);letter-spacing:-.02em}
+.slide-sub{font-size:14px;color:var(--muted);margin-bottom:36px;font-weight:400}
+
+/* ── KPI GRID ── */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px}
+.kpi{
+  background:var(--surface);border-radius:16px;padding:22px 20px;
+  box-shadow:var(--shadow);border:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.kpi::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  border-radius:16px 16px 0 0;
+}
+.kpi-lbl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.kpi-val{font-size:28px;font-weight:800;color:var(--text);letter-spacing:-.02em;line-height:1}
+.kpi-delta{font-size:12px;font-weight:500;margin-top:6px;display:flex;align-items:center;gap:3px}
+.up{color:var(--green)}
+.down{color:var(--red)}
+
+/* ── CHART GRID ── */
+.chart-row{display:grid;gap:20px;margin-bottom:20px}
+.chart-row.cols-2{grid-template-columns:1fr 1fr}
+.chart-row.cols-1{grid-template-columns:1fr}
+.chart-card{
+  background:var(--surface);border-radius:16px;padding:24px;
+  box-shadow:var(--shadow);border:1px solid var(--border);
+}
+.chart-title{
+  font-size:11px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px;
+}
+.chart-wrap{position:relative;overflow:visible}
+
+/* ── TABLES ── */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{
+  text-align:left;padding:8px 12px;color:var(--muted);
+  font-weight:600;border-bottom:2px solid var(--border);
+  font-size:10px;text-transform:uppercase;letter-spacing:.08em;
+  background:var(--surface2);
+}
+th:first-child{border-radius:8px 0 0 0}
+th:last-child{border-radius:0 8px 0 0}
+td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--text2);font-size:12px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--surface2)}
+.badge{
+  display:inline-flex;align-items:center;padding:3px 10px;
+  border-radius:20px;font-size:11px;font-weight:600;
+}
+.bg-green{background:var(--green-light);color:var(--green)}
+.bg-blue{background:var(--accent-light);color:var(--accent)}
+.bg-yellow{background:var(--yellow-light);color:var(--yellow)}
+.bg-red{background:var(--red-light);color:var(--red)}
+.pbar{height:5px;background:var(--border);border-radius:3px;margin-top:4px}
+.pbar-fill{height:100%;border-radius:3px;background:var(--accent)}
+
+/* ── INSIGHT ── */
+.insight{
+  background:var(--accent-light);
+  border-left:4px solid var(--accent);
+  border-radius:0 12px 12px 0;
+  padding:16px 22px;margin-top:20px;
+  font-size:14px;line-height:1.75;color:var(--text2);
+}
+.insight strong{color:var(--accent);font-weight:700}
+
+/* ── COVER ── */
+.cover{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:80px 60px 60px;
+  background:linear-gradient(150deg,#0f172a 0%,#1e3a8a 40%,#283593 70%,#3949ab 100%);
+  position:relative;overflow:hidden;
+}
+.cover::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.cover>*{position:relative}
+.cover-eyebrow{
+  font-size:11px;font-weight:700;letter-spacing:.25em;
+  color:rgba(255,255,255,.7);margin-bottom:20px;text-transform:uppercase;
+}
+.cover-title{
+  font-size:56px;font-weight:800;line-height:1.08;
+  margin-bottom:14px;color:#fff;letter-spacing:-.03em;
+}
+.cover-title em{
+  color:#9fa8da;font-style:normal;
+  display:block;
+}
+.cover-sub{font-size:16px;color:rgba(255,255,255,.65);margin-bottom:56px;font-weight:400}
+.cover-kpis{
+  display:flex;gap:0;flex-wrap:wrap;justify-content:center;
+  background:rgba(255,255,255,.1);border-radius:20px;
+  border:1px solid rgba(255,255,255,.2);overflow:hidden;
+  backdrop-filter:blur(8px);
+}
+.ck{
+  text-align:center;padding:28px 40px;
+  border-right:1px solid rgba(255,255,255,.15);
+}
+.ck:last-child{border-right:none}
+.ck-val{font-size:36px;font-weight:800;color:#fff;letter-spacing:-.02em}
+.ck-lbl{font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;font-weight:500;letter-spacing:.03em}
+.cover-credit{font-size:12px;color:rgba(255,255,255,.55);margin-top:40px;font-weight:400}
+
+/* ── SECTION SEPARATOR ── */
+.slide-section{max-width:1400px;margin:0 auto;padding:0 72px}
+
+/* ── FOOTER ── */
+.footer{
+  max-width:1400px;margin:0 auto;padding:36px 72px;
+  text-align:center;font-size:13px;color:var(--muted);
+}
+.footer a{color:var(--accent);text-decoration:none}
+
+@media(max-width:1024px){
+  .chart-row.cols-2,.chart-row.cols-3{grid-template-columns:1fr}
+  .slide{padding:74px 24px 48px}
+  .cover-title{font-size:38px}
+  .cover-kpis{flex-direction:column;gap:0;border-radius:16px}
+  .ck{border-right:none;border-bottom:1px solid rgba(255,255,255,.15);padding:20px 32px}
+  .ck:last-child{border-bottom:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">[Company Name] · [Q3 2026]</div>
+  <button class="nav-btn" onclick="go('cover')">Cover</button>
+  <button class="nav-btn" onclick="go('revenue')">01 Revenue</button>
+  <button class="nav-btn" onclick="go('margin')">02 Gross Margin</button>
+  <button class="nav-btn" onclick="go('opex')">03 OpEx</button>
+  <button class="nav-btn" onclick="go('ebitda')">04 EBITDA</button>
+  <button class="nav-btn" onclick="go('cashflow')">05 Cash Flow</button>
+  <button class="nav-btn" onclick="go('byunit')">06 Revenue by Unit</button>
+  <button class="nav-btn" onclick="go('budget')">07 Budget vs Actual</button>
+  <button class="nav-btn" onclick="go('case')">08 Unit Spotlight</button>
+  <button class="nav-btn" onclick="go('outlook')">09 Forecast &amp; Outlook</button>
+</nav>
+
+<div id="cover" class="cover">
+  <div class="cover-eyebrow">[COMPANY NAME] · FINANCIAL REVIEW</div>
+  <h1 class="cover-title">Financial <em>Review</em><br/>[Q3 2026]</h1>
+  <p class="cover-sub">[Q3 2025] vs [Q3 2026] · Data from [ERP] + [Source]</p>
+  <div class="cover-kpis" id="cover-kpis"></div>
+  <p class="cover-credit">Made with <a href="https://arkhen.tech" style="color:var(--accent);text-decoration:none">OpenReports</a> — free report templates by Instituto Arkhe</p>
+</div>
+
+<section class="slide" id="revenue">
+  <div class="slide-tag">01 · Revenue</div>
+  <h2 class="slide-h">Revenue Growth</h2>
+  <p class="slide-sub">Total revenue and active customers feeding the top line</p>
+  <div class="kpi-grid" id="kpi-pipeline"></div>
+  <div class="chart-row cols-2">
+    <div class="chart-card">
+      <div class="chart-title">Monthly Revenue — [2026]</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="ch-growth"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Revenue by Business Unit</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="ch-segment"></canvas></div>
+    </div>
+  </div>
+  <div class="insight" id="ins-pipeline"></div>
+</section>
+
+<section class="slide" id="margin">
+  <div class="slide-tag">02 · Gross Margin</div>
+  <h2 class="slide-h">Gross Margin &amp; Unit Economics</h2>
+  <p class="slide-sub">Margin per transaction — [Q3 2025] vs [Q3 2026]</p>
+  <div class="kpi-grid" id="kpi-winrate"></div>
+  <div class="chart-row cols-2">
+    <div class="chart-card">
+      <div class="chart-title">Average Margin per Order Trend — [2026]</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="ch-ticket"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Orders by Gross Margin Band — [2026]</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="ch-bands"></canvas></div>
+    </div>
+  </div>
+  <div class="insight" id="ins-winrate"></div>
+</section>
+
+<section class="slide" id="opex">
+  <div class="slide-tag">03 · Operating Expenses</div>
+  <h2 class="slide-h">Operating Expenses</h2>
+  <p class="slide-sub">[Q3 2025] ([ERP]) vs [Q3 2026] ([Source])</p>
+  <div class="kpi-grid" id="kpi-quota"></div>
+  <div class="chart-row cols-2">
+    <div class="chart-card">
+      <div class="chart-title">Monthly OpEx — [2025] vs [2026]</div>
+      <div class="chart-wrap" style="height:240px"><canvas id="ch-revenue-monthly"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">OpEx by Category — [Q3 2026]</div>
+      <div class="tbl-wrap" id="tbl-segment-revenue"></div>
+    </div>
+  </div>
+  <div class="insight" id="ins-quota"></div>
+</section>
+
+<section class="slide" id="ebitda">
+  <div class="slide-tag">04 · EBITDA</div>
+  <h2 class="slide-h">EBITDA Build Across [Q3]</h2>
+  <p class="slide-sub">Intra-month EBITDA pacing and month-end concentration</p>
+  <div class="kpi-grid" id="kpi-stages"></div>
+  <div class="chart-row cols-2">
+    <div class="chart-card">
+      <div class="chart-title">% Booked in Last 5 Business Days — [Q3 2025] vs [Q3 2026]</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="ch-concentration"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Cumulative EBITDA Curve — [Q3 2025] vs [Q3 2026]</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="ch-curve"></canvas></div>
+    </div>
+  </div>
+  <div class="insight" id="ins-stages"></div>
+</section>
+
+<section class="slide" id="cashflow">
+  <div class="slide-tag">05 · Cash Flow</div>
+  <h2 class="slide-h">Cash Inflows by Time and Day of Week</h2>
+  <p class="slide-sub">When cash actually lands across the week — local time</p>
+  <div class="kpi-grid" id="kpi-timing"></div>
+  <div class="chart-row cols-2">
+    <div class="chart-card">
+      <div class="chart-title">Cash Inflows by Hour of Day</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="ch-hour"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Cash Inflows by Day of Week</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="ch-weekday"></canvas></div>
+    </div>
+  </div>
+  <div class="chart-row cols-2" style="margin-top:16px">
+    <div class="chart-card">
+      <div class="chart-title">Cash Collected by Day of Week — [Q3 2026]</div>
+      <div class="kpi-grid" id="kpi-revenue-weekend" style="margin-bottom:12px"></div>
+      <div class="chart-wrap" style="height:160px"><canvas id="ch-revenue-weekday"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Cash: Weekdays vs Saturday vs Sunday</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="ch-revenue-period"></canvas></div>
+    </div>
+  </div>
+  <div class="insight" id="ins-timing"></div>
+</section>
+
+<section class="slide" id="byunit">
+  <div class="slide-tag">06 · Revenue by Unit</div>
+  <h2 class="slide-h">Revenue Contribution by Business Unit</h2>
+  <p class="slide-sub">By unit — Owners: [Owner A], [Owner B], [Owner C], [Owner D], [Owner E]</p>
+  <div class="kpi-grid" id="kpi-leaderboard"></div>
+  <div class="chart-row cols-2">
+    <div class="chart-card">
+      <div class="chart-title">Margin Contribution by Unit</div>
+      <div class="chart-wrap" style="height:260px"><canvas id="ch-penetration-segment"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">By Unit Owner</div>
+      <div class="tbl-wrap" id="tbl-managers"></div>
+    </div>
+  </div>
+  <div class="insight" id="ins-leaderboard"></div>
+</section>
+
+<section class="slide" id="contributors">
+  <div class="slide-tag">06b · Top Contributors</div>
+  <h2 class="slide-h">Top Product Lines Drive Revenue</h2>
+  <p class="slide-sub">Link between product line and revenue contribution</p>
+  <div class="kpi-grid" id="kpi-salesforce"></div>
+  <div class="chart-row cols-2">
+    <div class="chart-card">
+      <div class="chart-title">Top Product Lines — Revenue [Q3 2026]</div>
+      <div class="chart-wrap" style="height:260px"><canvas id="ch-top-reps"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Performance by Division</div>
+      <div class="tbl-wrap" id="tbl-supervisors"></div>
+    </div>
+  </div>
+  <div class="insight" id="ins-salesforce"></div>
+</section>
+
+<section class="slide" id="budget">
+  <div class="slide-tag">07 · Budget vs Actual</div>
+  <h2 class="slide-h">Cost Structure: Budget vs Actual</h2>
+  <p class="slide-sub">[Plan] ([Q3 2025]) → actuals ([Q3 2026]) — cost-line evolution and budget coverage by category</p>
+  <div class="kpi-grid" id="kpi-productmix"></div>
+  <div class="chart-row cols-1">
+    <div class="chart-card">
+      <div class="chart-title">% of Budget Consumed by Category — [Q3 2026]</div>
+      <p style="font-size:12px;color:var(--muted);margin:0 0 12px">Average share of the planned budget consumed within each cost category</p>
+      <div class="chart-wrap" style="height:260px"><canvas id="ch-coreitems"></canvas></div>
+    </div>
+  </div>
+  <div class="insight" id="ins-productmix"></div>
+</section>
+
+<section class="slide" id="case">
+  <div class="slide-tag">08 · Spotlight: Top Unit</div>
+  <h2 class="slide-h">Illustrative Spotlight — Top Unit [Q3 2026]</h2>
+  <p class="slide-sub">Profile, revenue mix and growth of the highest-contributing unit this quarter</p>
+  <div class="kpi-grid" id="kpi-account"></div>
+  <div class="chart-row cols-2">
+    <div class="chart-card">
+      <div class="chart-title">Monthly Revenue</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="ch-case-revenue"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Top 5 Revenue Lines</div>
+      <div class="chart-wrap" style="height:220px"><canvas id="ch-case-products"></canvas></div>
+    </div>
+  </div>
+  <div class="insight" id="ins-account"></div>
+</section>
+
+<section class="slide" id="outlook">
+  <div class="slide-tag">09 · Forecast &amp; Outlook</div>
+  <h2 class="slide-h">Where to Improve — Margin Opportunities by Unit</h2>
+  <p class="slide-sub">Cross-analysis of current margin and target margin · next-quarter outlook</p>
+  <div class="kpi-grid" id="kpi-strategy"></div>
+  <div class="chart-row cols-2">
+    <div class="chart-card">
+      <div class="chart-title">Margin Gap to Target by Unit — TOP and HIGH Priority</div>
+      <div class="chart-wrap" style="height:280px"><canvas id="ch-potential"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Current vs Target Margin</div>
+      <div class="chart-wrap" style="height:280px"><canvas id="ch-penetration-current"></canvas></div>
+    </div>
+  </div>
+  <div id="cards-strategy" style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:16px"></div>
+</section>
+
+<footer class="footer">
+  Made with <a href="https://arkhen.tech" style="color:var(--accent);text-decoration:none">OpenReports</a> — free report templates by Instituto Arkhe
+</footer>
+
+<script>
+const D = {
+  "pipeline":{
+    "total_customers_26":42000000,"total_customers_25":33000000,"total_active_registered":0,"pct_base_using_platform":27.0,
+    "monthly_trend":[{"Month":1,"Unique_Customers":13000000,"MonthName":"Jul/2026"},{"Month":2,"Unique_Customers":14000000,"MonthName":"Aug/2026"},{"Month":3,"Unique_Customers":15000000,"MonthName":"Sep/2026"}],
+    "recurring_26":30000000,"new_26":12000000,
+    "mix_segment":[{"Segment":"[Unit A]","Customers":12000000},{"Segment":"[Unit B]","Customers":9000000},{"Segment":"[Unit C]","Customers":7000000},{"Segment":"[Unit D]","Customers":5000000},{"Segment":"[Unit E]","Customers":4000000},{"Segment":"[Unit F]","Customers":2500000},{"Segment":"[Unit G]","Customers":1500000},{"Segment":"[Unit H]","Customers":600000},{"Segment":"[Unit I]","Customers":300000},{"Segment":"[Unit J]","Customers":100000}],
+    "yoy_customers":[{"Year":"[Q3 2025]","Unique_Customers":33000000,"Change_pct":null},{"Year":"[Q3 2026]","Unique_Customers":42000000,"Change_pct":27.0}]
+  },
+  "order_value":{
+    "yoy_comparison":[{"year":"[Q3 2025]","total_orders":120000,"avg_order_value":150.00,"median_order_value":120.00,"ticket_min":0,"ticket_max":5000.0},{"year":"[Q3 2026]","total_orders":160000,"avg_order_value":180.00,"median_order_value":140.00,"ticket_min":0,"ticket_max":6000.0}],
+    "order_value_change_pct":20.0,
+    "monthly_trend_2026":[{"Month":1,"Avg_Order_Value":170.00,"MonthName":"Jul/2026"},{"Month":2,"Avg_Order_Value":180.00,"MonthName":"Aug/2026"},{"Month":3,"Avg_Order_Value":190.00,"MonthName":"Sep/2026"}],
+    "monthly_trend_2025":[{"Month":1,"Avg_Order_Value":145.00,"MonthName":"Jul/2025"},{"Month":2,"Avg_Order_Value":150.00,"MonthName":"Aug/2025"},{"Month":3,"Avg_Order_Value":155.00,"MonthName":"Sep/2025"}],
+    "value_band_distribution_2026":[{"band":"Up to 50","orders":16000,"pct":10.0},{"band":"50–100","orders":40000,"pct":25.0},{"band":"100–200","orders":48000,"pct":30.0},{"band":"200–400","orders":32000,"pct":20.0},{"band":"400–800","orders":16000,"pct":10.0},{"band":"Above 800","orders":8000,"pct":5.0}]
+  },
+  "revenue":{
+    "revenue_total_2025":21000000,"revenue_total_2026":24000000,"total_change_pct":14.0,
+    "monthly_comparison":[{"Month":1,"Month_Name":"Jul","Revenue_25":6800000,"Revenue_26":7600000,"Change_pct":12.0},{"Month":2,"Month_Name":"Aug","Revenue_25":7000000,"Revenue_26":8000000,"Change_pct":14.0},{"Month":3,"Month_Name":"Sep","Revenue_25":7200000,"Revenue_26":8400000,"Change_pct":17.0}],
+    "mix_segment_2026":[{"Segment":"[Payroll]","Revenue":9600000,"Pct":40.0},{"Segment":"[Sales & Marketing]","Revenue":4800000,"Pct":20.0},{"Segment":"[G&A]","Revenue":3600000,"Pct":15.0},{"Segment":"[R&D]","Revenue":2400000,"Pct":10.0},{"Segment":"[Facilities]","Revenue":1680000,"Pct":7.0},{"Segment":"[IT & Software]","Revenue":960000,"Pct":4.0},{"Segment":"[Travel]","Revenue":480000,"Pct":2.0},{"Segment":"[Professional Services]","Revenue":360000,"Pct":1.5},{"Segment":"[Other]","Revenue":120000,"Pct":0.5}],
+    "mix_segment_2025":[{"Segment":"[Payroll]","Revenue":8400000,"Pct":40.0},{"Segment":"[Sales & Marketing]","Revenue":4200000,"Pct":20.0},{"Segment":"[G&A]","Revenue":3150000,"Pct":15.0},{"Segment":"[R&D]","Revenue":2100000,"Pct":10.0},{"Segment":"[Facilities]","Revenue":1470000,"Pct":7.0},{"Segment":"[IT & Software]","Revenue":840000,"Pct":4.0},{"Segment":"[Travel]","Revenue":420000,"Pct":2.0},{"Segment":"[Professional Services]","Revenue":315000,"Pct":1.5},{"Segment":"[Other]","Revenue":105000,"Pct":0.5}]
+  },
+  "quarterclose":{
+    "revenue_total_q1_2026":7200000,"revenue_total_q1_2025":6000000,
+    "concentration_by_month_2026":[{"Month":"Jul","Revenue_Total_Month":2300000,"Revenue_Last5BusinessDays":700000,"Pct_Concentrated_End":30.4},{"Month":"Aug","Revenue_Total_Month":2400000,"Revenue_Last5BusinessDays":770000,"Pct_Concentrated_End":32.1},{"Month":"Sep","Revenue_Total_Month":2500000,"Revenue_Last5BusinessDays":870000,"Pct_Concentrated_End":34.8}],
+    "concentration_by_month_2025":[{"Month":"Jul","Revenue_Total_Month":1900000,"Revenue_Last5BusinessDays":520000,"Pct_Concentrated_End":27.4},{"Month":"Aug","Revenue_Total_Month":2000000,"Revenue_Last5BusinessDays":560000,"Pct_Concentrated_End":28.0},{"Month":"Sep","Revenue_Total_Month":2100000,"Revenue_Last5BusinessDays":630000,"Pct_Concentrated_End":30.0}],
+    "daily_avg_by_month":[{"MonthName":"Jul/2026","Daily_Avg":105000,"Days_With_Revenue":22},{"MonthName":"Aug/2026","Daily_Avg":109000,"Days_With_Revenue":22},{"MonthName":"Sep/2026","Daily_Avg":119000,"Days_With_Revenue":21}],
+    "concentration_by_month":[{"Month":"Jul","Revenue_Total_Month":2300000,"Revenue_Last5BusinessDays":700000,"Pct_Concentrated_End":30.4},{"Month":"Aug","Revenue_Total_Month":2400000,"Revenue_Last5BusinessDays":770000,"Pct_Concentrated_End":32.1},{"Month":"Sep","Revenue_Total_Month":2500000,"Revenue_Last5BusinessDays":870000,"Pct_Concentrated_End":34.8}],
+    "cumulative_curve_2026":[{"QuarterDay":1,"Cumulative_Revenue":100000,"Cumulative_Pct":1.4},{"QuarterDay":5,"Cumulative_Revenue":550000,"Cumulative_Pct":7.6},{"QuarterDay":10,"Cumulative_Revenue":1150000,"Cumulative_Pct":16.0},{"QuarterDay":15,"Cumulative_Revenue":1800000,"Cumulative_Pct":25.0},{"QuarterDay":20,"Cumulative_Revenue":2450000,"Cumulative_Pct":34.0},{"QuarterDay":25,"Cumulative_Revenue":3150000,"Cumulative_Pct":43.8},{"QuarterDay":30,"Cumulative_Revenue":3900000,"Cumulative_Pct":54.2},{"QuarterDay":35,"Cumulative_Revenue":4650000,"Cumulative_Pct":64.6},{"QuarterDay":40,"Cumulative_Revenue":5400000,"Cumulative_Pct":75.0},{"QuarterDay":45,"Cumulative_Revenue":6100000,"Cumulative_Pct":84.7},{"QuarterDay":50,"Cumulative_Revenue":6700000,"Cumulative_Pct":93.1},{"QuarterDay":55,"Cumulative_Revenue":7050000,"Cumulative_Pct":97.9},{"QuarterDay":60,"Cumulative_Revenue":7180000,"Cumulative_Pct":99.7},{"QuarterDay":63,"Cumulative_Revenue":7200000,"Cumulative_Pct":100.0}],
+    "cumulative_curve_2025":[{"QuarterDay":1,"Cumulative_Revenue":80000,"Cumulative_Pct":1.3},{"QuarterDay":5,"Cumulative_Revenue":450000,"Cumulative_Pct":7.5},{"QuarterDay":10,"Cumulative_Revenue":950000,"Cumulative_Pct":15.8},{"QuarterDay":15,"Cumulative_Revenue":1500000,"Cumulative_Pct":25.0},{"QuarterDay":20,"Cumulative_Revenue":2050000,"Cumulative_Pct":34.2},{"QuarterDay":25,"Cumulative_Revenue":2650000,"Cumulative_Pct":44.2},{"QuarterDay":30,"Cumulative_Revenue":3250000,"Cumulative_Pct":54.2},{"QuarterDay":35,"Cumulative_Revenue":3850000,"Cumulative_Pct":64.2},{"QuarterDay":40,"Cumulative_Revenue":4500000,"Cumulative_Pct":75.0},{"QuarterDay":45,"Cumulative_Revenue":5100000,"Cumulative_Pct":85.0},{"QuarterDay":50,"Cumulative_Revenue":5600000,"Cumulative_Pct":93.3},{"QuarterDay":55,"Cumulative_Revenue":5900000,"Cumulative_Pct":98.3},{"QuarterDay":60,"Cumulative_Revenue":5980000,"Cumulative_Pct":99.7},{"QuarterDay":63,"Cumulative_Revenue":6000000,"Cumulative_Pct":100.0}]
+  },
+  "timing":{
+    "total_orders_q1_2026":160000,"within_business_hours":134000,"outside_business_hours":26000,"pct_within_hours":83.8,"pct_outside_hours":16.2,
+    "weekend_orders":9000,"pct_weekend":5.6,"weekday_off_hours":17000,
+    "revenue_weekday":21600000,"revenue_saturday":1700000,"revenue_sunday":700000,"revenue_weekend":2400000,"pct_revenue_saturday":7.1,"pct_revenue_sunday":2.9,
+    "by_hour":[{"Hour":0,"Orders":600,"Pct":0.4},{"Hour":1,"Orders":300,"Pct":0.2},{"Hour":2,"Orders":150,"Pct":0.1},{"Hour":3,"Orders":100,"Pct":0.1},{"Hour":4,"Orders":150,"Pct":0.1},{"Hour":5,"Orders":300,"Pct":0.2},{"Hour":6,"Orders":900,"Pct":0.6},{"Hour":7,"Orders":2500,"Pct":1.6},{"Hour":8,"Orders":7000,"Pct":4.4},{"Hour":9,"Orders":13000,"Pct":8.1},{"Hour":10,"Orders":17000,"Pct":10.6},{"Hour":11,"Orders":16500,"Pct":10.3},{"Hour":12,"Orders":11000,"Pct":6.9},{"Hour":13,"Orders":14000,"Pct":8.8},{"Hour":14,"Orders":19000,"Pct":11.9},{"Hour":15,"Orders":18500,"Pct":11.6},{"Hour":16,"Orders":12500,"Pct":7.8},{"Hour":17,"Orders":7000,"Pct":4.4},{"Hour":18,"Orders":4000,"Pct":2.5},{"Hour":19,"Orders":2500,"Pct":1.6},{"Hour":20,"Orders":1500,"Pct":0.9},{"Hour":21,"Orders":1000,"Pct":0.6},{"Hour":22,"Orders":700,"Pct":0.4},{"Hour":23,"Orders":400,"Pct":0.3}],
+    "by_weekday":[{"DayName":"Mon","Orders":35000,"Pct":21.9},{"DayName":"Tue","Orders":37000,"Pct":23.1},{"DayName":"Wed","Orders":33000,"Pct":20.6},{"DayName":"Thu","Orders":30000,"Pct":18.8},{"DayName":"Fri","Orders":16000,"Pct":10.0},{"DayName":"Sat","Orders":6000,"Pct":3.8},{"DayName":"Sun","Orders":3000,"Pct":1.9}],
+    "revenue_by_weekday":[{"DayName":"Mon","Revenue":4500000,"Pct":18.8},{"DayName":"Tue","Revenue":5000000,"Pct":20.8},{"DayName":"Wed","Revenue":4600000,"Pct":19.2},{"DayName":"Thu","Revenue":4200000,"Pct":17.5},{"DayName":"Fri","Revenue":3300000,"Pct":13.8},{"DayName":"Sat","Revenue":1700000,"Pct":7.1}]
+  },
+  "penetration":{
+    "total_customers_managers":24000000,"total_customers_platform":9600000,"pct_penetration_overall":40.0,
+    "penetration_by_segment":[{"Segment":"[Unit A]","Total_Customers":12000000,"Customers_Platform":5400000,"Pct_Penetration":45.0},{"Segment":"[Unit B]","Total_Customers":9000000,"Customers_Platform":3780000,"Pct_Penetration":42.0},{"Segment":"[Unit C]","Total_Customers":7000000,"Customers_Platform":2730000,"Pct_Penetration":39.0},{"Segment":"[Unit D]","Total_Customers":5000000,"Customers_Platform":1850000,"Pct_Penetration":37.0},{"Segment":"[Unit E]","Total_Customers":4000000,"Customers_Platform":1360000,"Pct_Penetration":34.0},{"Segment":"[Unit F]","Total_Customers":2500000,"Customers_Platform":800000,"Pct_Penetration":32.0},{"Segment":"[Unit G]","Total_Customers":1500000,"Customers_Platform":435000,"Pct_Penetration":29.0},{"Segment":"[Unit H]","Total_Customers":600000,"Customers_Platform":162000,"Pct_Penetration":27.0},{"Segment":"[Unit I]","Total_Customers":300000,"Customers_Platform":72000,"Pct_Penetration":24.0},{"Segment":"[Unit J]","Total_Customers":100000,"Customers_Platform":21000,"Pct_Penetration":21.0}],
+    "penetration_by_manager":[{"Manager":"[Owner A]","Total_Customers":7000000,"Customers_Platform":3150000,"Pct_Penetration":45.0,"Revenue_Platform":12000000},{"Manager":"[Owner B]","Total_Customers":6000000,"Customers_Platform":2520000,"Pct_Penetration":42.0,"Revenue_Platform":10000000},{"Manager":"[Owner C]","Total_Customers":5000000,"Customers_Platform":1950000,"Pct_Penetration":39.0,"Revenue_Platform":8000000},{"Manager":"[Owner D]","Total_Customers":4000000,"Customers_Platform":1480000,"Pct_Penetration":37.0,"Revenue_Platform":6500000},{"Manager":"[Owner E]","Total_Customers":2000000,"Customers_Platform":500000,"Pct_Penetration":25.0,"Revenue_Platform":3500000}],
+    "strategy_segment":[
+      {"Segment":"[Unit J]","Priority":"TOP","Total_Customers":100000,"Customers_Platform":21000,"Pct_Current":21.0,"Potential":79000,"Reason":"This unit runs well below the target margin band, with the largest gap to plan. The cost base is heavier than peers and pricing has not kept pace — yet the underlying demand is healthy.","Recommended_Action":"Launch a margin-recovery plan: renegotiate the top supplier contracts and revisit list pricing on low-margin lines."},
+      {"Segment":"[Unit I]","Priority":"HIGH","Total_Customers":300000,"Customers_Platform":72000,"Pct_Current":24.0,"Potential":228000,"Reason":"Margin sits at 24% against a higher target. Volume is small but growing; fixed-cost absorption is the main drag and improves quickly with scale.","Recommended_Action":"Hold opex flat while growing volume. Reallocate shared services costs to lift absorbed margin."},
+      {"Segment":"[Unit G]","Priority":"HIGH","Total_Customers":1500000,"Customers_Platform":435000,"Pct_Current":29.0,"Potential":1065000,"Reason":"Margin at 29% with a meaningful gap to target. Discounting on a few large accounts is eroding the blended rate.","Recommended_Action":"Tighten the discount-approval policy. Introduce a margin floor on deals above a set size."},
+      {"Segment":"[Unit E]","Priority":"HIGH","Total_Customers":4000000,"Customers_Platform":1360000,"Pct_Current":34.0,"Potential":2640000,"Reason":"The single largest absolute margin opportunity — a 34% rate across a large revenue base. Small rate gains here move the consolidated number materially.","Recommended_Action":"Run a unit-wide cost-to-serve review. Standardise the product mix toward higher-margin lines."},
+      {"Segment":"[Unit D]","Priority":"HIGH","Total_Customers":5000000,"Customers_Platform":1850000,"Pct_Current":37.0,"Potential":3150000,"Reason":"Margin at 37%, close to but below target. Most of the gap is in logistics and fulfilment cost, which is addressable through routing changes.","Recommended_Action":"Optimise fulfilment and freight terms. Consolidate shipments to reduce per-unit cost."},
+      {"Segment":"[Unit C]","Priority":"HIGH","Total_Customers":7000000,"Customers_Platform":2730000,"Pct_Current":39.0,"Potential":4270000,"Reason":"39% margin on a large base. The mix has drifted toward lower-margin SKUs over the quarter — a correctable trend.","Recommended_Action":"Rebalance the product mix in planning. Promote higher-margin lines through the next campaign cycle."},
+      {"Segment":"[Unit H]","Priority":"HIGH","Total_Customers":600000,"Customers_Platform":162000,"Pct_Current":27.0,"Potential":438000,"Reason":"Margin at 27%, a sizeable gap to target on a smaller base. A handful of high-cost inputs drive most of the shortfall.","Recommended_Action":"Dual-source the top cost inputs. Pass through input-cost increases via a scheduled price review."},
+      {"Segment":"[Unit B]","Priority":"MEDIUM","Total_Customers":9000000,"Customers_Platform":3780000,"Pct_Current":42.0,"Potential":5220000,"Reason":"42% margin, near target. Stable cost base and predictable demand. Incremental gains come from procurement, not pricing.","Recommended_Action":"Pursue procurement savings on indirect spend. Maintain pricing discipline on renewals."},
+      {"Segment":"[Unit F]","Priority":"MEDIUM","Total_Customers":2500000,"Customers_Platform":800000,"Pct_Current":32.0,"Potential":1700000,"Reason":"32% margin with predictable demand. The gap is structural — a higher fixed-cost footprint than peer units.","Recommended_Action":"Review the fixed-cost footprint. Evaluate shared-service consolidation to reduce overhead."},
+      {"Segment":"[Unit A]","Priority":"MEDIUM","Total_Customers":12000000,"Customers_Platform":5400000,"Pct_Current":45.0,"Potential":6600000,"Reason":"45% margin — the strongest unit and at target. The focus here is to protect the rate while continuing to scale revenue.","Recommended_Action":"Protect pricing and mix. Reinvest a share of the margin into growth where the return clears the hurdle rate."}
+    ]
+  },
+  "salesforce":{
+    "total_revenue_q1_2026":24000000,"buying_customers_with_rep":9560000,"buying_customers_without_rep":40000,"pct_with_rep":99.6,"activated_by_rep":9560000,"autonomous":40000,"pct_activated_by_rep":99.6,
+    "top10_reps":[{"Rep name":"[Line 01]","Revenue":3600000,"Orders":120,"Active_Customers":80,"Pct_Revenue":15.0},{"Rep name":"[Line 02]","Revenue":3000000,"Orders":110,"Active_Customers":72,"Pct_Revenue":12.5},{"Rep name":"[Line 03]","Revenue":2600000,"Orders":100,"Active_Customers":66,"Pct_Revenue":10.8},{"Rep name":"[Line 04]","Revenue":2200000,"Orders":92,"Active_Customers":60,"Pct_Revenue":9.2},{"Rep name":"[Line 05]","Revenue":1900000,"Orders":84,"Active_Customers":55,"Pct_Revenue":7.9},{"Rep name":"[Line 06]","Revenue":1600000,"Orders":76,"Active_Customers":50,"Pct_Revenue":6.7},{"Rep name":"[Line 07]","Revenue":1400000,"Orders":70,"Active_Customers":46,"Pct_Revenue":5.8},{"Rep name":"[Line 08]","Revenue":1200000,"Orders":64,"Active_Customers":42,"Pct_Revenue":5.0},{"Rep name":"[Line 09]","Revenue":1000000,"Orders":58,"Active_Customers":38,"Pct_Revenue":4.2},{"Rep name":"[Line 10]","Revenue":800000,"Orders":52,"Active_Customers":34,"Pct_Revenue":3.3}],
+    "by_supervisor":[{"Supervisor name":"[Division 1]","Revenue":7000000,"Customers":300,"Pct_Revenue":29.2},{"Supervisor name":"[Division 2]","Revenue":6000000,"Customers":270,"Pct_Revenue":25.0},{"Supervisor name":"[Division 3]","Revenue":4500000,"Customers":230,"Pct_Revenue":18.8},{"Supervisor name":"[Division 4]","Revenue":3500000,"Customers":190,"Pct_Revenue":14.6},{"Supervisor name":"[Division 5]","Revenue":2000000,"Customers":140,"Pct_Revenue":8.3},{"Supervisor name":"[Division 6]","Revenue":1000000,"Customers":90,"Pct_Revenue":4.2}]
+  },
+  "productmix":{
+    "mix_2025":{"year":2025,"avg_skus_per_order":3.0,"median_skus_per_order":3.0,"avg_skus_per_customer":4.0,"total_unique_skus":40,"total_orders":120000,"total_customers":33000000},
+    "mix_2026":{"year":2026,"avg_skus_per_order":3.4,"median_skus_per_order":3.0,"avg_skus_per_customer":4.5,"total_unique_skus":45,"total_orders":160000,"total_customers":42000000},
+    "core_item_coverage":[{"Channel":"[Payroll]","Total_Customers":100,"Core_Total":10,"Coverage_Avg":98.0,"Customers_50pct":100,"Customers_80pct":95},{"Channel":"[Sales & Marketing]","Total_Customers":100,"Core_Total":10,"Coverage_Avg":92.0,"Customers_50pct":95,"Customers_80pct":80},{"Channel":"[G&A]","Total_Customers":100,"Core_Total":10,"Coverage_Avg":88.0,"Customers_50pct":90,"Customers_80pct":70},{"Channel":"[R&D]","Total_Customers":100,"Core_Total":10,"Coverage_Avg":76.0,"Customers_50pct":80,"Customers_80pct":40},{"Channel":"[Facilities]","Total_Customers":100,"Core_Total":10,"Coverage_Avg":83.0,"Customers_50pct":85,"Customers_80pct":55},{"Channel":"[IT & Software]","Total_Customers":100,"Core_Total":10,"Coverage_Avg":69.0,"Customers_50pct":70,"Customers_80pct":30}]
+  },
+  "customercase":{
+    "customer_id":"[Unit A]","segment":"[Product Line A]","rep":"[Division 1]","manager":"[Owner A]",
+    "revenue_total_2026":12000000,"revenue_total_2025":10000000,"change_pct":20.0,
+    "avg_order_value":250,"total_orders_2026":48000,"days_with_order":63,"skus_purchased":18,
+    "revenue_by_month":[{"Month":1,"MonthName":"Jul/2026","Revenue":3800000,"Orders":15000},{"Month":2,"MonthName":"Aug/2026","Revenue":4000000,"Orders":16000},{"Month":3,"MonthName":"Sep/2026","Revenue":4200000,"Orders":17000}],
+    "top_products":[{"SKU":1,"Product_Name":"[Revenue Line A]","Gross_Revenue":4800000},{"SKU":2,"Product_Name":"[Revenue Line B]","Gross_Revenue":3000000},{"SKU":3,"Product_Name":"[Revenue Line C]","Gross_Revenue":2000000},{"SKU":4,"Product_Name":"[Revenue Line D]","Gross_Revenue":1400000},{"SKU":5,"Product_Name":"[Revenue Line E]","Gross_Revenue":800000}]
+  }
+};
+
+const COLORS = ['#3949ab','#1e3a8a','#5c6bc0','#7986cb','#0891b2','#3f51b5','#283593','#5e35b1','#1565c0','#00838f'];
+const COLORS_LIGHT = ['#e8eaf6','#dbeafe','#e8eaf6','#e8eaf6','#cffafe','#e8eaf6','#dbeafe','#ede9fe','#dbeafe','#cffafe'];
+
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+
+function brl(v){return '$ '+Number(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function num(v){return Number(v).toLocaleString('en-US')}
+function pct(v){return Number(v).toFixed(1)+'%'}
+
+function kpi(label,value,delta,deltaLabel,color){
+  const c = color||'#3949ab';
+  const arrow = delta>0?'▲':'▼';
+  const cls = delta>0?'up':'down';
+  const deltaHtml = delta!==undefined
+    ?`<div class="kpi-delta ${cls}">${arrow} ${Math.abs(delta).toFixed(1)}% ${deltaLabel||'vs [Q3 2025]'}</div>`:'';
+  return `<div class="kpi" style="border-top:4px solid ${c};border-radius:0 0 16px 16px;border-left:1px solid #e2e8f0;border-right:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;box-shadow:0 2px 8px rgba(0,0,0,.06)">
+    <div class="kpi-lbl">${label}</div>
+    <div class="kpi-val">${value}</div>
+    ${deltaHtml}
+  </div>`;
+}
+
+function mkChart(id, cfg){
+  const ctx = document.getElementById(id);
+  if(!ctx) return;
+  const defaults = {
+    responsive:true,maintainAspectRatio:false,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        backgroundColor:'#fff',borderColor:'#e2e8f0',borderWidth:1,
+        titleColor:'#64748b',bodyColor:'#0f172a',
+        padding:10,cornerRadius:8,
+        boxShadow:'0 4px 6px -1px rgba(0,0,0,.1)'
+      }
+    },
+    scales:{
+      x:{grid:{color:'#f1f5f9',drawBorder:false},ticks:{color:'#64748b',font:{size:11,family:'Inter'}},border:{color:'#e2e8f0'}},
+      y:{grid:{color:'#f1f5f9',drawBorder:false},ticks:{color:'#64748b',font:{size:11,family:'Inter'}},border:{color:'#e2e8f0'}}
+    }
+  };
+  const merged = mergeDeep(defaults, cfg);
+  return new Chart(ctx, merged);
+}
+
+function mergeDeep(target, source){
+  const out = Object.assign({}, target);
+  if(isObj(target)&&isObj(source)){
+    Object.keys(source).forEach(k=>{
+      if(isObj(source[k])){if(!(k in target))out[k]=source[k];else out[k]=mergeDeep(target[k],source[k])}
+      else out[k]=source[k];
+    });
+  }
+  return out;
+}
+function isObj(x){return x&&typeof x==='object'&&!Array.isArray(x)}
+
+function table(rows, headers, fmts){
+  const ths = headers.map(h=>`<th>${h}</th>`).join('');
+  const trs = rows.map(row=>{
+    const tds = row.map((v,i)=>{
+      const fmt = fmts&&fmts[i];
+      let display = v===null||v===undefined?'—':v;
+      if(fmt==='brl')display=brl(v);
+      else if(fmt==='num')display=num(v);
+      else if(fmt==='pct')display=pct(v);
+      else if(fmt==='badge'){
+        const n=parseFloat(v);
+        const cls=n>=50?'bg-green':n>=30?'bg-blue':'bg-yellow';
+        display=`<span class="badge ${cls}">${pct(v)}</span>`;
+      }
+      else if(fmt==='pbar'){
+        const n=parseFloat(v);
+        display=`<span>${pct(v)}</span><div class="pbar"><div class="pbar-fill" style="width:${Math.min(n,100)}%"></div></div>`;
+      }
+      return `<td>${display}</td>`;
+    }).join('');
+    return `<tr>${tds}</tr>`;
+  }).join('');
+  return `<table><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
+}
+
+// ---- COVER ----
+(function(){
+  const revenue = D.revenue; const base = D.pipeline; const drop = D.order_value;
+  const yoy = base.yoy_customers||[];
+  const pctCustomers = yoy.length>=2?(((yoy[1].Unique_Customers-yoy[0].Unique_Customers)/yoy[0].Unique_Customers)*100).toFixed(0):'—';
+  document.getElementById('cover-kpis').innerHTML = `
+    <div class="ck"><div class="ck-val">+${pctCustomers}%</div><div class="ck-lbl">Revenue Growth</div></div>
+    <div class="ck"><div class="ck-val">${base.pct_base_using_platform}%</div><div class="ck-lbl">EBITDA Margin</div></div>
+    <div class="ck"><div class="ck-val">+${revenue.total_change_pct}%</div><div class="ck-lbl">OpEx Change</div></div>
+    <div class="ck"><div class="ck-val">+${drop.order_value_change_pct}%</div><div class="ck-lbl">Gross Margin Change</div></div>
+  `;
+})();
+
+// ---- REVENUE ----
+(function(){
+  const d = D.pipeline;
+  const yoy = d.yoy_customers||[];
+  const pctYoy = yoy.length>=2?(((yoy[1].Unique_Customers-yoy[0].Unique_Customers)/yoy[0].Unique_Customers)*100).toFixed(1):'—';
+  document.getElementById('kpi-pipeline').innerHTML =
+    kpi('Revenue [Q3 2026]',brl(d.total_customers_26),parseFloat(pctYoy),undefined,'#3949ab')+
+    kpi('Revenue [Q3 2025]',brl(d.total_customers_25),undefined,undefined,'#1e3a8a')+
+    kpi('EBITDA Margin',pct(d.pct_base_using_platform),undefined,undefined,'#16a34a')+
+    kpi('Recurring Revenue',brl(d.recurring_26),undefined,undefined,'#5c6bc0');
+
+  const ev = d.monthly_trend||[];
+  mkChart('ch-growth',{type:'bar',data:{
+    labels:ev.map(r=>r.MonthName),
+    datasets:[{label:'Revenue',data:ev.map(r=>r.Unique_Customers),backgroundColor:'#3949ab',borderRadius:5}]
+  },options:{scales:{y:{ticks:{callback:v=>'$'+Number(v).toLocaleString('en-US',{notation:'compact'})}}}}});
+
+  const mix = (d.mix_segment||[]).slice(0,8);
+  mkChart('ch-segment',{type:'bar',data:{
+    labels:mix.map(r=>r.Segment),
+    datasets:[{label:'Revenue',data:mix.map(r=>r.Customers),backgroundColor:COLORS,borderRadius:4}]
+  },options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>'$'+Number(v).toLocaleString('en-US',{notation:'compact'})}}}}});
+
+  document.getElementById('ins-pipeline').innerHTML =
+    `Total revenue grew from <strong>${brl(d.total_customers_25)}</strong> in [Q3 2025] to <strong>${brl(d.total_customers_26)}</strong> in [Q3 2026] — growth of <strong>+${pctYoy}%</strong>.
+     Of the [Q3 2026] total, <strong>${brl(d.recurring_26)} is recurring revenue</strong>, indicating a stable base.
+     The business is delivering an <strong>EBITDA margin of ${pct(d.pct_base_using_platform)}</strong>.`;
+})();
+
+// ---- GROSS MARGIN ----
+(function(){
+  const d = D.order_value;
+  const s25 = d.yoy_comparison[0]||{};
+  const s26 = d.yoy_comparison[1]||{};
+  const growthOrders = ((s26.total_orders-s25.total_orders)/s25.total_orders*100).toFixed(0);
+  document.getElementById('kpi-winrate').innerHTML =
+    kpi('Avg Margin/Order [Q3 2026]',brl(s26.avg_order_value),d.order_value_change_pct,undefined,'#3949ab')+
+    kpi('Avg Margin/Order [Q3 2025]',brl(s25.avg_order_value),undefined,undefined,'#1e3a8a')+
+    kpi('Total Orders [2026]',num(s26.total_orders),parseFloat(growthOrders),undefined,'#16a34a')+
+    kpi('Median Margin [Q3 2026]',brl(s26.median_order_value),undefined,undefined,'#d97706');
+
+  const ev26 = d.monthly_trend_2026||[];
+  const ev25 = d.monthly_trend_2025||[];
+  const tickLabels = ['Jul','Aug','Sep'];
+  const ticket26 = [1,2,3].map(m=>{const r=ev26.find(x=>x.Month===m); return r?r.Avg_Order_Value:null;});
+  const ticket25 = [1,2,3].map(m=>{const r=ev25.find(x=>x.Month===m); return r?r.Avg_Order_Value:null;});
+  mkChart('ch-ticket',{type:'line',data:{
+    labels:tickLabels,
+    datasets:[
+      {label:'[2026]',data:ticket26,borderColor:'#3949ab',backgroundColor:'rgba(57,73,171,.1)',fill:true,tension:.4,pointRadius:6,pointBackgroundColor:'#3949ab',pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5},
+      {label:'[2025]',data:ticket25,borderColor:'#d97706',backgroundColor:'rgba(217,119,6,.06)',fill:false,tension:.4,pointRadius:6,pointBackgroundColor:'#d97706',pointBorderColor:'#fff',pointBorderWidth:2,borderWidth:2.5,borderDash:[6,3]}
+    ]
+  },options:{
+    plugins:{legend:{display:true,labels:{color:'#64748b',font:{size:12,family:'Inter'},usePointStyle:true,pointStyleWidth:10}}},
+    scales:{y:{ticks:{callback:v=>'$'+num(v)}}}
+  }});
+
+  const dist = d.value_band_distribution_2026||[];
+  mkChart('ch-bands',{type:'bar',data:{
+    labels:dist.map(r=>r.band),
+    datasets:[{label:'Orders',data:dist.map(r=>r.orders),backgroundColor:COLORS,borderRadius:4}]
+  }});
+
+  document.getElementById('ins-winrate').innerHTML =
+    `Average gross margin per order grew <strong>+${d.order_value_change_pct}%</strong> — from <strong>${brl(s25.avg_order_value)}</strong> to <strong>${brl(s26.avg_order_value)}</strong>.
+     Order volume rose from <strong>${num(s25.total_orders)}</strong> to <strong>${num(s26.total_orders)}</strong> (+${growthOrders}%).
+     Margin per transaction and volume both improved — a healthy combination for the bottom line.`;
+})();
+
+// ---- OPERATING EXPENSES ----
+(function(){
+  const d = D.revenue;
+  const monthly = d.monthly_comparison||[];
+  document.getElementById('kpi-quota').innerHTML =
+    kpi('OpEx [Q3 2026]',brl(d.revenue_total_2026),d.total_change_pct,undefined,'#3949ab')+
+    kpi('OpEx [Q3 2025]',brl(d.revenue_total_2025),undefined,undefined,'#1e3a8a')+
+    monthly.map(m=>kpi('Change '+m.Month_Name,'+'+m.Change_pct+'%',undefined,undefined,'#d97706')).join('');
+
+  (function(){
+    const ctx = document.getElementById('ch-revenue-monthly').getContext('2d');
+    new Chart(ctx, {
+      data: {
+        labels: monthly.map(m => m.Month_Name),
+        datasets: [
+          {
+            type: 'bar',
+            label: '[2025]',
+            data: monthly.map(m => m.Revenue_25),
+            backgroundColor: 'rgba(30,58,138,.6)',
+            borderColor: '#1e3a8a',
+            borderWidth: 1.5,
+            borderRadius: 5,
+            yAxisID: 'y'
+          },
+          {
+            type: 'bar',
+            label: '[2026]',
+            data: monthly.map(m => m.Revenue_26),
+            backgroundColor: 'rgba(57,73,171,.75)',
+            borderColor: '#3949ab',
+            borderWidth: 1.5,
+            borderRadius: 5,
+            yAxisID: 'y'
+          },
+          {
+            type: 'line',
+            label: 'Change %',
+            data: monthly.map(m => m.Change_pct),
+            borderColor: '#d97706',
+            backgroundColor: 'rgba(217,119,6,.08)',
+            fill: false,
+            tension: .4,
+            pointRadius: 6,
+            pointBackgroundColor: '#d97706',
+            pointBorderColor: '#fff',
+            pointBorderWidth: 2,
+            borderWidth: 2.5,
+            yAxisID: 'y2'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: true, labels: { color: '#64748b', font: { size: 12 } } }
+        },
+        scales: {
+          y: {
+            position: 'left',
+            grid: { color: '#f1f5f9' },
+            ticks: { color: '#64748b', callback: v => '$' + Number(v).toLocaleString('en-US', { notation: 'compact' }) }
+          },
+          y2: {
+            position: 'right',
+            grid: { drawOnChartArea: false },
+            ticks: { color: '#d97706', callback: v => v + '%' }
+          },
+          x: { grid: { color: '#f1f5f9' }, ticks: { color: '#64748b' } }
+        }
+      }
+    });
+  })();
+
+  const mix = (d.mix_segment_2026||[]).slice(0,6);
+  document.getElementById('tbl-segment-revenue').innerHTML = table(
+    mix.map(r=>[r.Segment,r.Revenue,r.Pct]),
+    ['Category','OpEx','%'],['','brl','pbar']
+  );
+
+  document.getElementById('ins-quota').innerHTML =
+    `Operating expenses grew from <strong>${brl(d.revenue_total_2025)}</strong> to <strong>${brl(d.revenue_total_2026)}</strong> — an increase of <strong>+${d.total_change_pct}%</strong>, below revenue growth.
+     September saw the largest monthly increase (+${monthly[2]?.Change_pct||'—'}%), driven mainly by [Payroll] and [Sales & Marketing].`;
+})();
+
+// ---- EBITDA BUILD ----
+(function(){
+  const d = D.quarterclose;
+  const conc = d.concentration_by_month||[];
+  const dailyAvgs = d.daily_avg_by_month||[];
+  document.getElementById('kpi-stages').innerHTML =
+    conc.map((m,i)=>kpi(m.Month+' — Last 5 Business Days',pct(m.Pct_Concentrated_End),undefined,undefined,COLORS[i])).join('')+
+    dailyAvgs.map(m=>kpi('Daily avg '+m.MonthName,brl(m.Daily_Avg),undefined,undefined,'#64748b')).join('');
+
+  const conc26 = d.concentration_by_month_2026 || conc;
+  const conc25 = d.concentration_by_month_2025 || [];
+  const concLabels = conc26.map(c => c.Month);
+  mkChart('ch-concentration',{type:'bar',data:{
+    labels: concLabels,
+    datasets:[
+      {label:'[2025]',data:conc25.map(c=>c.Pct_Concentrated_End),backgroundColor:'rgba(30,58,138,.6)',borderColor:'#1e3a8a',borderWidth:1.5,borderRadius:5},
+      {label:'[2026]',data:conc26.map(c=>c.Pct_Concentrated_End),backgroundColor:'rgba(57,73,171,.75)',borderColor:'#3949ab',borderWidth:1.5,borderRadius:5}
+    ]
+  },options:{
+    plugins:{legend:{display:true,labels:{color:'#64748b',font:{size:12}}}},
+    scales:{
+      y:{max:60,grid:{color:'#f1f5f9'},ticks:{color:'#64748b',callback:v=>v+'%'}},
+      x:{grid:{color:'#f1f5f9'},ticks:{color:'#64748b'}}
+    }
+  }});
+
+  const curve26 = (d.cumulative_curve_2026||d.cumulative_curve||[]);
+  const curve25 = (d.cumulative_curve_2025||[]);
+  const curvaLabels = curve26.map(r=>r.QuarterDay);
+  (function(){
+    const ctx = document.getElementById('ch-curve').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: curvaLabels,
+        datasets: [
+          {
+            label: '[Q3 2026]',
+            data: curve26.map(r=>r.Cumulative_Revenue),
+            borderColor: '#3949ab',
+            backgroundColor: 'rgba(57,73,171,.1)',
+            fill: true,
+            tension: .3,
+            pointRadius: 0,
+            borderWidth: 2.5
+          },
+          {
+            label: '[Q3 2025]',
+            data: curve25.map(r=>r.Cumulative_Revenue),
+            borderColor: '#d97706',
+            backgroundColor: 'rgba(217,119,6,.06)',
+            fill: false,
+            tension: .3,
+            pointRadius: 0,
+            borderWidth: 2.5,
+            borderDash: [6,3]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: true, labels: { color: '#64748b', font: { size: 12 } } } },
+        scales: {
+          x: { grid: { color: '#f1f5f9' }, ticks: { color: '#64748b', maxTicksLimit: 10 } },
+          y: { grid: { color: '#f1f5f9' }, ticks: { color: '#64748b', callback: v => '$' + Number(v).toLocaleString('en-US', { notation: 'compact' }) } }
+        }
+      }
+    });
+  })();
+
+  document.getElementById('ins-stages').innerHTML =
+    `August and September show <strong>~33% of EBITDA booked in the last 5 business days</strong> of the month.
+     This month-end weighting is typical of revenue-recognition timing; smoothing it improves intra-month cash visibility and forecasting accuracy.`;
+})();
+
+// ---- CASH FLOW / TIMING ----
+(function(){
+  const d = D.timing;
+  document.getElementById('kpi-timing').innerHTML =
+    kpi('Cash Transactions (quarter)',num(d.total_orders_q1_2026),undefined,undefined,'#3949ab')+
+    kpi('Within Business Hours',pct(d.pct_within_hours),undefined,undefined,'#16a34a')+
+    kpi('Outside Business Hours',pct(d.pct_outside_hours),undefined,undefined,'#d97706')+
+    kpi('Weekend',pct(d.pct_weekend),undefined,undefined,'#dc2626');
+
+  const ph = d.by_hour||[];
+  const bgHour = ph.map(r=>r.Hour>=8&&r.Hour<=17?'#3949ab':'#d97706');
+  mkChart('ch-hour',{type:'bar',data:{
+    labels:ph.map(r=>r.Hour+'h'),
+    datasets:[{label:'Transactions',data:ph.map(r=>r.Orders),backgroundColor:bgHour,borderRadius:2}]
+  },options:{plugins:{tooltip:{callbacks:{label:ctx=>`Transactions: ${num(ctx.raw)}`}}}}});
+
+  const pd = d.by_weekday||[];
+  const bgDay = pd.map(r=>r.DayName==='Sat'||r.DayName==='Sun'?'#dc2626':'#3949ab');
+  mkChart('ch-weekday',{type:'bar',data:{
+    labels:pd.map(r=>r.DayName),
+    datasets:[{label:'Transactions',data:pd.map(r=>r.Orders),backgroundColor:bgDay,borderRadius:5}]
+  }});
+
+  const revenueDay = d.revenue_by_weekday||[];
+  document.getElementById('kpi-revenue-weekend').innerHTML =
+    kpi('Cash Weekdays (Mon–Fri)', brl(d.revenue_weekday||0), undefined, undefined, '#3949ab')+
+    kpi('Cash Saturday', brl(d.revenue_saturday||0), undefined, undefined, '#d97706')+
+    kpi('Cash Sunday', brl(d.revenue_sunday||0), undefined, undefined, '#dc2626')+
+    kpi('Cash Weekend', brl(d.revenue_weekend||0), undefined, undefined, '#1e3a8a');
+
+  mkChart('ch-revenue-weekday',{type:'bar',data:{
+    labels: revenueDay.map(r=>r.DayName),
+    datasets:[{
+      label:'Cash Collected',
+      data: revenueDay.map(r=>r.Revenue),
+      backgroundColor: revenueDay.map(r=>['Sat','Sun'].includes(r.DayName)?'#d97706':'#3949ab'),
+      borderRadius: 4
+    }]
+  },options:{
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>brl(ctx.raw)}}},
+    scales:{y:{grid:{color:'#f1f5f9'},ticks:{color:'#64748b',callback:v=>'$'+Number(v).toLocaleString('en-US',{notation:'compact'})}},x:{grid:{color:'#f1f5f9'},ticks:{color:'#64748b'}}}
+  }});
+
+  (function(){
+    const ctx2 = document.getElementById('ch-revenue-period').getContext('2d');
+    const rWeekday = d.revenue_weekday||0;
+    const rSat = d.revenue_saturday||0;
+    const rSun = d.revenue_sunday||0;
+    const rUtil = rWeekday;
+    new Chart(ctx2, {
+      type: 'doughnut',
+      data: {
+        labels: ['Weekdays (Mon–Fri)', 'Saturday', 'Sunday'],
+        datasets: [{
+          data: [rUtil, rSat, rSun],
+          backgroundColor: ['#3949ab','#d97706','#dc2626'],
+          borderWidth: 2,
+          borderColor: '#fff'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { color: '#64748b', font: { size: 12 }, generateLabels: function(chart) {
+            const data = chart.data;
+            const total = data.datasets[0].data.reduce((a,b)=>a+b,0);
+            return data.labels.map((label,i)=>{
+              const val = data.datasets[0].data[i];
+              return {
+                text: label+' ('+((val/total)*100).toFixed(1)+'%)',
+                fillStyle: data.datasets[0].backgroundColor[i],
+                fontColor: '#64748b'
+              };
+            });
+          } } },
+          tooltip: { callbacks: { label: ctx => brl(ctx.raw)+' ('+((ctx.raw/(rUtil+rSat+rSun))*100).toFixed(1)+'%)' } }
+        }
+      }
+    });
+  })();
+
+  document.getElementById('ins-timing').innerHTML =
+    `<strong>${pct(d.pct_outside_hours)} of cash transactions</strong> post outside business hours and <strong>${pct(d.pct_weekend)} on weekends</strong> — local time.
+     Weekend collections: <strong>Saturday ${brl(d.revenue_saturday||0)}</strong> (${pct(d.pct_revenue_saturday||0)} of total) and <strong>Sunday ${brl(d.revenue_sunday||0)}</strong> (${pct(d.pct_revenue_sunday||0)}) — relevant for daily cash-position management.`;
+})();
+
+// ---- REVENUE BY UNIT ----
+(function(){
+  const d = D.penetration;
+  const remaining = d.total_customers_managers - d.total_customers_platform;
+  document.getElementById('kpi-leaderboard').innerHTML =
+    kpi('Total Revenue (Units)',brl(d.total_customers_managers),undefined,undefined,'#3949ab')+
+    kpi('Margin Contribution',brl(d.total_customers_platform),undefined,undefined,'#16a34a')+
+    kpi('Blended Margin',pct(d.pct_penetration_overall),undefined,undefined,'#d97706')+
+    kpi('Cost of Revenue',brl(remaining),undefined,undefined,'#1e3a8a');
+
+  const sub = (d.penetration_by_segment||[]).slice(0,8);
+  mkChart('ch-penetration-segment',{type:'bar',data:{
+    labels:sub.map(r=>r.Segment),
+    datasets:[{label:'% Margin',data:sub.map(r=>r.Pct_Penetration),backgroundColor:COLORS,borderRadius:4}]
+  },options:{indexAxis:'y',scales:{x:{max:100,ticks:{callback:v=>v+'%'}}} }});
+
+  const managers = d.penetration_by_manager||[];
+  document.getElementById('tbl-managers').innerHTML = table(
+    managers.map(r=>[r.Manager,r.Total_Customers,r.Customers_Platform,r.Pct_Penetration,r.Revenue_Platform]),
+    ['Owner','Revenue','Margin $','Margin %','EBITDA'],['','brl','brl','badge','brl']
+  );
+
+  document.getElementById('ins-leaderboard').innerHTML =
+    `Of the total <strong>${brl(d.total_customers_managers)} in unit revenue</strong>, <strong>${brl(d.total_customers_platform)} (${pct(d.pct_penetration_overall)}) is margin contribution</strong>.
+     The remaining <strong>${brl(remaining)} is cost of revenue</strong> — margin by unit shows where the structure is strongest and weakest.`;
+})();
+
+// ---- TOP CONTRIBUTORS ----
+(function(){
+  const d = D.salesforce;
+  document.getElementById('kpi-salesforce').innerHTML =
+    kpi('Tracked Revenue Lines',num(d.activated_by_rep ? 10 : 0),undefined,undefined,'#3949ab')+
+    kpi('Total Revenue',brl(d.total_revenue_q1_2026),undefined,undefined,'#d97706');
+
+  const top = (d.top10_reps||[]).slice(0,8);
+  mkChart('ch-top-reps',{type:'bar',data:{
+    labels:top.map(r=>r['Rep name']),
+    datasets:[{label:'Revenue',data:top.map(r=>r.Revenue),backgroundColor:COLORS,borderRadius:4}]
+  },options:{indexAxis:'y',scales:{x:{ticks:{callback:v=>'$'+Number(v).toLocaleString('en-US',{notation:'compact'})}}} }});
+
+  const sup = (d.by_supervisor||[]).slice(0,6);
+  document.getElementById('tbl-supervisors').innerHTML = table(
+    sup.map(r=>[(r['Supervisor name']||'No division').substring(0,28),r.Revenue,r.Customers,r.Pct_Revenue]),
+    ['Division','Revenue','Accounts','%'],['','brl','num','badge']
+  );
+
+  document.getElementById('ins-salesforce').innerHTML =
+    `The top product lines carry an outsized share of total revenue — the leading line alone contributes <strong>${pct(d.top10_reps[0].Pct_Revenue)}</strong> of the total.
+     Concentration like this is a <strong>resilience consideration</strong>: diversifying contribution across lines reduces single-line risk over time.`;
+})();
+
+// ---- BUDGET VS ACTUAL ----
+(function(){
+  const d = D.productmix||{};
+  const m25 = d.mix_2025||{};
+  const m26 = d.mix_2026||{};
+
+  document.getElementById('kpi-productmix').innerHTML =
+    kpi('Cost Lines/Category [2025]', m25.avg_skus_per_order||'—', undefined, undefined, '#1e3a8a')+
+    kpi('Cost Lines/Category [2026]', m26.avg_skus_per_order||'—', undefined, undefined, '#3949ab')+
+    kpi('Cost Lines/Unit [2025]', m25.avg_skus_per_customer||'—', undefined, undefined, '#1e3a8a')+
+    kpi('Cost Lines/Unit [2026]', m26.avg_skus_per_customer||'—', undefined, undefined, '#3949ab')+
+    kpi('Active Cost Lines [2025]', num(m25.total_unique_skus||0), undefined, undefined, '#1e3a8a')+
+    kpi('Active Cost Lines [2026]', num(m26.total_unique_skus||0), undefined, undefined, '#3949ab');
+
+  const coverage = d.core_item_coverage||[];
+  if(coverage.length>0){
+    mkChart('ch-coreitems',{type:'bar',data:{
+      labels: coverage.map(r=>r.Channel),
+      datasets:[{
+        label:'% Budget Consumed',
+        data: coverage.map(r=>r.Coverage_Avg),
+        backgroundColor: COLORS.slice(0,coverage.length),
+        borderRadius: 5,
+        borderSkipped: false
+      }]
+    },options:{
+      indexAxis: 'y',
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{
+          label: ctx=>`${ctx.raw.toFixed(1)}% of planned budget consumed`,
+          afterLabel: ctx=>{
+            const r=coverage[ctx.dataIndex];
+            return `${r.Core_Total} budget lines in this category`;
+          }
+        }}
+      },
+      scales:{
+        x:{min:0,max:120,grid:{color:'#f1f5f9'},ticks:{color:'#64748b',callback:v=>v+'%'}},
+        y:{grid:{color:'#f1f5f9'},ticks:{color:'#64748b',font:{size:12}}}
+      }
+    }});
+  }
+
+  const deltaAvg = m26.avg_skus_per_order && m25.avg_skus_per_order
+    ? (m26.avg_skus_per_order - m25.avg_skus_per_order).toFixed(1) : '—';
+  document.getElementById('ins-productmix').innerHTML =
+    `Most categories are tracking within plan, with [Payroll] and [Sales & Marketing] nearest full consumption.
+     [R&D] and [IT & Software] are under budget so far — an opportunity to either accelerate planned investment or reallocate to higher-return categories (Δ cost lines ${deltaAvg}).`;
+})();
+
+// ---- UNIT SPOTLIGHT ----
+(function(){
+  const d = D.customercase||{};
+
+  document.getElementById('kpi-account').innerHTML =
+    kpi('Revenue [Q3 2026]', brl(d.revenue_total_2026||0), undefined, undefined, '#3949ab')+
+    kpi('Revenue [Q3 2025]', brl(d.revenue_total_2025||0), undefined, undefined, '#1e3a8a')+
+    kpi('Avg Transaction', brl(d.avg_order_value||0), undefined, undefined, '#16a34a')+
+    kpi('Total Transactions [2026]', num(d.total_orders_2026||0), undefined, undefined, '#d97706')+
+    kpi('Revenue Lines', num(d.skus_purchased||0), undefined, undefined, '#0891b2')+
+    kpi('Days with Activity', num(d.days_with_order||0), undefined, undefined, '#5c6bc0');
+
+  const revenueMonth = d.revenue_by_month||[];
+  mkChart('ch-case-revenue',{type:'bar',data:{
+    labels: revenueMonth.map(r=>r.MonthName),
+    datasets:[{
+      label:'Revenue',
+      data: revenueMonth.map(r=>r.Revenue),
+      backgroundColor:'#3949ab',
+      borderRadius:6
+    }]
+  },options:{
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>brl(ctx.raw)}}},
+    scales:{y:{grid:{color:'#f1f5f9'},ticks:{color:'#64748b',callback:v=>'$'+Number(v).toLocaleString('en-US',{notation:'compact'})}},x:{grid:{color:'#f1f5f9'},ticks:{color:'#64748b'}}}
+  }});
+
+  const tp = d.top_products||[];
+  const labelSC = s => s.length>22?s.substring(0,22)+'…':s;
+  mkChart('ch-case-products',{type:'bar',data:{
+    labels: tp.map(r=>labelSC(r.Product_Name||('Line '+r.SKU))),
+    datasets:[{
+      label:'Revenue',
+      data: tp.map(r=>r.Gross_Revenue),
+      backgroundColor: COLORS.slice(0,5),
+      borderRadius:4
+    }]
+  },options:{
+    indexAxis:'y',
+    plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>brl(ctx.raw)}}},
+    scales:{x:{grid:{color:'#f1f5f9'},ticks:{color:'#64748b',callback:v=>'$'+Number(v).toLocaleString('en-US',{notation:'compact'})}},y:{grid:{color:'#f1f5f9'},ticks:{color:'#64748b',font:{size:10}}}}
+  }});
+
+  const changeStr = d.change_pct!=null ? ` (+${d.change_pct}% vs [Q3 2025])` : '';
+  document.getElementById('ins-account').innerHTML =
+    `Unit <strong>${d.customer_id}</strong> — Line: <strong>${d.segment}</strong> | Division: <strong>${d.rep}</strong>.
+     Generated <strong>${brl(d.revenue_total_2026||0)}</strong> in [Q3 2026]${changeStr} across <strong>${num(d.total_orders_2026)} transactions</strong> (${d.days_with_order} active days).
+     Revenue spread across <strong>${d.skus_purchased} lines</strong> — a well-diversified, top-contributing unit.`;
+})();
+
+// ---- FORECAST & OUTLOOK ----
+(function(){
+  const strategy = D.penetration.strategy_segment || [];
+  const PRIO_COLOR = {'TOP':'#dc2626','HIGH':'#d97706','MEDIUM':'#3949ab'};
+  const PRIO_BG = {'TOP':'rgba(220,38,38,.1)','HIGH':'rgba(217,119,6,.1)','MEDIUM':'rgba(57,73,171,.1)'};
+
+  const totPotential = strategy.filter(x=>x.Potential).reduce((s,x)=>s+(x.Potential||0),0);
+  const highTop   = strategy.filter(x=>x.Priority==='HIGH'||x.Priority==='TOP');
+  const potHighTop   = highTop.filter(x=>x.Potential).reduce((s,x)=>s+(x.Potential||0),0);
+  document.getElementById('kpi-strategy').innerHTML =
+    kpi('Units Mapped',strategy.length,undefined,undefined,'#3949ab')+
+    kpi('Top Priority',strategy.filter(x=>x.Priority==='TOP').length+' units',undefined,undefined,'#dc2626')+
+    kpi('High Priority',strategy.filter(x=>x.Priority==='HIGH').length+' units',undefined,undefined,'#d97706')+
+    kpi('Margin Upside (High+Top)',brl(potHighTop),undefined,undefined,'#16a34a');
+
+  const highData = strategy.filter(x=>x.Potential&&(x.Priority==='HIGH'||x.Priority==='TOP'))
+    .sort((a,b)=>b.Potential-a.Potential);
+  const labelShort = s => s.split(',')[0].substring(0,22);
+  mkChart('ch-potential',{type:'bar',data:{
+    labels: highData.map(x=>labelShort(x.Segment)),
+    datasets:[{
+      label:'Margin gap to target ($)',
+      data: highData.map(x=>x.Potential),
+      backgroundColor: highData.map(x=>PRIO_COLOR[x.Priority]||'#3949ab'),
+      borderRadius:4
+    }]
+  },options:{indexAxis:'y',scales:{x:{ticks:{callback:v=>'$'+Number(v).toLocaleString('en-US',{notation:'compact'})}}}}});
+
+  const withData = strategy.filter(x=>x.Pct_Current!==null&&x.Pct_Current!==undefined)
+    .sort((a,b)=>a.Pct_Current-b.Pct_Current).slice(0,10);
+  new Chart(document.getElementById('ch-penetration-current'),{
+    type:'bar',
+    data:{
+      labels: withData.map(x=>labelShort(x.Segment)),
+      datasets:[
+        {label:'Current Margin',data:withData.map(x=>x.Pct_Current),backgroundColor:'#3949ab',borderRadius:4,barPercentage:.5},
+        {label:'Target (100%)',data:withData.map(()=>100),backgroundColor:'rgba(0,0,0,.05)',borderRadius:4,barPercentage:.5}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      indexAxis:'y',
+      plugins:{
+        legend:{display:true,labels:{color:'#64748b',font:{size:11}}},
+        tooltip:{backgroundColor:'#fff',borderColor:'#e2e8f0',borderWidth:1,titleColor:'#64748b',bodyColor:'#0f172a'}
+      },
+      scales:{
+        x:{max:100,grid:{color:'#f1f5f9'},ticks:{color:'#64748b',font:{size:11},callback:function(v){return v+'%'}}},
+        y:{grid:{color:'#f1f5f9'},ticks:{color:'#64748b',font:{size:11}}}
+      }
+    }
+  });
+
+  const cards = strategy.map(x=>{
+    const pctStr = x.Pct_Current!==null&&x.Pct_Current!==undefined ? pct(x.Pct_Current) : 'No data';
+    const potStr = x.Potential ? brl(x.Potential) : '—';
+    return `<div style="background:${PRIO_BG[x.Priority]||'var(--surface)'};border:1px solid ${PRIO_COLOR[x.Priority]||'var(--border)'};border-radius:12px;padding:18px 20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <span style="font-size:13px;font-weight:700;color:var(--text)">${x.Segment.split(',')[0]}</span>
+        <span class="badge" style="background:${PRIO_COLOR[x.Priority]}22;color:${PRIO_COLOR[x.Priority]}">${x.Priority}</span>
+      </div>
+      <div style="display:flex;gap:20px;margin-bottom:10px">
+        <span style="font-size:12px;color:var(--muted)">Current margin: <strong style="color:var(--text)">${pctStr}</strong></span>
+        <span style="font-size:12px;color:var(--muted)">Upside: <strong style="color:var(--green)">${potStr}</strong></span>
+      </div>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px">${x.Reason}</p>
+      <div style="background:var(--accent-light);border-radius:6px;padding:8px 12px;font-size:11px;color:var(--accent)">
+        <strong>Action:</strong> ${x.Recommended_Action}
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('cards-strategy').innerHTML = cards;
+})();
+</script>
+</body>
+</html>

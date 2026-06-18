@@ -128,6 +128,60 @@ const REPORTS = [
       pt: "O mesmo deck multi-slide em esquema escuro graphite.",
     },
   },
+  {
+    id: "sales-deck", category: "sales", charts: "chartjs",
+    file: "templates/sales-deck.html",
+    title: { en: "Sales Performance Review (deck)", pt: "Revisão de Performance de Vendas (deck)" },
+    description: {
+      en: "A sales QBR as a slide deck: pipeline, win rate, quota attainment, rep leaderboard and forecast. Interactive Chart.js. Emerald.",
+      pt: "QBR de vendas em formato deck: pipeline, win rate, atingimento de meta, ranking de vendedores e forecast. Chart.js interativo. Emerald.",
+    },
+  },
+  {
+    id: "financial-deck", category: "financial", charts: "chartjs",
+    file: "templates/financial-deck.html",
+    title: { en: "Financial Review (deck)", pt: "Revisão Financeira (deck)" },
+    description: {
+      en: "Board-style financial review deck: revenue, margin, opex, EBITDA, cash flow and budget vs. actual. Interactive Chart.js. Indigo.",
+      pt: "Deck de revisão financeira para diretoria: receita, margem, opex, EBITDA, fluxo de caixa e orçado vs. realizado. Chart.js interativo. Indigo.",
+    },
+  },
+  {
+    id: "marketing-deck", category: "marketing", charts: "chartjs",
+    file: "templates/marketing-deck.html",
+    title: { en: "Marketing Performance Review (deck)", pt: "Revisão de Marketing (deck)" },
+    description: {
+      en: "Marketing review deck: traffic, acquisition funnel, channel mix, CAC & ROAS and campaign performance. Interactive Chart.js. Violet.",
+      pt: "Deck de marketing: tráfego, funil de aquisição, mix de canais, CAC & ROAS e performance de campanhas. Chart.js interativo. Violeta.",
+    },
+  },
+  {
+    id: "audience-segmentation", category: "marketing", charts: "embedded",
+    file: "templates/audience-segmentation.html",
+    title: { en: "Audience Segmentation", pt: "Segmentação de Audiência" },
+    description: {
+      en: "Split an audience into two mutually-exclusive segments: flow diagram, side-by-side columns, stat cards, tables and a decision block. Violet & amber.",
+      pt: "Divide uma audiência em dois segmentos exclusivos: diagrama de fluxo, colunas lado a lado, cards, tabelas e bloco de decisão. Violeta & âmbar.",
+    },
+  },
+  {
+    id: "project-portfolio", category: "operations", charts: "embedded",
+    file: "templates/project-portfolio.html",
+    title: { en: "Project Portfolio (Year in Review)", pt: "Portfólio de Projetos (Retrospectiva)" },
+    description: {
+      en: "A delivery recap: animated mega-numbers, highlight initiatives, a project grid with status & owners, a timeline and a summary table. Amber.",
+      pt: "Retrospectiva de entregas: mega-números animados, iniciativas em destaque, grade de projetos com status e responsáveis, timeline e tabela. Âmbar.",
+    },
+  },
+  {
+    id: "kpi-scorecard", category: "kpi", charts: "embedded",
+    file: "templates/kpi-scorecard.html",
+    title: { en: "Executive KPI Scorecard", pt: "Scorecard Executivo de KPIs" },
+    description: {
+      en: "A one-page scorecard: KPI cards with inline-SVG sparklines and deltas, progress-to-target bars and a compact table. Self-contained. Slate.",
+      pt: "Scorecard de uma página: cards de KPI com sparklines em SVG e deltas, barras de progresso até a meta e tabela compacta. Autossuficiente. Slate.",
+    },
+  },
 ];
 
 const CATEGORIES = [
