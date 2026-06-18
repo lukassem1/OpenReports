@@ -403,23 +403,30 @@ async function copyText(text, msg) {
 
 /* ---------- boot ---------- */
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".seg button").forEach((b) =>
-    b.addEventListener("click", () => {
-      document.querySelectorAll(".seg button").forEach((x) => x.classList.remove("active"));
-      b.classList.add("active"); state.charts = b.dataset.charts; render();
-    }));
-  let searchT;
-  $("search-input").addEventListener("input", (e) => {
-    const v = e.target.value;
-    clearTimeout(searchT);
-    searchT = setTimeout(() => { state.q = v; render(); }, 220);
-  });
-  document.querySelectorAll("#lang-toggle button").forEach((b) =>
-    b.addEventListener("click", () => setLang(b.dataset.lang)));
-  $("viewer-back").addEventListener("click", closeViewer);
-  $("viewer-download").addEventListener("click", () => { if (currentViewer) bumpDownload(currentViewer); });
-  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("viewer").hidden) closeViewer(); });
-  // Fallback if the official GitHub star widget can't render (e.g. blocked iframe)
+  // 1) Render the gallery first — nothing should be able to block it.
+  try { setLang(lang); } catch (e) { console.error("OpenReports: render failed", e); }
+
+  // 2) Wire up interactions (guarded, so a missing element never breaks the page).
+  try {
+    document.querySelectorAll(".seg button").forEach((b) =>
+      b.addEventListener("click", () => {
+        document.querySelectorAll(".seg button").forEach((x) => x.classList.remove("active"));
+        b.classList.add("active"); state.charts = b.dataset.charts; render();
+      }));
+    let searchT;
+    $("search-input").addEventListener("input", (e) => {
+      const v = e.target.value;
+      clearTimeout(searchT);
+      searchT = setTimeout(() => { state.q = v; render(); }, 220);
+    });
+    document.querySelectorAll("#lang-toggle button").forEach((b) =>
+      b.addEventListener("click", () => setLang(b.dataset.lang)));
+    $("viewer-back").addEventListener("click", closeViewer);
+    $("viewer-download").addEventListener("click", () => { if (currentViewer) bumpDownload(currentViewer); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("viewer").hidden) closeViewer(); });
+  } catch (e) { console.error("OpenReports: event wiring failed", e); }
+
+  // 3) Fallback if the official GitHub star widget can't render (e.g. blocked iframe).
   setTimeout(() => {
     const host = document.querySelector(".gh-star");
     if (host && !host.querySelector("iframe")) {
@@ -428,5 +435,4 @@ document.addEventListener("DOMContentLoaded", () => {
         `<svg width="15" height="15" viewBox="0 0 24 24" fill="#e3a008"><path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 2.5z"/></svg> Star on GitHub</a>`;
     }
   }, 2500);
-  setLang(lang);
 });
