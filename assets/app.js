@@ -154,6 +154,7 @@ const T = {
     step2h: "Download or copy the prompt", step2p: "Grab the self-contained HTML file and the ready-made prompt with one click.",
     step3h: "Drop it in your AI chat", step3p: "Attach the file, paste your data, and get your own polished report back.",
     fAll: "All charts", fEmbedded: "Self-contained", fInteractive: "Interactive",
+    sortFeatured: "Featured", sortDownloads: "Most downloaded",
     searchPh: "Search templates…",
     count: (n) => `${n} template${n === 1 ? "" : "s"}`,
     preview: "Preview", download: "Download", copy: "Copy AI prompt",
@@ -174,6 +175,7 @@ const T = {
     step2h: "Baixe ou copie o prompt", step2p: "Pegue o HTML autossuficiente e o prompt pronto com um clique.",
     step3h: "Cole no chat da sua IA", step3p: "Anexe o arquivo, cole seus dados e receba seu relatório pronto.",
     fAll: "Todos", fEmbedded: "Autossuficiente", fInteractive: "Interativo",
+    sortFeatured: "Em destaque", sortDownloads: "Mais baixados",
     searchPh: "Buscar modelos…",
     count: (n) => `${n} modelo${n === 1 ? "" : "s"}`,
     preview: "Visualizar", download: "Baixar", copy: "Copiar prompt de IA",
@@ -189,7 +191,7 @@ const T = {
 };
 
 let lang = localStorage.getItem("or-lang") || "en";
-const state = { category: "all", charts: "all", q: "" };
+const state = { category: "all", charts: "all", q: "", sort: "featured" };
 const $ = (id) => document.getElementById(id);
 const tr = (o) => (o && o[lang]) || (o && o.en) || o;
 
@@ -243,6 +245,28 @@ function setDl(id, v) {
 }
 function bumpDownload(id) { counterHit(id).then((v) => { if (v != null) { dlCache[id] = v; setDl(id, v); } }); }
 
+/* Pre-load all download counts so the "Most downloaded" sort has data, then re-render. */
+function prefetchCounts() {
+  Promise.all(REPORTS.map((r) => counterGet(r.id).then((v) => { if (v != null) dlCache[r.id] = v; })))
+    .then(() => render())
+    .catch(() => {});
+}
+
+/* GitHub star count, straight from the GitHub API. */
+function initStar() {
+  const el = $("star-count");
+  if (!el) return;
+  fetch("https://api.github.com/repos/" + REPO)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => {
+      if (d && typeof d.stargazers_count === "number") {
+        el.textContent = d.stargazers_count.toLocaleString();
+        el.hidden = false;
+      }
+    })
+    .catch(() => {});
+}
+
 function catLabel(key) {
   const c = CATEGORIES.find((x) => x.key === key);
   return c ? tr(c.label) : key;
@@ -294,6 +318,10 @@ function render() {
     if (q && !(tr(r.title) + tr(r.description) + catLabel(r.category)).toLowerCase().includes(q)) return false;
     return true;
   });
+
+  if (state.sort === "downloads") {
+    list.sort((a, b) => (dlCache[b.id] ?? -1) - (dlCache[a.id] ?? -1));
+  }
 
   grid.innerHTML = list.length
     ? list.map(cardHTML).join("")
@@ -353,24 +381,29 @@ function closeViewer() {
 function applyLang() {
   const s = T[lang];
   document.documentElement.lang = lang;
-  $("nav-how").textContent = s.navHow;
-  $("nav-templates").textContent = s.navTemplates;
-  $("hero-title").innerHTML = s.heroTitle;
-  $("hero-lead").innerHTML = s.heroLead;
-  $("step1-h").textContent = s.step1h; $("step1-p").textContent = s.step1p;
-  $("step2-h").textContent = s.step2h; $("step2-p").textContent = s.step2p;
-  $("step3-h").textContent = s.step3h; $("step3-p").textContent = s.step3p;
-  document.querySelector('.seg [data-charts="all"]').textContent = s.fAll;
-  document.querySelector('.seg [data-charts="embedded"]').textContent = s.fEmbedded;
-  document.querySelector('.seg [data-charts="chartjs"]').textContent = s.fInteractive;
-  $("search-input").placeholder = s.searchPh;
-  $("footer-left").innerHTML = s.footerLeft;
-  $("footer-right").childNodes[0].nodeValue = s.footerRight + " ";
-  $("footer-contribute").textContent = s.contribute;
-  $("footer-contribute").href = REPO_URL;
-  $("viewer-back-label").textContent = s.viewerBack;
-  $("viewer-open-label").textContent = s.viewerOpen;
-  $("viewer-download-label").textContent = s.viewerDownload;
+  // Static UI labels — guarded so a missing element can never block the gallery render.
+  try {
+    $("nav-how").textContent = s.navHow;
+    $("nav-templates").textContent = s.navTemplates;
+    $("hero-title").innerHTML = s.heroTitle;
+    $("hero-lead").innerHTML = s.heroLead;
+    $("step1-h").textContent = s.step1h; $("step1-p").textContent = s.step1p;
+    $("step2-h").textContent = s.step2h; $("step2-p").textContent = s.step2p;
+    $("step3-h").textContent = s.step3h; $("step3-p").textContent = s.step3p;
+    document.querySelector('.seg [data-charts="all"]').textContent = s.fAll;
+    document.querySelector('.seg [data-charts="embedded"]').textContent = s.fEmbedded;
+    document.querySelector('.seg [data-charts="chartjs"]').textContent = s.fInteractive;
+    document.querySelector('[data-sort="featured"]').textContent = s.sortFeatured;
+    document.querySelector('[data-sort="downloads"]').textContent = s.sortDownloads;
+    $("search-input").placeholder = s.searchPh;
+    $("footer-left").innerHTML = s.footerLeft;
+    $("footer-right").childNodes[0].nodeValue = s.footerRight + " ";
+    $("footer-contribute").textContent = s.contribute;
+    $("footer-contribute").href = REPO_URL;
+    $("viewer-back-label").textContent = s.viewerBack;
+    $("viewer-open-label").textContent = s.viewerOpen;
+    $("viewer-download-label").textContent = s.viewerDownload;
+  } catch (e) { console.error("OpenReports: i18n labels failed", e); }
   buildChips();
   render();
 }
@@ -408,10 +441,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2) Wire up interactions (guarded, so a missing element never breaks the page).
   try {
-    document.querySelectorAll(".seg button").forEach((b) =>
+    // chart-type filter (scoped to .seg buttons so it never matches cards' data-charts)
+    document.querySelectorAll('.seg [data-charts]').forEach((b) =>
       b.addEventListener("click", () => {
-        document.querySelectorAll(".seg button").forEach((x) => x.classList.remove("active"));
+        document.querySelectorAll('.seg [data-charts]').forEach((x) => x.classList.remove("active"));
         b.classList.add("active"); state.charts = b.dataset.charts; render();
+      }));
+    // sort: Featured vs Most downloaded
+    document.querySelectorAll('#sort-seg button').forEach((b) =>
+      b.addEventListener("click", () => {
+        document.querySelectorAll('#sort-seg button').forEach((x) => x.classList.remove("active"));
+        b.classList.add("active"); state.sort = b.dataset.sort; render();
       }));
     let searchT;
     $("search-input").addEventListener("input", (e) => {
@@ -425,6 +465,9 @@ document.addEventListener("DOMContentLoaded", () => {
     $("viewer-download").addEventListener("click", () => { if (currentViewer) bumpDownload(currentViewer); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("viewer").hidden) closeViewer(); });
   } catch (e) { console.error("OpenReports: event wiring failed", e); }
+
+  initStar();
+  prefetchCounts();
 
   // 3) Fallback if the official GitHub star widget can't render (e.g. blocked iframe).
   setTimeout(() => {
