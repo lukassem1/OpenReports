@@ -66,7 +66,7 @@ const REPORTS = [
     },
   },
   {
-    id: "strategy-report", category: "strategy", charts: "embedded",
+    id: "strategy-report", category: "strategy", charts: "embedded", featured: true,
     file: "templates/strategy-report.html",
     title: { en: "Strategy Report (long-form)", pt: "Relatório de Estratégia (long-form)" },
     description: {
@@ -93,7 +93,7 @@ const REPORTS = [
     },
   },
   {
-    id: "segmentation-study", category: "analysis", charts: "embedded", pick: true,
+    id: "segmentation-study", category: "analysis", charts: "embedded", pick: true, featured: true,
     file: "templates/segmentation-study.html",
     title: { en: "Customer Segmentation Study", pt: "Estudo de Segmentação de Clientes" },
     description: {
@@ -120,7 +120,7 @@ const REPORTS = [
     },
   },
   {
-    id: "slide-deck-graphite", category: "deck", charts: "chartjs",
+    id: "slide-deck-graphite", category: "deck", charts: "chartjs", featured: true,
     file: "templates/slide-deck-graphite.html",
     title: { en: "Executive Quarterly Review — Graphite", pt: "Revisão Trimestral — Graphite" },
     description: {
@@ -160,7 +160,7 @@ const T = {
     preview: "Preview", download: "Download", copy: "Copy AI prompt",
     badgeEmbedded: "Self-contained", badgeInteractive: "Interactive (Chart.js)",
     live: "Live preview", soon: "Coming soon", roadmap: "On the roadmap",
-    pick: "Author's pick", dl: "downloads",
+    pick: "Author's pick", dl: "downloads", featured: "Featured",
     footerLeft: `MIT-licensed · free for commercial use · built by <a href="${ARKHE_URL}" target="_blank" rel="noopener">Instituto Arkhe</a>.`,
     footerRight: "Have a design to share?", contribute: "Contribute on GitHub →",
     viewerBack: "Back to gallery", viewerOpen: "Open in new tab", viewerDownload: "Download",
@@ -181,7 +181,7 @@ const T = {
     preview: "Visualizar", download: "Baixar", copy: "Copiar prompt de IA",
     badgeEmbedded: "Autossuficiente", badgeInteractive: "Interativo (Chart.js)",
     live: "Preview ao vivo", soon: "Em breve", roadmap: "No roadmap",
-    pick: "Escolha do autor", dl: "downloads",
+    pick: "Escolha do autor", dl: "downloads", featured: "Em destaque",
     footerLeft: `Licença MIT · livre para uso comercial · feito pelo <a href="${ARKHE_URL}" target="_blank" rel="noopener">Instituto Arkhe</a>.`,
     footerRight: "Tem um design pra compartilhar?", contribute: "Contribua no GitHub →",
     viewerBack: "Voltar à galeria", viewerOpen: "Abrir em nova aba", viewerDownload: "Baixar",
@@ -299,6 +299,7 @@ function cardHTML(r) {
       <div class="badges">
         <span class="badge cat">${catLabel(r.category)}</span>
         <span class="badge">${chartBadge(r.charts)}</span>
+        ${r.featured ? `<span class="badge feat">✦ ${s.featured}</span>` : ""}
         ${r.pick ? `<span class="badge pick">★ ${s.pick}</span>` : ""}
         <span class="badge dl" data-dl="${r.id}" title="${s.dl}">${I.down}<b>—</b></span>
       </div>
@@ -321,6 +322,9 @@ function render() {
 
   if (state.sort === "downloads") {
     list.sort((a, b) => (dlCache[b.id] ?? -1) - (dlCache[a.id] ?? -1));
+  } else {
+    // "Featured": curated picks first, everything else keeps catalog order (stable sort)
+    list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
   }
 
   grid.innerHTML = list.length

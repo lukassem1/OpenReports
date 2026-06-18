@@ -224,6 +224,7 @@ body.viewer-open { overflow: hidden; }
 }
 .badge.cat { background: var(--accent-soft); border-color: transparent; color: var(--accent-hover); }
 .badge.pick { background: #fbf3df; border-color: #f0e2bd; color: #9a7218; font-weight: 600; }
+.badge.feat { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 600; }
 .badge.dl { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; color: var(--muted); }
 .badge.dl svg { width: 12px; height: 12px; }
 .badge.dl b { font-weight: 600; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
