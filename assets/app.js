@@ -65,6 +65,15 @@ const REPORTS = [
       pt: "Status de projetos com barras de progresso, throughput, entrega no prazo (SLA) e timeline de marcos. Totalmente autossuficiente.",
     },
   },
+  {
+    id: "strategy-report", category: "strategy", charts: "embedded",
+    file: "templates/strategy-report.html",
+    title: { en: "Strategy Report (long-form)", pt: "Relatório de Estratégia (long-form)" },
+    description: {
+      en: "A premium long-form executive memo — verdict banner, market map, positioning A/B, value ladder, a named framework, risks and a 90-day plan. Editorial design (Fraunces + Inter), Midnight Slate dark scheme.",
+      pt: "Memorando executivo long-form premium — verdict banner, mapa de mercado, A/B de posicionamento, escada de valor, framework nomeado, riscos e plano de 90 dias. Design editorial (Fraunces + Inter), esquema escuro Midnight Slate.",
+    },
+  },
 ];
 
 const CATEGORIES = [
@@ -75,6 +84,7 @@ const CATEGORIES = [
   { key: "marketing", label: { en: "Marketing / Traffic", pt: "Marketing / Tráfego" } },
   { key: "people", label: { en: "People / HR", pt: "Pessoas / RH" } },
   { key: "operations", label: { en: "Operations / Project", pt: "Operações / Projetos" } },
+  { key: "strategy", label: { en: "Strategy / Memo", pt: "Estratégia / Memo" } },
 ];
 
 /* ---------- UI strings ---------- */

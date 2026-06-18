@@ -50,6 +50,7 @@ Six production-ready templates, each covering a common managerial meeting:
 | **Marketing & Traffic Report** | Marketing / Traffic | Inline SVG · self-contained |
 | **People & HR Report** | People / HR | Inline SVG · self-contained |
 | **Operations & Project Status** | Operations / Project | Inline SVG · self-contained |
+| **Strategy Report (long-form)** | Strategy / Memo | Editorial · Google Fonts (Midnight Slate) |
 
 Two chart styles, filterable in the gallery:
 
@@ -97,7 +98,8 @@ Two chart styles, filterable in the gallery:
     ├── kpi-dashboard.html
     ├── marketing-traffic.html
     ├── people-hr.html
-    └── operations-project.html
+    ├── operations-project.html
+    └── strategy-report.html
 ```
 
 ## Run it locally
