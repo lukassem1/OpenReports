@@ -8,8 +8,8 @@
   OpenReports template · "Strategy Report (long-form)"
   Editorial executive memo. Colour scheme: Midnight Slate.
   Fonts via Google Fonts (graceful system fallback offline).
-  Replace every [ ... ] placeholder and sample number with your own content.
-  Re-skin the whole report from the :root block below.
+  All content below is neutral, fictional sample copy — replace every
+  [ ... ] placeholder and example number with your own. Re-skin from :root.
 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -182,7 +182,7 @@
   .newbadge{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.05em;background:var(--ocre);color:#241803;padding:.12rem .4rem;border-radius:5px;margin-left:.45rem;vertical-align:middle;font-weight:700}
 
   /* framework evolution */
-  .resolve{display:grid;gap:.55rem}
+  .framework{display:grid;gap:.55rem}
   .rstep{display:grid;grid-template-columns:2.4rem 1fr;gap:1rem;align-items:start;background:var(--card);border:1px solid var(--linha);border-radius:var(--radius-sm);padding:1rem 1.3rem;box-shadow:var(--sombra-sm)}
   .rstep .letter{font-family:'Fraunces',serif;font-weight:700;font-size:1.5rem;color:var(--terracota);width:2.4rem;height:2.4rem;border:1.5px solid var(--linha);border-radius:10px;display:grid;place-items:center}
   .rstep.changed .letter{background:var(--terracota);color:#0c1116;border-color:var(--terracota)}
@@ -250,8 +250,9 @@
     <div class="brand"><span class="glyph">S</span><span class="nm">[Company Name]</span></div>
     <div class="toc" id="toc">
       <a href="#veredito">Verdict</a>
+      <a href="#decidir">Decisions</a>
       <a href="#mercado">Market</a>
-      <a href="#posicionamento">Positioning &amp; A/B</a>
+      <a href="#posicionamento">Positioning</a>
       <a href="#preco">Pricing</a>
       <a href="#metodo">Framework</a>
       <a href="#plano">90 days</a>
@@ -263,20 +264,20 @@
 <header class="hero">
   <div class="hero-inner">
     <p class="eyebrow">Strategy Report · Master document · [Year]</p>
-    <h1>The strategy is <span class="hl">clear</span>.<br>Execution decides the rest.</h1>
-    <p class="sub">Executive synthesis of the market research (~[N] competitors, regional + global) and the four decisions on method, experiments, pricing and content — stitched into one plan you can act on starting tomorrow.</p>
+    <h1>The opportunity is <span class="hl">[clear]</span>.<br>Execution decides the rest.</h1>
+    <p class="sub">[One-paragraph executive synthesis of your strategy review — the question this document answers and the decisions it recommends.]</p>
     <div class="hero-meta">
-      <span class="pill">Anchor case <b>2h/day → 7min/day</b> · ~94%</span>
-      <span class="pill">First-mover window <b>12–18 months</b></span>
-      <span class="pill">Quarter goal <b>3–5 measured cases</b></span>
+      <span class="pill">[Headline metric] <b>[value]</b></span>
+      <span class="pill">[Opportunity window] <b>[N] months</b></span>
+      <span class="pill">[Quarter goal] <b>[target]</b></span>
     </div>
 
     <!-- VERDICT -->
     <div class="verdict" id="veredito">
       <p class="eyebrow">Executive verdict</p>
-      <h2>The approach is strong — and one of the most underused in its niche.</h2>
-      <p><span class="vline">The thesis is right, and rare.</span> No competitor — local or global — sells exactly what you do: <b>[your one-line wedge]</b>. The combination of [differentiator A] + [differentiator B] + [differentiator C] doesn't exist anywhere else.</p>
-      <p><span class="vline">Execution isn't there yet — but the fixes are surgical.</span> Two gaps competitors already cover: there's no explicit step to <b>diagnose and measure the current state</b>, and no <b>success metric defined up front</b>. The research shows the cost: [stat 1], [stat 2], [stat 3]. If the method doesn't force measurement, it repeats the market's mistake.</p>
+      <h2>[The one-sentence verdict that frames the whole document.]</h2>
+      <p><span class="vline">[Lead statement one.]</span> [Two or three sentences of supporting reasoning. Keep it concrete: what is true today, and why it matters for the decision ahead.]</p>
+      <p><span class="vline">[Lead statement two.]</span> [The counter-point or the gap to close. State the evidence in plain terms and the implication for the plan.]</p>
     </div>
   </div>
 </header>
@@ -287,17 +288,17 @@
   <section id="decidir">
     <div class="sec-head">
       <p class="eyebrow">What to decide now</p>
-      <h2>Four moves unlock everything</h2>
-      <p class="lead">None of them reinvents the method. Each one hardens it, prices it right, or packages it in layers — before the 12–18 month window closes.</p>
+      <h2>[Four moves that unlock the rest]</h2>
+      <p class="lead">[One line on why these four — e.g. none of them is a big rewrite; each removes a specific blocker.]</p>
     </div>
     <div class="moves">
-      <div class="move"><b>Pricing:</b> <span class="m-body">raise the core from $[X] to <b>$[Y]</b>, keeping $[X] as a founder price for the first cohorts — in exchange for a documented case.</span></div>
-      <div class="move"><b>Offer:</b> <span class="m-body">insert the missing rung between “free” and the core — a <b>$[Z] diagnostic workshop</b> that credits 100% toward the core.</span></div>
-      <div class="move"><b>Focus:</b> <span class="m-body">pursue <b>[ICP B]</b> first — sharper pain, faster decision, easy to reach, and it produces the cases that unlock [ICP A] later.</span></div>
-      <div class="move"><b>Method:</b> <span class="m-body">evolve to the <b>[Method] 2.0</b>, with a “Step 0 — diagnose” baked into the first phase.</span></div>
+      <div class="move"><b>[Decision 1]:</b> <span class="m-body">[One sentence describing the move and the expected effect.]</span></div>
+      <div class="move"><b>[Decision 2]:</b> <span class="m-body">[One sentence describing the move and the expected effect.]</span></div>
+      <div class="move"><b>[Decision 3]:</b> <span class="m-body">[One sentence describing the move and the expected effect.]</span></div>
+      <div class="move"><b>[Decision 4]:</b> <span class="m-body">[One sentence describing the move and the expected effect.]</span></div>
     </div>
     <div class="callout">
-      <p class="q">“[Company] doesn't need to reinvent the method — it needs to harden it, price it right, and package it in layers before the window closes.”</p>
+      <p class="q">“[A short, quotable line that captures the strategic stance.]”</p>
     </div>
   </section>
 
@@ -308,71 +309,71 @@
     <div class="sec-head">
       <p class="eyebrow">Market map</p>
       <h2>Where [Company] fits</h2>
-      <p class="lead">The market is fragmented into four fields that leave a hole exactly where [Company] sits: 1:1, with the client's real data, focused on their problem — a quadrant <b>nobody occupies yet</b>.</p>
+      <p class="lead">[Two sentences describing the landscape and the gap you occupy.]</p>
     </div>
 
     <div class="grid cols-4" style="margin-bottom:1.4rem">
-      <div class="metric"><div class="num">~50</div><div class="lbl">competitors scanned — none sells “I solve the problem, not the tool”</div></div>
-      <div class="metric"><div class="num ocre">9%</div><div class="lbl">of [segment] have measured ROI from the category</div></div>
-      <div class="metric"><div class="num oliva">67%</div><div class="lbl">don't measure the process before automating — the gap to own</div></div>
-      <div class="metric"><div class="num">0</div><div class="lbl">players with [your stack] + real data + 1:1</div></div>
+      <div class="metric"><div class="num">[N]</div><div class="lbl">[what this number counts]</div></div>
+      <div class="metric"><div class="num ocre">[N]%</div><div class="lbl">[supporting market stat]</div></div>
+      <div class="metric"><div class="num oliva">[N]%</div><div class="lbl">[supporting market stat]</div></div>
+      <div class="metric"><div class="num">[N]</div><div class="lbl">[supporting market stat]</div></div>
     </div>
 
     <div class="grid cols-2" style="margin-bottom:1.6rem">
       <div class="card">
-        <span class="kicker">Expensive &amp; generic</span>
-        <h3>Strategy without delivery</h3>
-        <p>[Big-name programs] ($[range]). Charge a lot for concept and networking, with no concrete result. Useful as a price anchor: “more weeks, a real result, for less than half.”</p>
+        <span class="kicker">[Quadrant 1]</span>
+        <h3>[Short label for this group]</h3>
+        <p>[Who sits here and the trade-off they represent. Two sentences.]</p>
       </div>
       <div class="card">
-        <span class="kicker">Cheap &amp; tool-first</span>
-        <h3>How to write prompts</h3>
-        <p>[Marketplace courses]. Teach how to operate the tool, not how to solve a problem. They depreciate the moment the tool changes.</p>
+        <span class="kicker">[Quadrant 2]</span>
+        <h3>[Short label for this group]</h3>
+        <p>[Who sits here and the trade-off they represent. Two sentences.]</p>
       </div>
       <div class="card">
-        <span class="kicker">Premium live cohort</span>
-        <h3>1-to-many, no client data</h3>
-        <p>[Cohort brands] ($[range]). Good format, but it's a group, without the client's real data, and almost never 1:1.</p>
+        <span class="kicker">[Quadrant 3]</span>
+        <h3>[Short label for this group]</h3>
+        <p>[Who sits here and the trade-off they represent. Two sentences.]</p>
       </div>
       <div class="card">
-        <span class="kicker">Done-for-you consulting</span>
-        <h3>Leaves the client dependent</h3>
-        <p>[Agencies] ($[range]/project). Solve one process and leave dependency behind. [Company] is the opposite: <b>consulting that turns into autonomy</b>.</p>
+        <span class="kicker">[Quadrant 4]</span>
+        <h3>[Short label for this group]</h3>
+        <p>[Who sits here and the trade-off they represent. Two sentences.]</p>
       </div>
     </div>
 
     <div class="callout note-oliva">
-      <p class="q">“The [reference brand] for [your segment].”</p>
-      <p style="margin-top:.5rem">Result vs. tool, focus on adoption and ROI, in the segment the reference explicitly doesn't serve.</p>
+      <p class="q">“[A one-line positioning analogy — e.g. ‘the [reference] for [your segment]’.]”</p>
+      <p style="margin-top:.5rem">[One sentence explaining the analogy.]</p>
     </div>
 
-    <h3 style="font-size:1.35rem;margin:2.6rem 0 1.1rem">Competitors to mirror — and what to borrow from each</h3>
+    <h3 style="font-size:1.35rem;margin:2.6rem 0 1.1rem">Players to learn from — and what to borrow</h3>
 
     <div class="grid cols-2">
       <div class="mirror">
-        <div class="who"><h3>[Competitor A]</h3><span class="flag">Region · positioning</span></div>
-        <p class="desc">Upskilling by result and behaviour, with scalable 1:1 coaching (a “coach + dashboard” model). Notable clients. Doesn't serve companies under [N] people.</p>
-        <p class="grab"><b>Borrow:</b> the “we measure behaviour and ROI, we don't teach a tool” positioning + the coach-with-dashboard model to scale 1:1 without multiplying founder hours.</p>
+        <div class="who"><h3>[Reference A]</h3><span class="flag">[region · theme]</span></div>
+        <p class="desc">[One or two sentences on what they do well.]</p>
+        <p class="grab"><b>Borrow:</b> [the specific idea worth adapting].</p>
       </div>
       <div class="mirror">
-        <div class="who"><h3>[Competitor B]</h3><span class="flag">Region · the exact niche</span></div>
-        <p class="desc">The closest player to what [Company] does — proof the niche has real demand (high ratings, active community).</p>
-        <p class="grab"><b>Borrow:</b> the radical clarity of “zero code required”; a demo day as the central value; a named methodology. <b>Don't borrow:</b> the generic format, without the client's real data.</p>
+        <div class="who"><h3>[Reference B]</h3><span class="flag">[region · theme]</span></div>
+        <p class="desc">[One or two sentences on what they do well.]</p>
+        <p class="grab"><b>Borrow:</b> [the specific idea worth adapting].</p>
       </div>
       <div class="mirror">
-        <div class="who"><h3>[Competitor C]</h3><span class="flag">Region · trust &amp; scale</span></div>
-        <p class="desc">Training for non-technical teams with compliance/security as a product pillar, and a “train-the-trainer” model. Enterprise clients.</p>
-        <p class="grab"><b>Borrow:</b> turn compliance/security from an objection into a module and a differentiator; train-the-trainer as the route to enterprise scale.</p>
+        <div class="who"><h3>[Reference C]</h3><span class="flag">[region · theme]</span></div>
+        <p class="desc">[One or two sentences on what they do well.]</p>
+        <p class="grab"><b>Borrow:</b> [the specific idea worth adapting].</p>
       </div>
       <div class="mirror">
-        <div class="who"><h3>[Competitor D]</h3><span class="flag">Region · the pricing argument</span></div>
-        <p class="desc">Live cohort ([N] sessions). Costs <b>$[price]</b> — more than your core today — and has no 1:1, no real data, no accompanied case.</p>
-        <p class="grab"><b>The play:</b> position above on depth. If they charge $[price] with no 1:1, your core at $[Y] with 1:1 + real data + demo day is the obvious bargain.</p>
+        <div class="who"><h3>[Reference D]</h3><span class="flag">[region · theme]</span></div>
+        <p class="desc">[One or two sentences on what they do well.]</p>
+        <p class="grab"><b>The play:</b> [how you position relative to them].</p>
       </div>
     </div>
 
     <div class="callout note-ocre" style="margin-top:1.6rem">
-      <p><b>Content mirrors (for the brand):</b> [Voice A] gives the <b>format</b> (a real, published experiment); [Voice B] gives the <b>machine</b> (free framework + multi-step CTA); [Voice C] gives the <b>angle</b> (an antidote to “stage AI”); [Voice D] gives the <b>nerve</b> (a sharp point of view).</p>
+      <p><b>[Optional sidebar:]</b> [a short list of references for tone, format, or angle — one clause each].</p>
     </div>
   </section>
 
@@ -383,78 +384,78 @@
     <div class="sec-head">
       <p class="eyebrow">Positioning &amp; experimentation</p>
       <h2>The flag, and what to test — in what order</h2>
-      <p class="lead">Every piece carries a number or a case alongside the thesis. Provocation without proof becomes the very hype you're fighting.</p>
+      <p class="lead">[One line on the principle: every claim carries proof alongside it.]</p>
     </div>
 
     <div class="grid cols-3" style="margin-bottom:2rem">
       <div class="card">
-        <span class="kicker">Public flag (point of view)</span>
-        <h3 style="font-style:italic">“[A sharp five-word point of view.]”</h3>
-        <p>Memorable, debatable, hits the ROI pain. Short, repeatable by others.</p>
+        <span class="kicker">Public flag</span>
+        <h3 style="font-style:italic">“[A sharp, memorable point of view.]”</h3>
+        <p>[Why this line works — one or two sentences.]</p>
       </div>
       <div class="card">
         <span class="kicker">Institutional · C-level</span>
         <h3 style="font-size:1.02rem;font-style:italic">“[The calm, defensible version.]”</h3>
-        <p>You don't need to code or memorise prompts — you need to learn to solve problems. Sober, defensible, never burns a bridge.</p>
+        <p>[Why this version works for a senior audience.]</p>
       </div>
       <div class="card">
         <span class="kicker">Data-anchored</span>
-        <h3 style="font-size:1.02rem;font-style:italic">“[N]% tried. Only [N]% see returns.”</h3>
-        <p>The problem was never the tool. Lends calm authority and shields against “you're just being contrarian.”</p>
+        <h3 style="font-size:1.02rem;font-style:italic">“[A claim anchored to a number.]”</h3>
+        <p>[Why the number lends authority.]</p>
       </div>
     </div>
 
     <div class="callout">
-      <p><b>What is NOT an A/B — clearing the confusion.</b> “Current state vs. future state” <b>is not</b> a test: it's the backbone of the method (you don't test whether to breathe; you breathe). It's the market's biggest gap, the engine of the anchor case, and the hook that converts best. It's always on. The real A/Bs are about <b>marketing</b> — how you sell access to the method, not the method itself.</p>
+      <p><b>What is NOT an experiment.</b> [Name the thing that is core to the approach and therefore not up for testing — it is always on. The real experiments are about how you go to market, not about the substance itself.]</p>
     </div>
 
-    <h3 style="font-size:1.35rem;margin:2.4rem 0 .4rem">Sequential pilots, not parallel A/B</h3>
-    <p style="color:var(--grafite-soft);margin:0 0 1.4rem;max-width:64ch">With dozens of leads a month, splitting traffic only produces noise read as signal — worse than not testing. Statistical A/B needs ~1,000 visitors or ~30–50 conversions <b>per variant</b> (realistic only around month 6–9). Until then: one bet at a time, 2–4 weeks each, decided on strong qualitative signal. Lock one variable before testing the next.</p>
+    <h3 style="font-size:1.35rem;margin:2.4rem 0 .4rem">Sequential pilots, not parallel tests</h3>
+    <p style="color:var(--grafite-soft);margin:0 0 1.4rem;max-width:64ch">[Why low volume means one bet at a time, decided on strong qualitative signal — and the rough volume needed before statistical testing makes sense.]</p>
 
     <div class="ab-track">
       <div class="ab-step">
         <div class="ord">1</div>
         <div>
-          <h3>ICP — who you speak to</h3>
-          <div class="win">Weeks 1–4 · conditions message and format</div>
+          <h3>[Test 1 — audience]</h3>
+          <div class="win">[window · why it goes first]</div>
           <div class="vs">
-            <div class="opt"><span class="ot">Variant A</span>[ICP A]</div>
+            <div class="opt"><span class="ot">Option A</span>[Audience A]</div>
             <div class="mid">vs</div>
-            <div class="opt b"><span class="ot">Variant B · default</span>[ICP B]</div>
+            <div class="opt b"><span class="ot">Option B · default</span>[Audience B]</div>
           </div>
-          <p class="why"><b>Comes first</b> because it's the one decision where intuition and research disagree — 4 weeks of real data beats months of debate. It's the cheapest to test: only the targeting changes. <b>Default bet: start with [ICP B]</b> — sharper pain, decides for themselves, abundant to reach, and becomes the door to [ICP A] and to B2B.</p>
+          <p class="why">[Why this comes first and which option is the default bet, in two or three sentences.]</p>
         </div>
       </div>
       <div class="ab-step">
         <div class="ord">2</div>
         <div>
-          <h3>Positioning — which promise pulls the lead</h3>
-          <div class="win">Weeks 5–8 · changes only the headline / hook</div>
+          <h3>[Test 2 — message]</h3>
+          <div class="win">[window · changes only the hook]</div>
           <div class="vs">
-            <div class="opt"><span class="ot">Variant A</span>“Solves the problem no one wants to touch”</div>
+            <div class="opt"><span class="ot">Option A</span>[Message A]</div>
             <div class="mid">vs</div>
-            <div class="opt b"><span class="ot">Variant B</span>“Have the right questions before the boss finishes”</div>
+            <div class="opt b"><span class="ot">Option B</span>[Message B]</div>
           </div>
-          <p class="why">Only makes sense once you know who you're talking to. <b>Careful:</b> the “10x analyst” variant must be “who solves problems” — never “who masters the tool”, because that attacks your own anti-tool thesis. The axis is <b>pain vs. aspiration</b>, not “problem vs. tool”.</p>
+          <p class="why">[Why it follows the audience test, and the axis being tested.]</p>
         </div>
       </div>
       <div class="ab-step">
         <div class="ord">3</div>
         <div>
-          <h3>Format — how the lead enters</h3>
-          <div class="win">Weeks 9–12 · the most expensive to change</div>
+          <h3>[Test 3 — format]</h3>
+          <div class="win">[window · the most expensive to change]</div>
           <div class="vs">
-            <div class="opt"><span class="ot">Variant A</span>1:1 direct (high ticket)</div>
+            <div class="opt"><span class="ot">Option A</span>[Format A]</div>
             <div class="mid">vs</div>
-            <div class="opt b"><span class="ot">Variant B</span>$[Z] entry workshop</div>
+            <div class="opt b"><span class="ot">Option B</span>[Format B]</div>
           </div>
-          <p class="why">Last, because it requires running the workshop. The recommendation is already strong: test <b>whether the $[Z] rung improves conversion to the core</b> vs. selling the core directly.</p>
+          <p class="why">[Why it is last and what the recommendation already is.]</p>
         </div>
       </div>
     </div>
 
     <div class="callout note-oliva" style="margin-top:1.6rem">
-      <p>The north-star metric of this whole phase <b>is not click-through — it's the number of documented cases</b> (testimonial + before/after number). Goal: <b>3–5 in 90 days</b>. Every test exists to speed those cases up, because a case is what unlocks the $[Y] price, the sale to [ICP A], and the door to B2B.</p>
+      <p>[The north-star metric for the whole phase — what every test is really trying to accelerate, and the target for the quarter.]</p>
     </div>
   </section>
 
@@ -464,79 +465,49 @@
   <section id="preco">
     <div class="sec-head">
       <p class="eyebrow">Pricing &amp; offer structure</p>
-      <h2>The $[X] core is underpriced</h2>
-      <p class="lead">[N] sessions × [duration] = [hours] of contact. At $[rate]/h (senior consulting floor) that's already $[Y] in hours alone — the margin per client is near zero. Every comparable-format benchmark sits above.</p>
+      <h2>[The headline pricing recommendation]</h2>
+      <p class="lead">[One or two sentences on the rationale — cost basis, benchmark, willingness to pay.]</p>
     </div>
 
     <div class="grid cols-4" style="margin-bottom:1.8rem">
-      <div class="metric"><div class="num">$4,997</div><div class="lbl">recommended core · one-time $4,597 · 3× $1,665</div></div>
-      <div class="metric"><div class="num oliva">$3,497</div><div class="lbl">founder price (first 5–8 cohorts) = investment in a case</div></div>
-      <div class="metric"><div class="num ocre">$497</div><div class="lbl">diagnostic workshop — the missing rung · credits to the core</div></div>
-      <div class="metric"><div class="num">$15k+</div><div class="lbl">B2B floor for closed groups of 5+ (underpriced today)</div></div>
+      <div class="metric"><div class="num">$[X]</div><div class="lbl">[recommended headline tier]</div></div>
+      <div class="metric"><div class="num oliva">$[Y]</div><div class="lbl">[entry / intro tier]</div></div>
+      <div class="metric"><div class="num ocre">$[Z]</div><div class="lbl">[add-on or trial]</div></div>
+      <div class="metric"><div class="num">$[W]+</div><div class="lbl">[top / enterprise tier]</div></div>
     </div>
 
-    <h3 style="font-size:1.35rem;margin:1.4rem 0 1rem">The value ladder — 6 rungs</h3>
-    <p style="color:var(--grafite-soft);margin:0 0 1.3rem;max-width:62ch">The ladder has a fatal gap today: it jumps from “free” to “$[X]”. Too big a leap for a cold lead.</p>
+    <h3 style="font-size:1.35rem;margin:1.4rem 0 1rem">The value ladder</h3>
+    <p style="color:var(--grafite-soft);margin:0 0 1.3rem;max-width:62ch">[One line on the ladder logic — and the gap it fixes.]</p>
 
     <div class="ladder">
-      <div class="rung"><span class="step-no">0</span><div><div class="r-name">Lead magnet</div><div class="r-desc">Mini-class + 5-day email mini-course · capture / warm up</div></div><div class="r-price free">FREE</div></div>
-      <div class="rung"><span class="step-no">1</span><div><div class="r-name">Diagnostic call</div><div class="r-desc">30-min qualification session · triage hot leads</div></div><div class="r-price free">FREE</div></div>
-      <div class="rung"><span class="step-no new">2</span><div><div class="r-name">Entry<span class="newbadge">NEW</span></div><div class="r-desc">Diagnostic workshop (1× 90 min) · tripwire to the core</div></div><div class="r-price">$497</div></div>
-      <div class="rung"><span class="step-no">3</span><div><div class="r-name">Core 1:1 — [Method]</div><div class="r-desc">8 weeks + Demo Day · anchor product</div></div><div class="r-price">$4,997</div></div>
-      <div class="rung"><span class="step-no">4</span><div><div class="r-name">Continuity</div><div class="r-desc">Monthly 1:1 follow-up · recurring</div></div><div class="r-price">$997/mo</div></div>
-      <div class="rung"><span class="step-no new">4b</span><div><div class="r-name">Community<span class="newbadge">NEW</span></div><div class="r-desc">Group + newsletter + case vault · cheap recurring</div></div><div class="r-price">$197/mo</div></div>
-      <div class="rung"><span class="step-no">5</span><div><div class="r-name">B2B closed group</div><div class="r-desc">In-company, customised · scale / margin</div></div><div class="r-price">$15k+</div></div>
+      <div class="rung"><span class="step-no">0</span><div><div class="r-name">[Lead magnet]</div><div class="r-desc">[what it is · why it exists]</div></div><div class="r-price free">FREE</div></div>
+      <div class="rung"><span class="step-no">1</span><div><div class="r-name">[Qualification step]</div><div class="r-desc">[what it is · why it exists]</div></div><div class="r-price free">FREE</div></div>
+      <div class="rung"><span class="step-no new">2</span><div><div class="r-name">[Entry offer]<span class="newbadge">NEW</span></div><div class="r-desc">[what it is · why it exists]</div></div><div class="r-price">$[Z]</div></div>
+      <div class="rung"><span class="step-no">3</span><div><div class="r-name">[Core offer]</div><div class="r-desc">[the anchor product]</div></div><div class="r-price">$[X]</div></div>
+      <div class="rung"><span class="step-no">4</span><div><div class="r-name">[Continuity]</div><div class="r-desc">[recurring tier]</div></div><div class="r-price">$[A]/mo</div></div>
+      <div class="rung"><span class="step-no new">4b</span><div><div class="r-name">[Community]<span class="newbadge">NEW</span></div><div class="r-desc">[cheap recurring tier]</div></div><div class="r-price">$[B]/mo</div></div>
+      <div class="rung"><span class="step-no">5</span><div><div class="r-name">[Top tier]</div><div class="r-desc">[scale / margin]</div></div><div class="r-price">$[W]+</div></div>
     </div>
 
-    <h3 style="font-size:1.35rem;margin:2.4rem 0 1rem">Anchoring in the messaging — the numbers</h3>
+    <h3 style="font-size:1.35rem;margin:2.4rem 0 1rem">Anchoring in the messaging</h3>
     <div class="table-wrap">
       <table>
         <thead>
           <tr><th>Item</th><th>Today</th><th>Recommended</th><th>Rationale</th></tr>
         </thead>
         <tbody>
-          <tr>
-            <td><b>[Method] (core)</b></td>
-            <td class="num-cell">$3,497</td>
-            <td><span class="tag up">↑ $4,997</span><div style="margin-top:.3rem;font-size:.82rem" class="mono">one-time 4,597 · 3× 1,665</div></td>
-            <td>Still below the cheapest cohort without 1:1 (~$5,800). A [N]+ revenue client absorbs it without friction.</td>
-          </tr>
-          <tr>
-            <td><b>Founder price</b></td>
-            <td class="num-cell">—</td>
-            <td class="num-cell">$3,497</td>
-            <td>Not a discount — an investment in a case. First 5–8 cohorts. Anchors the “from $4,997 to $3,497”.</td>
-          </tr>
-          <tr>
-            <td><b>Diagnostic workshop</b></td>
-            <td class="num-cell">—</td>
-            <td><span class="tag up">new · $497</span></td>
-            <td>The missing rung. The client leaves with a “Before/After Map” + a use-case card. Credits 100% to the core within 7 days.</td>
-          </tr>
-          <tr>
-            <td><b>Continuity</b></td>
-            <td class="num-cell">$997/mo</td>
-            <td><span class="tag hold">keep</span></td>
-            <td>Test $1,497 with social proof. Standalone mentoring runs $150–240/mo — $997 is competitive.</td>
-          </tr>
-          <tr>
-            <td><b>Community</b></td>
-            <td class="num-cell">—</td>
-            <td><span class="tag up">new · $197/mo</span></td>
-            <td>Mirrors paid communities ($97/mo × 1,800 members). Retains those who don't close the 1:1.</td>
-          </tr>
-          <tr>
-            <td><b>B2B closed group</b></td>
-            <td class="num-cell">“$8,000+”</td>
-            <td><span class="tag up">↑ floor $15k (5+)</span></td>
-            <td>$8,000 up to 3 people + $2,500/extra. A group of 5 at $8,000 = $1,600/seat, below the individual core.</td>
-          </tr>
+          <tr><td><b>[Core offer]</b></td><td class="num-cell">$[old]</td><td><span class="tag up">↑ $[new]</span></td><td>[one-line rationale]</td></tr>
+          <tr><td><b>[Intro price]</b></td><td class="num-cell">—</td><td class="num-cell">$[Y]</td><td>[one-line rationale]</td></tr>
+          <tr><td><b>[Entry offer]</b></td><td class="num-cell">—</td><td><span class="tag up">new · $[Z]</span></td><td>[one-line rationale]</td></tr>
+          <tr><td><b>[Continuity]</b></td><td class="num-cell">$[A]/mo</td><td><span class="tag hold">keep</span></td><td>[one-line rationale]</td></tr>
+          <tr><td><b>[Community]</b></td><td class="num-cell">—</td><td><span class="tag up">new · $[B]/mo</span></td><td>[one-line rationale]</td></tr>
+          <tr><td><b>[Top tier]</b></td><td class="num-cell">“$[old]”</td><td><span class="tag up">↑ floor $[W]</span></td><td>[one-line rationale]</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="callout" style="margin-top:1.6rem">
-      <p>Climb sequence: sell the first 5–8 cohorts at <b>$3,497</b> (founder price), gather 5 solid cases, then <b>raise to $4,997 around month 3–4</b>. The $3,497 was never the real price — it was the cost of buying the social proof that makes $4,997 obvious. <b>Proof precedes price.</b></p>
+      <p>[The sequencing thesis — e.g. start at the intro price to gather proof, then raise once the proof exists. One memorable closing line.]</p>
     </div>
   </section>
 
@@ -545,65 +516,65 @@
   <!-- FRAMEWORK -->
   <section id="metodo">
     <div class="sec-head">
-      <p class="eyebrow">Evolved methodology</p>
-      <h2>[Method] 2.0 — the acronym stays, the content of a few steps changes</h2>
-      <p class="lead">The skeleton is good and has three differentiators no competitor has together: focus on the client's problem, a demo day as proof, and a real accompanied case. The fix closes the two gaps without inventing anything new.</p>
+      <p class="eyebrow">The framework</p>
+      <h2>[Your framework name] — a [N]-step approach</h2>
+      <p class="lead">[One or two sentences on what the framework is and the two gaps this version closes.]</p>
     </div>
 
-    <div class="resolve">
+    <div class="framework">
       <div class="rstep changed">
         <div class="letter">D</div>
-        <div><div class="rs-name">Discover &amp; diagnose</div><div class="rs-delta"><b>+ Step 0 baked in:</b> a “current state” map + a baseline metric measured before any intervention.</div></div>
+        <div><div class="rs-name">[Discover]</div><div class="rs-delta">[what happens in this step]</div></div>
       </div>
       <div class="rstep changed">
         <div class="letter">E</div>
-        <div><div class="rs-name">Explore the context</div><div class="rs-delta"><b>+ beginner-proof onboarding</b> (“first win in 20 minutes”) + data-hygiene basics.</div></div>
+        <div><div class="rs-name">[Explore]</div><div class="rs-delta">[what happens in this step]</div></div>
       </div>
       <div class="rstep">
         <div class="letter">L</div>
-        <div><div class="rs-name">Lay out options</div><div class="rs-delta">No change.</div></div>
+        <div><div class="rs-name">[Lay out]</div><div class="rs-delta">[what happens in this step]</div></div>
       </div>
       <div class="rstep">
         <div class="letter">I</div>
-        <div><div class="rs-name">Implement</div><div class="rs-delta">No change.</div></div>
+        <div><div class="rs-name">[Implement]</div><div class="rs-delta">[what happens in this step]</div></div>
       </div>
       <div class="rstep changed">
         <div class="letter">V</div>
-        <div><div class="rs-name">Validate</div><div class="rs-delta"><b>against the metric</b> defined in Discover — no baseline, no proof of the delta.</div></div>
+        <div><div class="rs-name">[Validate]</div><div class="rs-delta">[what happens in this step]</div></div>
       </div>
       <div class="rstep changed">
         <div class="letter">E</div>
-        <div><div class="rs-name">Embed &amp; hand off</div><div class="rs-delta"><b>+ autonomy transfer</b> (“the training wheels come off”) — a manual + each week the client does more alone.</div></div>
+        <div><div class="rs-name">[Embed]</div><div class="rs-delta">[what happens in this step]</div></div>
       </div>
       <div class="rstep changed">
         <div class="letter">R</div>
-        <div><div class="rs-name">Review &amp; report</div><div class="rs-delta"><b>the measured before/after</b> packaged as the case asset.</div></div>
+        <div><div class="rs-name">[Review]</div><div class="rs-delta">[what happens in this step]</div></div>
       </div>
       <div class="rstep final">
-        <div class="letter">8</div>
-        <div><div class="rs-name">Week 8 · Demo Day</div><div class="rs-delta"><b>proof of the MEASURED before/after</b> + a 90-day plan. Every client leaves with their own “2h → 7min”.</div></div>
+        <div class="letter">★</div>
+        <div><div class="rs-name">[Final milestone]</div><div class="rs-delta">[the proof point at the end — the readout that demonstrates the result]</div></div>
       </div>
     </div>
 
     <div class="callout" style="margin-top:1.6rem">
-      <p>The thread that stitches it together: <b>Discover measures the before → Lay out designs the after → Validate checks against the baseline → Demo Day proves the delta.</b> That closes both gaps at once and replicates the brand asset every cohort.</p>
+      <p>[The through-line that stitches the steps together in one sentence.]</p>
     </div>
 
-    <h3 style="font-size:1.25rem;margin:2.2rem 0 .2rem">The named deliverables that become a brand asset</h3>
+    <h3 style="font-size:1.25rem;margin:2.2rem 0 .2rem">Named deliverables</h3>
     <div class="artefacts">
-      <div class="artefact"><div class="an">Before/After Map</div><p>The measured comparison. Delivered in Week 1 of the core — and also in the $497 workshop.</p></div>
-      <div class="artefact"><div class="an">Right-Questions Sheet</div><p>The problem-diagnosis framework — arrive with the right questions before touching the tool.</p></div>
-      <div class="artefact"><div class="an">Data-Hygiene Checklist</div><p>The compliance/security piece baked in: what to anonymise, when to use synthetic data, what never leaves the company.</p></div>
+      <div class="artefact"><div class="an">[Deliverable 1]</div><p>[one line on what it is and when it lands]</p></div>
+      <div class="artefact"><div class="an">[Deliverable 2]</div><p>[one line on what it is and when it lands]</p></div>
+      <div class="artefact"><div class="an">[Deliverable 3]</div><p>[one line on what it is and when it lands]</p></div>
     </div>
 
     <h3 style="font-size:1.25rem;margin:2.4rem 0 1rem">Risks to harden against</h3>
     <div class="grid" style="gap:.7rem">
-      <div class="risk"><span class="sev grave">SEVERE</span><div><h3>“It's a terminal, but you don't code”</h3><p>Sounds contradictory to a beginner. <span class="fix">Mitigation:</span> hardened onboarding + “first win in 20 minutes” in Week 2. What you teach is steering an agent — proven in the first session, not asserted.</p></div></div>
-      <div class="risk"><span class="sev grave">SEVERE</span><div><h3>Data privacy / security</h3><p>A beginner hands real data to an external agent without a legal basis. <span class="fix">Mitigation:</span> turn the objection into a module and a differentiator. Checklist embedded in the flow.</p></div></div>
-      <div class="risk"><span class="sev grave">SEVERE</span><div><h3>Vendor dependency</h3><p>Pricing/policy outside your control. <span class="fix">Mitigation:</span> decouple method from tool conceptually — the method is “diagnose + ask right + validate”; the current implementation is [tool]. If the tool changes, the method survives.</p></div></div>
-      <div class="risk"><span class="sev grave">SEVERE</span><div><h3>Revenue capped by the founder</h3><p>1:1 is the differentiator and the cage. <span class="fix">Mitigation:</span> package in layers — 1:1 becomes the premium tier; below it, community + cohort; above it, train-the-trainer. The method scales; the founder doesn't.</p></div></div>
-      <div class="risk"><span class="sev mod">MODERATE</span><div><h3>Finite first-mover window (12–18 months)</h3><p><span class="fix">Mitigation:</span> build the brand moat now — a named methodology + a body of measured cases + authority on your channel. The moat isn't being first; it's being <b>the name</b> when the market matures.</p></div></div>
-      <div class="risk"><span class="sev mod">MODERATE</span><div><h3>“Expensive for the segment” without social proof</h3><p>When raising to $4,997. <span class="fix">Mitigation:</span> the founder price buys the cases; only raise after 5 solid ones.</p></div></div>
+      <div class="risk"><span class="sev grave">SEVERE</span><div><h3>[Risk 1]</h3><p>[the risk in one line.] <span class="fix">Mitigation:</span> [the mitigation in one line.]</p></div></div>
+      <div class="risk"><span class="sev grave">SEVERE</span><div><h3>[Risk 2]</h3><p>[the risk in one line.] <span class="fix">Mitigation:</span> [the mitigation in one line.]</p></div></div>
+      <div class="risk"><span class="sev grave">SEVERE</span><div><h3>[Risk 3]</h3><p>[the risk in one line.] <span class="fix">Mitigation:</span> [the mitigation in one line.]</p></div></div>
+      <div class="risk"><span class="sev grave">SEVERE</span><div><h3>[Risk 4]</h3><p>[the risk in one line.] <span class="fix">Mitigation:</span> [the mitigation in one line.]</p></div></div>
+      <div class="risk"><span class="sev mod">MODERATE</span><div><h3>[Risk 5]</h3><p>[the risk in one line.] <span class="fix">Mitigation:</span> [the mitigation in one line.]</p></div></div>
+      <div class="risk"><span class="sev mod">MODERATE</span><div><h3>[Risk 6]</h3><p>[the risk in one line.] <span class="fix">Mitigation:</span> [the mitigation in one line.]</p></div></div>
     </div>
   </section>
 
@@ -613,80 +584,72 @@
   <section id="plano">
     <div class="sec-head">
       <p class="eyebrow">90-day plan</p>
-      <h2>Single objective: not revenue — produce 3–5 documented cases</h2>
-      <p class="lead">A case is the currency that unlocks price, [ICP A] and B2B. Revenue is the consequence.</p>
+      <h2>Single objective: [the one outcome that matters]</h2>
+      <p class="lead">[Why this one outcome is the currency that unlocks everything else.]</p>
     </div>
 
     <div class="grid cols-4" style="margin-bottom:2.2rem">
-      <div class="metric"><div class="num">3–5</div><div class="lbl">documented cases (testimonial + before/after number)</div></div>
-      <div class="metric"><div class="num oliva">3–5</div><div class="lbl">core clients at $3,497 → $10.5k–17.5k</div></div>
-      <div class="metric"><div class="num ocre">8–12</div><div class="lbl">$497 workshops sold → $4k–6k (funds acquisition)</div></div>
-      <div class="metric"><div class="num">150–300</div><div class="lbl">mini-course / newsletter subscribers (owned list)</div></div>
+      <div class="metric"><div class="num">[N]</div><div class="lbl">[primary 90-day target]</div></div>
+      <div class="metric"><div class="num oliva">[N]</div><div class="lbl">[secondary target]</div></div>
+      <div class="metric"><div class="num ocre">[N]</div><div class="lbl">[supporting target]</div></div>
+      <div class="metric"><div class="num">[N]</div><div class="lbl">[supporting target]</div></div>
     </div>
 
     <div class="timeline">
       <div class="tl-item"><div class="tl-card">
         <div class="tl-when">Week 0 · Preparation</div>
-        <h3>Lock the offer before chasing a single lead</h3>
+        <h3>[Lock the offer before chasing demand]</h3>
         <ul>
-          <li>6-rung ladder; core at $3,497 (founder); $497 workshop.</li>
-          <li>Rewrite the method as <b>[Method] 2.0</b>; name the artefacts.</li>
-          <li>Pin the point of view at the top of your profile and site header.</li>
-          <li>Set up the newsletter + a 5-email sequence.</li>
-          <li>Create the case-capture protocol (consent + anonymisation + metric).</li>
+          <li>[Preparation task]</li>
+          <li>[Preparation task]</li>
+          <li>[Preparation task]</li>
         </ul>
       </div></div>
 
       <div class="tl-item"><div class="tl-card">
-        <div class="tl-when">Weeks 1–2 · Warm network</div>
-        <h3>Plant the flag · ICP test window 1 = [ICP B]</h3>
+        <div class="tl-when">Weeks 1–2 · [Phase]</div>
+        <h3>[Phase headline]</h3>
         <ul>
-          <li>List 20–30 direct contacts of [ICP B]. Founder offer + 30-min diagnostic.</li>
-          <li>One “origin” scholarship (1 free) for the most photogenic case.</li>
-          <li>Content begins: pin the thesis (point-of-view + the 2h→7min case). Cadence 4 pieces/week.</li>
-          <li>Targeted outreach to <b>[ICP B]</b> — hook: “that process that eats 2h of your day”.</li>
+          <li>[Task]</li>
+          <li>[Task]</li>
+          <li>[Task]</li>
         </ul>
-        <span class="tl-goal">Goal: 2 clients</span>
+        <span class="tl-goal">Goal: [milestone]</span>
       </div></div>
 
       <div class="tl-item"><div class="tl-card">
-        <div class="tl-when">Weeks 3–4 · Prove with method</div>
-        <h3>Close the first ones · ICP test window 2 = [ICP A]</h3>
+        <div class="tl-when">Weeks 3–4 · [Phase]</div>
+        <h3>[Phase headline]</h3>
         <ul>
-          <li>Content: prove with method (the 3 right questions; security as a differentiator).</li>
-          <li>Outreach to <b>[ICP A]</b>. Compare which audience responded more with less effort — <b>ICP decision at the end of week 4</b>.</li>
-          <li>Run the first 1–2 $497 workshops with the warm network — each delivers the “Before/After Map”.</li>
-          <li>Newsletter issue 1 (anonymised case + measurement framework).</li>
+          <li>[Task]</li>
+          <li>[Task]</li>
         </ul>
       </div></div>
 
       <div class="tl-item"><div class="tl-card">
-        <div class="tl-when">Weeks 5–8 · Deliver the first cores</div>
-        <h3>Positioning test with the winning ICP</h3>
+        <div class="tl-when">Weeks 5–8 · [Phase]</div>
+        <h3>[Phase headline]</h3>
         <ul>
-          <li>Run the first [Method] 2.0 cohorts (3–5 clients, founder price). <b>Measure the “current state” in Week 1 of each client</b> — it's the raw material of the case.</li>
-          <li>Content: “solves the problem” vs. “the right questions”. Change only the headline/hook.</li>
-          <li>Newsletter issue 2. Keep $497 workshops as the qualification + revenue engine.</li>
+          <li>[Task]</li>
+          <li>[Task]</li>
         </ul>
       </div></div>
 
       <div class="tl-item"><div class="tl-card">
-        <div class="tl-when">Weeks 9–12 · Harvest cases</div>
-        <h3>Format test · prepare the price raise</h3>
+        <div class="tl-when">Weeks 9–12 · [Phase]</div>
+        <h3>[Phase headline]</h3>
         <ul>
-          <li><b>First Demo Days:</b> capture the “measured before/after” → turn each case into 4 pieces. The content factory starts spinning.</li>
-          <li>Format test: does the $497 rung improve conversion to the core vs. selling direct?</li>
-          <li>With 5 solid cases, <b>raise the core to $4,997</b> and update the anchor “from $4,997 → now $4,997”.</li>
-          <li><b>Opportunistic B2B:</b> every [ICP B] who became a case works at a company — a natural door to the closed group ($15k+).</li>
+          <li>[Task]</li>
+          <li>[Task]</li>
         </ul>
       </div></div>
     </div>
 
     <h3 style="font-size:1.25rem;margin:2.6rem 0 1rem">The three deliverables that define success on day 90</h3>
     <div class="grid cols-3">
-      <div class="card"><span class="kicker">Deliverable 01</span><h3>3–5 measured cases</h3><p>Documented (testimonial + number). The currency that unlocks price, [ICP A] and B2B.</p></div>
-      <div class="card"><span class="kicker">Deliverable 02</span><h3>Offer ladder running</h3><p>$497 workshop → core $4,997 → continuity / community, with the core already at $4,997.</p></div>
-      <div class="card"><span class="kicker">Deliverable 03</span><h3>Content machine spinning</h3><p>The “1 case → 4 pieces” factory and an owned list of 150–300 subscribers — the start of the brand moat.</p></div>
+      <div class="card"><span class="kicker">Deliverable 01</span><h3>[Outcome 1]</h3><p>[one line]</p></div>
+      <div class="card"><span class="kicker">Deliverable 02</span><h3>[Outcome 2]</h3><p>[one line]</p></div>
+      <div class="card"><span class="kicker">Deliverable 03</span><h3>[Outcome 3]</h3><p>[one line]</p></div>
     </div>
   </section>
 
@@ -694,8 +657,8 @@
 
 <footer>
   <div class="footer-inner">
-    <p class="gold">Golden rule for all communication: thesis (provocation) + number/case (proof). Provocation without proof is the hype we fight.</p>
-    <p>[Company Name] · Strategy &amp; Research · master document. For the founder — to decide and execute, not to archive. · Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe.</p>
+    <p class="gold">[Your golden rule for the document — one memorable principle.]</p>
+    <p>[Company Name] · Strategy &amp; Research · master document. · Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe.</p>
   </div>
 </footer>
 

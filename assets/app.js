@@ -102,6 +102,7 @@ const T = {
     preview: "Preview", download: "Download", copy: "Copy AI prompt",
     badgeEmbedded: "Self-contained", badgeInteractive: "Interactive (Chart.js)",
     live: "Live preview", soon: "Coming soon", roadmap: "On the roadmap",
+    pick: "Author's pick", dl: "downloads",
     footerLeft: `MIT-licensed · free for commercial use · built by <a href="${ARKHE_URL}" target="_blank" rel="noopener">Instituto Arkhe</a>.`,
     footerRight: "Have a design to share?", contribute: "Contribute on GitHub →",
     viewerBack: "Back to gallery", viewerOpen: "Open in new tab", viewerDownload: "Download",
@@ -121,6 +122,7 @@ const T = {
     preview: "Visualizar", download: "Baixar", copy: "Copiar prompt de IA",
     badgeEmbedded: "Autossuficiente", badgeInteractive: "Interativo (Chart.js)",
     live: "Preview ao vivo", soon: "Em breve", roadmap: "No roadmap",
+    pick: "Escolha do autor", dl: "downloads",
     footerLeft: `Licença MIT · livre para uso comercial · feito pelo <a href="${ARKHE_URL}" target="_blank" rel="noopener">Instituto Arkhe</a>.`,
     footerRight: "Tem um design pra compartilhar?", contribute: "Contribua no GitHub →",
     viewerBack: "Voltar à galeria", viewerOpen: "Abrir em nova aba", viewerDownload: "Baixar",
@@ -162,6 +164,27 @@ const I = {
   copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
 };
 
+/* ---------- download counters (Abacus — free hosted counter, no key) ---------- */
+const COUNTER_NS = "openreports-lukassem1";
+let currentViewer = null;
+const counterFmt = (n) => (n == null ? "—" : Number(n).toLocaleString());
+function counterGet(id) {
+  return fetch(`https://abacus.jasoncameron.dev/get/${COUNTER_NS}/${id}`)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => (d && typeof d.value === "number" ? d.value : null))
+    .catch(() => null);
+}
+function counterHit(id) {
+  return fetch(`https://abacus.jasoncameron.dev/hit/${COUNTER_NS}/${id}`)
+    .then((r) => (r.ok ? r.json() : null))
+    .then((d) => (d && typeof d.value === "number" ? d.value : null))
+    .catch(() => null);
+}
+function setDl(id, v) {
+  document.querySelectorAll(`[data-dl="${id}"] b`).forEach((el) => { el.textContent = counterFmt(v); });
+}
+function bumpDownload(id) { counterHit(id).then((v) => { if (v != null) setDl(id, v); }); }
+
 function catLabel(key) {
   const c = CATEGORIES.find((x) => x.key === key);
   return c ? tr(c.label) : key;
@@ -184,7 +207,7 @@ function cardHTML(r) {
     ? `<div class="actions"><button class="btn" disabled style="opacity:.5;cursor:default">${s.roadmap}</button></div>`
     : `<div class="actions">
          <button class="btn" data-preview="${r.id}">${I.eye} ${s.preview}</button>
-         <a class="btn" href="${r.file}" download>${I.down} ${s.download}</a>
+         <a class="btn" href="${r.file}" download data-dl-btn="${r.id}">${I.down} ${s.download}</a>
          <button class="btn primary icon-btn" data-prompt="${r.id}" title="${s.copy}">${I.copy}</button>
        </div>`;
 
@@ -194,6 +217,8 @@ function cardHTML(r) {
       <div class="badges">
         <span class="badge cat">${catLabel(r.category)}</span>
         <span class="badge">${chartBadge(r.charts)}</span>
+        ${r.pick ? `<span class="badge pick">★ ${s.pick}</span>` : ""}
+        <span class="badge dl" data-dl="${r.id}" title="${s.dl}">${I.down}<b>—</b></span>
       </div>
       <h3>${title}</h3>
       <p>${tr(r.description)}</p>
@@ -221,6 +246,14 @@ function render() {
     b.addEventListener("click", () => copyText(buildPrompt(byId(b.dataset.prompt)), T[lang].copied)));
   grid.querySelectorAll("[data-preview]").forEach((b) =>
     b.addEventListener("click", () => openViewer(byId(b.dataset.preview))));
+
+  // download counters: fetch current count + increment on download click
+  grid.querySelectorAll("[data-dl]").forEach((el) => {
+    const id = el.getAttribute("data-dl");
+    counterGet(id).then((v) => { if (v != null) setDl(id, v); });
+  });
+  grid.querySelectorAll("[data-dl-btn]").forEach((a) =>
+    a.addEventListener("click", () => bumpDownload(a.getAttribute("data-dl-btn"))));
 }
 const byId = (id) => REPORTS.find((x) => x.id === id);
 
@@ -243,6 +276,7 @@ function buildChips() {
 /* ---------- viewer (full page in-site, preserves gallery scroll) ---------- */
 function openViewer(r) {
   if (!r || r.soon) return;
+  currentViewer = r.id;
   $("viewer-title").textContent = tr(r.title);
   $("viewer-frame").src = r.file;
   $("viewer-open").href = r.file;
@@ -334,6 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("#lang-toggle button").forEach((b) =>
     b.addEventListener("click", () => setLang(b.dataset.lang)));
   $("viewer-back").addEventListener("click", closeViewer);
+  $("viewer-download").addEventListener("click", () => { if (currentViewer) bumpDownload(currentViewer); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("viewer").hidden) closeViewer(); });
   initStar();
   setLang(lang);
