@@ -133,6 +133,8 @@ to re-skin everything.
 
 Pull requests are welcome — submit a **brand-new template you designed yourself**, or a variation (a new colour scheme or a different category) of an existing one. Both are equally welcome. 🐾
 
+**📖 Full guide: [CONTRIBUTING.md](CONTRIBUTING.md)** — and every PR is checked automatically by a [validation workflow](.github/workflows/validate-templates.yml).
+
 1. Add your design as a self-contained file in `templates/` — either an original report you built from scratch, or a copy of an existing one, restyled.
 2. Keep it **self-contained** (inline `<style>`; inline SVG, or Chart.js via CDN).
 3. Use clear `[placeholders]` and round sample numbers so AIs swap data cleanly.

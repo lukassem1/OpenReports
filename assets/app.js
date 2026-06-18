@@ -74,6 +74,60 @@ const REPORTS = [
       pt: "Memorando executivo long-form premium — verdict banner, mapa de mercado, A/B de posicionamento, escada de valor, framework nomeado, riscos e plano de 90 dias. Design editorial (Fraunces + Inter), esquema escuro Midnight Slate.",
     },
   },
+  {
+    id: "annual-results", category: "review", charts: "embedded",
+    file: "templates/annual-results.html",
+    title: { en: "Annual Results (Year in Review)", pt: "Resultados Anuais (Retrospectiva)" },
+    description: {
+      en: "A high-impact year-in-review: animated mega-numbers, highlight cards, a full project grid with status pills, a delivery timeline and a consolidated table. Indigo scheme.",
+      pt: "Retrospectiva de alto impacto: mega-números animados, cards de destaque, grade de projetos com status, timeline de entregas e tabela consolidada. Esquema indigo.",
+    },
+  },
+  {
+    id: "annual-results-emerald", category: "review", charts: "embedded",
+    file: "templates/annual-results-emerald.html",
+    title: { en: "Annual Results — Emerald", pt: "Resultados Anuais — Emerald" },
+    description: {
+      en: "The same year-in-review layout in an emerald colour scheme.",
+      pt: "A mesma retrospectiva anual em esquema de cor emerald.",
+    },
+  },
+  {
+    id: "segmentation-study", category: "analysis", charts: "embedded", pick: true,
+    file: "templates/segmentation-study.html",
+    title: { en: "Customer Segmentation Study", pt: "Estudo de Segmentação de Clientes" },
+    description: {
+      en: "Split a base into two mutually-exclusive tiers: a flow diagram, side-by-side columns, stat cards, comparison tables and a decision block. Emerald & amber.",
+      pt: "Divide uma base em duas faixas exclusivas: diagrama de fluxo, colunas lado a lado, cards, tabelas comparativas e bloco de decisão. Emerald & âmbar.",
+    },
+  },
+  {
+    id: "segmentation-study-slate", category: "analysis", charts: "embedded",
+    file: "templates/segmentation-study-slate.html",
+    title: { en: "Customer Segmentation — Slate", pt: "Segmentação de Clientes — Slate" },
+    description: {
+      en: "The same segmentation study in a slate-blue colour scheme.",
+      pt: "O mesmo estudo de segmentação em esquema slate (azul ardósia).",
+    },
+  },
+  {
+    id: "slide-deck", category: "deck", charts: "chartjs",
+    file: "templates/slide-deck.html",
+    title: { en: "Executive Quarterly Review (deck)", pt: "Revisão Trimestral Executiva (deck)" },
+    description: {
+      en: "A multi-slide executive presentation: gradient cover, slide nav, KPI grids, interactive Chart.js charts, tables and insight callouts. Royal blue.",
+      pt: "Apresentação executiva multi-slide: capa em gradiente, navegação por slides, grids de KPI, gráficos interativos Chart.js, tabelas e insights. Azul royal.",
+    },
+  },
+  {
+    id: "slide-deck-graphite", category: "deck", charts: "chartjs",
+    file: "templates/slide-deck-graphite.html",
+    title: { en: "Executive Quarterly Review — Graphite", pt: "Revisão Trimestral — Graphite" },
+    description: {
+      en: "The same multi-slide deck in a dark graphite colour scheme.",
+      pt: "O mesmo deck multi-slide em esquema escuro graphite.",
+    },
+  },
 ];
 
 const CATEGORIES = [
@@ -85,6 +139,9 @@ const CATEGORIES = [
   { key: "people", label: { en: "People / HR", pt: "Pessoas / RH" } },
   { key: "operations", label: { en: "Operations / Project", pt: "Operações / Projetos" } },
   { key: "strategy", label: { en: "Strategy / Memo", pt: "Estratégia / Memo" } },
+  { key: "review", label: { en: "Annual Review", pt: "Retrospectiva Anual" } },
+  { key: "analysis", label: { en: "Analysis / Study", pt: "Análise / Estudo" } },
+  { key: "deck", label: { en: "Presentation / Deck", pt: "Apresentação / Deck" } },
 ];
 
 /* ---------- UI strings ---------- */
@@ -167,6 +224,7 @@ const I = {
 /* ---------- download counters (Abacus — free hosted counter, no key) ---------- */
 const COUNTER_NS = "openreports-lukassem1";
 let currentViewer = null;
+const dlCache = {};
 const counterFmt = (n) => (n == null ? "—" : Number(n).toLocaleString());
 function counterGet(id) {
   return fetch(`https://abacus.jasoncameron.dev/get/${COUNTER_NS}/${id}`)
@@ -183,7 +241,7 @@ function counterHit(id) {
 function setDl(id, v) {
   document.querySelectorAll(`[data-dl="${id}"] b`).forEach((el) => { el.textContent = counterFmt(v); });
 }
-function bumpDownload(id) { counterHit(id).then((v) => { if (v != null) setDl(id, v); }); }
+function bumpDownload(id) { counterHit(id).then((v) => { if (v != null) { dlCache[id] = v; setDl(id, v); } }); }
 
 function catLabel(key) {
   const c = CATEGORIES.find((x) => x.key === key);
@@ -250,7 +308,8 @@ function render() {
   // download counters: fetch current count + increment on download click
   grid.querySelectorAll("[data-dl]").forEach((el) => {
     const id = el.getAttribute("data-dl");
-    counterGet(id).then((v) => { if (v != null) setDl(id, v); });
+    if (dlCache[id] != null) { setDl(id, dlCache[id]); return; }
+    counterGet(id).then((v) => { if (v != null) { dlCache[id] = v; setDl(id, v); } });
   });
   grid.querySelectorAll("[data-dl-btn]").forEach((a) =>
     a.addEventListener("click", () => bumpDownload(a.getAttribute("data-dl-btn"))));
@@ -324,21 +383,6 @@ function setLang(l) {
   applyLang();
 }
 
-/* ---------- GitHub star button ---------- */
-function initStar() {
-  $("star-btn").href = REPO_URL;
-  fetch("https://api.github.com/repos/" + REPO)
-    .then((r) => (r.ok ? r.json() : null))
-    .then((d) => {
-      if (d && typeof d.stargazers_count === "number") {
-        const el = $("star-count");
-        el.textContent = d.stargazers_count.toLocaleString();
-        el.hidden = false;
-      }
-    })
-    .catch(() => {});
-}
-
 /* ---------- clipboard + toast ---------- */
 let toastT;
 function showToast(msg) {
@@ -364,12 +408,25 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll(".seg button").forEach((x) => x.classList.remove("active"));
       b.classList.add("active"); state.charts = b.dataset.charts; render();
     }));
-  $("search-input").addEventListener("input", (e) => { state.q = e.target.value; render(); });
+  let searchT;
+  $("search-input").addEventListener("input", (e) => {
+    const v = e.target.value;
+    clearTimeout(searchT);
+    searchT = setTimeout(() => { state.q = v; render(); }, 220);
+  });
   document.querySelectorAll("#lang-toggle button").forEach((b) =>
     b.addEventListener("click", () => setLang(b.dataset.lang)));
   $("viewer-back").addEventListener("click", closeViewer);
   $("viewer-download").addEventListener("click", () => { if (currentViewer) bumpDownload(currentViewer); });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("viewer").hidden) closeViewer(); });
-  initStar();
+  // Fallback if the official GitHub star widget can't render (e.g. blocked iframe)
+  setTimeout(() => {
+    const host = document.querySelector(".gh-star");
+    if (host && !host.querySelector("iframe")) {
+      host.innerHTML =
+        `<a class="gh-btn" href="${REPO_URL}" target="_blank" rel="noopener" aria-label="Star on GitHub">` +
+        `<svg width="15" height="15" viewBox="0 0 24 24" fill="#e3a008"><path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 2.5z"/></svg> Star on GitHub</a>`;
+    }
+  }, 2500);
   setLang(lang);
 });

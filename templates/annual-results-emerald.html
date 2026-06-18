@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Annual Results — [Company Name]</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #059669;
+    --red-light: #ecfdf5;
+    --red-mid: #a7f3d0;
+    --bg: #f7f7f7;
+    --bg2: #ffffff;
+    --card: #ffffff;
+    --border: #e8e8e8;
+    --border2: #d4d4d4;
+    --text: #0f0f0f;
+    --muted: #6b6b6b;
+    --muted2: #9a9a9a;
+    --green: #16a34a;
+    --green-bg: #f0fdf4;
+    --green-border: #bbf7d0;
+    --blue: #2563eb;
+    --blue-bg: #eff6ff;
+    --blue-border: #bfdbfe;
+    --amber: #d97706;
+    --amber-bg: #fffbeb;
+    --amber-border: #fde68a;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.06);
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 0 40px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255,255,255,0.9);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  .nav-logo { font-size: 15px; font-weight: 800; letter-spacing: -0.5px; color: var(--text); }
+  .nav-logo span { color: var(--red); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 140px 24px 100px;
+    text-align: center;
+    background: linear-gradient(180deg, #fff 0%, var(--bg) 100%);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: 50%; transform: translateX(-50%);
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(5,150,105,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--red-light);
+    border: 1px solid var(--red-mid);
+    color: var(--red);
+    padding: 5px 14px; border-radius: 100px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .badge-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+
+  .hero h1 {
+    font-size: clamp(42px, 8vw, 88px);
+    font-weight: 900; line-height: 1.0; letter-spacing: -3px;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .hero h1 span { color: var(--red); }
+  .hero-sub { font-size: clamp(15px, 2vw, 19px); color: var(--muted); font-weight: 400; margin-bottom: 64px; }
+
+  /* ── MEGA NUMBERS ── */
+  .mega-numbers {
+    display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 20px; box-shadow: var(--shadow);
+    max-width: 900px; margin: 0 auto 64px; overflow: hidden;
+  }
+  .mega-num {
+    min-width: 0;
+    padding: 32px 16px; text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .mega-num:last-child { border-right: none; }
+  .mega-num .value { font-size: clamp(22px, 3vw, 44px); font-weight: 900; letter-spacing: -0.8px; line-height: 1; color: var(--text); white-space: nowrap; }
+  .mega-num .value.money { font-size: clamp(20px, 2.6vw, 42px); }
+  .mega-num .value.red { color: var(--red); }
+  .mega-num .value.green { color: var(--green); }
+  .mega-num .label { font-size: 11px; font-weight: 600; color: var(--muted2); letter-spacing: 0.5px; text-transform: uppercase; margin-top: 8px; }
+
+  .scroll-hint { display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--muted2); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; animation: bounce 2s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+
+  /* ── SECTIONS ── */
+  section { padding: 96px 24px; max-width: 1160px; margin: 0 auto; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
+  .section-title { font-size: clamp(26px, 4vw, 44px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; margin-bottom: 12px; }
+  .section-desc { font-size: 15px; color: var(--muted); max-width: 520px; margin-bottom: 52px; }
+
+  /* ── HIGHLIGHTS ── */
+  .highlights-wrap { background: #fff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .highlight-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+
+  .highlight-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 36px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+  .highlight-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+  .highlight-card::after {
+    content: '';
+    position: absolute;
+    top: -86px;
+    right: -72px;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0.8;
+  }
+
+  .highlight-card.h-red { border-top: 3px solid var(--red); }
+  .highlight-card.h-green { border-top: 3px solid var(--green); }
+  .highlight-card.h-blue { border-top: 3px solid var(--blue); }
+  .highlight-card.h-red::after { background: radial-gradient(circle, rgba(5, 150, 105, 0.14) 0%, rgba(5, 150, 105, 0.04) 50%, transparent 75%); }
+  .highlight-card.h-green::after { background: radial-gradient(circle, rgba(22, 163, 74, 0.14) 0%, rgba(22, 163, 74, 0.04) 50%, transparent 75%); }
+  .highlight-card.h-blue::after { background: radial-gradient(circle, rgba(37, 99, 235, 0.14) 0%, rgba(37, 99, 235, 0.04) 50%, transparent 75%); }
+
+  .highlight-tag {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 100px; margin-bottom: 20px;
+  }
+  .tag-red { background: var(--red-light); color: var(--red); border: 1px solid var(--red-mid); }
+  .tag-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .tag-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+
+  .highlight-card h3 { font-size: 19px; font-weight: 700; margin-bottom: 10px; letter-spacing: -0.3px; }
+  .highlight-card p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 28px; }
+
+  .big-number { font-size: 52px; font-weight: 900; letter-spacing: -2px; line-height: 1; }
+  .big-number.red { color: var(--red); }
+  .big-number.green { color: var(--green); }
+  .big-number.blue { color: var(--blue); }
+  .big-number-label { font-size: 13px; color: var(--muted); margin-top: 6px; }
+
+  .metrics-row { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .metric-item .mv { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
+  .metric-item .ml { font-size: 11px; color: var(--muted2); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  /* ── PROJECT GRID ── */
+  .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+
+  .project-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 14px; padding: 24px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s;
+  }
+  .project-card:hover { border-color: var(--border2); box-shadow: var(--shadow); transform: translateY(-2px); }
+
+  .project-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 14px; gap: 10px; }
+  .project-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+
+  .status-pill { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; white-space: nowrap; }
+  .status-done { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+  .status-active { background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border); }
+  .status-wip { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+
+  .project-card h4 { font-size: 14px; font-weight: 700; letter-spacing: -0.2px; margin-bottom: 7px; line-height: 1.3; }
+  .project-card .project-desc { font-size: 12.5px; color: var(--muted); line-height: 1.6; margin-bottom: 14px; }
+
+  .project-impact { font-size: 12.5px; font-weight: 600; color: var(--green); }
+  .project-impact.neutral { color: var(--blue); }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 36px; }
+  .timeline::before { content: ''; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(to bottom, var(--red), var(--border)); }
+
+  .tl-item { position: relative; margin-bottom: 44px; }
+  .tl-item::before { content: ''; position: absolute; left: -30px; top: 5px; width: 12px; height: 12px; border-radius: 50%; background: var(--red); box-shadow: 0 0 0 3px var(--red-light); }
+
+  .tl-quarter { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
+  .tl-projects { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tl-chip { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 500; box-shadow: var(--shadow-sm); }
+
+  /* ── TABLE ── */
+  .table-wrap { border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm); background: var(--bg2); }
+  .impact-table { width: 100%; border-collapse: collapse; }
+  .impact-table th { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); padding: 14px 16px; background: var(--bg); border-bottom: 1px solid var(--border); }
+  .impact-table td { padding: 14px 16px; font-size: 13.5px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .impact-table tr:last-child td { border-bottom: none; }
+  .impact-table tbody tr:hover td { background: var(--bg); }
+  .impact-val { font-weight: 600; color: var(--green); }
+  .impact-blue { font-weight: 600; color: var(--blue); }
+  .impact-amber { font-weight: 600; color: var(--amber); }
+
+  /* ── FOOTER ── */
+  footer { text-align: center; padding: 56px 24px; border-top: 1px solid var(--border); background: var(--bg2); }
+  footer .footer-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--red); margin-bottom: 10px; font-weight: 700; }
+  footer strong { color: var(--text); }
+  footer span { color: var(--muted); font-size: 13px; }
+  footer .credit { display: block; margin-top: 18px; font-size: 12px; color: var(--muted2); }
+
+  /* ── DIVIDER ── */
+  .divider { height: 1px; background: var(--border); max-width: 1160px; margin: 0 auto; }
+
+  /* ── FADE IN ── */
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.55s ease, transform 0.55s ease; }
+  .fade-in.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .mega-numbers { grid-template-columns: 1fr; }
+    .mega-num { border-right: none; border-bottom: 1px solid var(--border); }
+    .mega-num:last-child { border-bottom: none; }
+    section { padding: 64px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">[Team]<span>.</span>Results <span style="color:var(--muted);font-weight:400;font-size:12px">2025</span></div>
+  <ul class="nav-links">
+    <li><a href="#highlights">Highlights</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#summary">Summary</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge"><div class="badge-dot"></div>[Team] · [Company Name]</div>
+  <h1>Results<br><span>2025</span></h1>
+  <p class="hero-sub">[N] projects delivered · Direct impact on revenue, operational efficiency, and digital transformation</p>
+
+  <div class="mega-numbers">
+    <div class="mega-num">
+      <div class="value money green">$[X]M</div>
+      <div class="label">Additional Revenue</div>
+    </div>
+    <div class="mega-num">
+      <div class="value money red">$[X]k</div>
+      <div class="label">Savings / Month</div>
+    </div>
+    <div class="mega-num">
+      <div class="value">[N]</div>
+      <div class="label">Projects Delivered</div>
+    </div>
+    <div class="mega-num">
+      <div class="value">[N]</div>
+      <div class="label">People Impacted</div>
+    </div>
+    <div class="mega-num">
+      <div class="value red">[N]%</div>
+      <div class="label">Efficiency Gain</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll to see the details</span>
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</div>
+
+<!-- HIGHLIGHTS -->
+<div class="highlights-wrap" id="highlights">
+  <section style="padding-top:80px;padding-bottom:80px">
+    <div class="section-label fade-in">Major Wins</div>
+    <h2 class="section-title fade-in">The 3 highest-impact projects</h2>
+    <p class="section-desc fade-in">Results that moved the business in a direct and measurable way.</p>
+
+    <div class="highlight-grid">
+
+      <!-- HIGHLIGHT 1 -->
+      <div class="highlight-card h-green fade-in">
+        <div class="highlight-tag tag-green">Operational Efficiency</div>
+        <h3>⚙️ Billing Automation</h3>
+        <p>Automation of [a recurring manual workflow] across [N] teams. Analysis of [N] months of activity, removing duplicated steps and streamlining how work moves through the org.</p>
+        <div class="big-number green">$[X]k</div>
+        <div class="big-number-label">monthly savings in operating costs</div>
+        <div class="metrics-row">
+          <div class="metric-item"><div class="mv" style="color:var(--green)">[N]%</div><div class="ml">Time saved</div></div>
+          <div class="metric-item"><div class="mv" style="color:var(--green)">$[X]M</div><div class="ml">Savings/year</div></div>
+        </div>
+      </div>
+
+      <!-- HIGHLIGHT 2 -->
+      <div class="highlight-card h-red fade-in">
+        <div class="highlight-tag tag-red">Growth & Revenue</div>
+        <h3>📊 Self-serve Launch</h3>
+        <p>Investigation of the revenue impact of a new self-serve offering for [N] accounts. [N] accounts activated in the first phase. Cross-team partnership with [Team] and [Team].</p>
+        <div class="big-number red">$[X]M</div>
+        <div class="big-number-label">additional revenue attributable to the launch</div>
+        <div class="metrics-row">
+          <div class="metric-item"><div class="mv" style="color:var(--red)">[N]</div><div class="ml">Eligible accounts</div></div>
+          <div class="metric-item"><div class="mv" style="color:var(--red)">$[X]M</div><div class="ml">Potential next phase</div></div>
+        </div>
+      </div>
+
+      <!-- HIGHLIGHT 3 -->
+      <div class="highlight-card h-blue fade-in">
+        <div class="highlight-tag tag-blue">Foundational Project</div>
+        <h3>🚀 [Project Alpha]</h3>
+        <p>Assessment of [Project Alpha]'s impact on day-to-day team routines, with a full operational analysis and support for designing a new structure and updated roles.</p>
+        <div class="big-number-label" style="font-size:14px;color:var(--blue);font-weight:700;margin-top:4px">One of the highest strategic impact projects of the year</div>
+        <div class="metrics-row">
+          <div class="metric-item"><div class="mv" style="color:var(--blue)">New structure</div><div class="ml">Operating model updated</div></div>
+          <div class="metric-item"><div class="mv" style="color:var(--blue)">Delivery completed</div><div class="ml">Dashboard and executive report</div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ALL PROJECTS -->
+<section id="projects">
+  <div class="section-label fade-in">Full Portfolio</div>
+  <h2 class="section-title fade-in">All [N] projects</h2>
+  <p class="section-desc fade-in">From strategic analysis to operational automation, each initiative delivered direct business impact.</p>
+
+  <div class="project-grid">
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#ecfdf5">📊</div>
+        <span class="status-pill status-done">Completed</span>
+      </div>
+      <h4>Self-serve Launch</h4>
+      <p class="project-desc">Revenue impact analysis of a new self-serve offering for [N] accounts. Segmentation + clustering. Presented to leadership.</p>
+      <div class="project-impact">$[X]M additional · $[X]M potential</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#fefce8">⚙️</div>
+        <span class="status-pill status-active">In Production</span>
+      </div>
+      <h4>Billing Automation</h4>
+      <p class="project-desc">Automated pipeline for [recurring targets], performance tracking, monthly close, and offboarding. [N]+ contributors, [N] managers, [N] categories.</p>
+      <div class="project-impact neutral">Manual process eliminated · [N] months in production</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#ecfdf5">🎯</div>
+        <span class="status-pill status-wip">In Progress</span>
+      </div>
+      <h4>Customer Segmentation</h4>
+      <p class="project-desc">[N] months of data, Active vs. Inactive accounts. Cross-team partnership. Final filtering step still pending.</p>
+      <div class="project-impact neutral">[N]-month dataset structured · awaiting review</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#eff6ff">📈</div>
+        <span class="status-pill status-done">Completed</span>
+      </div>
+      <h4>Pricing Analysis</h4>
+      <p class="project-desc">Price sensitivity by product and channel, with a scenario simulator and a [year] planning optimizer. Cross-team partnership.</p>
+      <div class="project-impact">+[N]% ROI · [year] plan optimized</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#f0fdf4">🔁</div>
+        <span class="status-pill status-done">Completed</span>
+      </div>
+      <h4>Onboarding Revamp</h4>
+      <p class="project-desc">Redesign of the onboarding flow using [N] months of activity. Mapping friction points and streamlining each step.</p>
+      <div class="project-impact">+[N]% completion · $[X]k/month saved</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#eff6ff">🛍️</div>
+        <span class="status-pill status-done">Completed</span>
+      </div>
+      <h4>Capacity Study</h4>
+      <p class="project-desc">Capacity score vs. workload analysis. Identification of allocation gaps and justification for expanding headcount. Presented to [Name] ([Department]).</p>
+      <div class="project-impact neutral">Data-based allocation decision</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#f0fdf4">🗜️</div>
+        <span class="status-pill status-active">In Production</span>
+      </div>
+      <h4>Data Pipeline Tool</h4>
+      <p class="project-desc">Tool to convert heavy files into a columnar format. Impacts analytics, planning, and reporting workflows.</p>
+      <div class="project-impact">[N]% smaller · [N]x faster in BI tools</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#ecfdf5">📋</div>
+        <span class="status-pill status-done">Delivered</span>
+      </div>
+      <h4>Workforce Planning Analysis</h4>
+      <p class="project-desc">Analysis of [N] team members under applicable internal policies. New role created: [Role Name]. Interactive maps and dashboards.</p>
+      <div class="project-impact neutral">Evidence-based restructuring · new role created</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#fdf4ff">🚀</div>
+        <span class="status-pill status-done">Completed</span>
+      </div>
+      <h4>[Project Alpha]</h4>
+      <p class="project-desc">Assessment of [Project Alpha]'s impact on the team. New structure and roles created. [N] accounts and [N]k records analyzed.</p>
+      <div class="project-impact neutral">New operating structure implemented</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#ecfdf5">🤖</div>
+        <span class="status-pill status-done">Completed</span>
+      </div>
+      <h4>Request Workflow Automation</h4>
+      <p class="project-desc">Full automation of recurring request handling. The process had been 100% manual, consuming significant time from the team.</p>
+      <div class="project-impact">-[N]h/day · process 100% automated</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#eff6ff">📱</div>
+        <span class="status-pill status-done">Launched</span>
+      </div>
+      <h4>Digital Channel Launch</h4>
+      <p class="project-desc">Self-service app for customers and a companion app for the internal team. Implementation and launch support.</p>
+      <div class="project-impact neutral">New digital channel operational</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#f0fdf4">🌱</div>
+        <span class="status-pill status-done">Implemented</span>
+      </div>
+      <h4>Platform Rollout</h4>
+      <p class="project-desc">Platform rollout for all team members. Onboarding and support for platform adoption.</p>
+      <div class="project-impact neutral">Unified system · entire team</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#fef9c3">👥</div>
+        <span class="status-pill status-done">Completed</span>
+      </div>
+      <h4>Customer Reactivation Study</h4>
+      <p class="project-desc">Behavior analysis of recurring customers and mapping of the inactive base for reactivation and retention strategy.</p>
+      <div class="project-impact neutral">Strategic input for retention and reactivation</div>
+    </div>
+
+    <div class="project-card fade-in">
+      <div class="project-header">
+        <div class="project-icon" style="background:#fefce8">💡</div>
+        <span class="status-pill status-done">Completed</span>
+      </div>
+      <h4>Brand Refresh</h4>
+      <p class="project-desc">Refresh of brand assets and messaging to boost engagement across digital channels and support the broader growth strategy.</p>
+      <div class="project-impact">Engagement growth across channels</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="section-label fade-in">Timeline</div>
+  <h2 class="section-title fade-in">Delivery cadence</h2>
+  <p class="section-desc fade-in">Projects distributed across 2025 and early 2026.</p>
+
+  <div class="timeline">
+    <div class="tl-item fade-in">
+      <div class="tl-quarter">Q2 2025 — Apr-Jun</div>
+      <div class="tl-projects">
+        <div class="tl-chip">🌱 Platform Rollout</div>
+        <div class="tl-chip">🤖 Request Workflow Automation</div>
+        <div class="tl-chip">💡 Brand Refresh</div>
+        <div class="tl-chip">📱 Digital Channel Launch</div>
+      </div>
+    </div>
+    <div class="tl-item fade-in">
+      <div class="tl-quarter">Q3 2025 — Jul-Sep</div>
+      <div class="tl-projects">
+        <div class="tl-chip">📊 Self-serve Launch</div>
+        <div class="tl-chip">🎯 Customer Segmentation</div>
+        <div class="tl-chip">👥 Customer Reactivation Study</div>
+      </div>
+    </div>
+    <div class="tl-item fade-in">
+      <div class="tl-quarter">Q4 2025 — Oct-Dec</div>
+      <div class="tl-projects">
+        <div class="tl-chip">📈 Pricing Analysis</div>
+        <div class="tl-chip">🔁 Onboarding Revamp</div>
+        <div class="tl-chip">🛍️ Capacity Study</div>
+        <div class="tl-chip">🚀 [Project Alpha]</div>
+      </div>
+    </div>
+    <div class="tl-item fade-in">
+      <div class="tl-quarter">Q1 2026 — Jan-Mar</div>
+      <div class="tl-projects">
+        <div class="tl-chip">⚙️ Billing Automation</div>
+        <div class="tl-chip">🗜️ Data Pipeline Tool</div>
+        <div class="tl-chip">📋 Workforce Planning Analysis</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SUMMARY TABLE -->
+<section id="summary" style="padding-bottom: 40px;">
+  <div class="section-label fade-in">Executive Table</div>
+  <h2 class="section-title fade-in">Consolidated summary</h2>
+  <p class="section-desc fade-in">Complete view of all projects with period, status, and primary impact.</p>
+
+  <div class="table-wrap fade-in" style="overflow-x:auto">
+    <table class="impact-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Project</th>
+          <th>Period</th>
+          <th>Status</th>
+          <th>Main Impact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="color:var(--muted2);font-size:12px">01</td><td><strong>🔁 Onboarding Revamp</strong></td><td style="color:var(--muted);font-size:13px">Q4 2025</td><td><span class="status-pill status-done">Completed</span></td><td class="impact-val">+[N]% completion · $[X]k/month · $[X]M/year</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">02</td><td><strong>📊 Self-serve Launch</strong></td><td style="color:var(--muted);font-size:13px">Q3 2025</td><td><span class="status-pill status-done">Completed</span></td><td class="impact-val">$[X]M additional · $[X]M potential</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">03</td><td><strong>📈 Pricing Analysis</strong></td><td style="color:var(--muted);font-size:13px">Q4 2025</td><td><span class="status-pill status-done">Completed</span></td><td class="impact-val">+[N]% ROI · [year] plan optimized</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">04</td><td><strong>⚙️ Billing Automation</strong></td><td style="color:var(--muted);font-size:13px">Q1 2026</td><td><span class="status-pill status-active">In Production</span></td><td class="impact-blue">Manual process eliminated · [N]+ contributors</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">05</td><td><strong>🗜️ Data Pipeline Tool</strong></td><td style="color:var(--muted);font-size:13px">Q1 2026</td><td><span class="status-pill status-active">In Production</span></td><td class="impact-val">[N]% smaller · [N]x faster in BI tools</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">06</td><td><strong>📋 Workforce Planning Analysis</strong></td><td style="color:var(--muted);font-size:13px">Q1 2026</td><td><span class="status-pill status-done">Delivered</span></td><td class="impact-blue">[N] members mapped · new role created</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">07</td><td><strong>🛍️ Capacity Study</strong></td><td style="color:var(--muted);font-size:13px">Q4 2025</td><td><span class="status-pill status-done">Completed</span></td><td class="impact-blue">Headcount justification for [Department]</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">08</td><td><strong>🚀 [Project Alpha]</strong></td><td style="color:var(--muted);font-size:13px">Q4 2025</td><td><span class="status-pill status-done">Completed</span></td><td class="impact-blue">New operating structure implemented</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">09</td><td><strong>🎯 Customer Segmentation</strong></td><td style="color:var(--muted);font-size:13px">Q3 2025</td><td><span class="status-pill status-wip">In Progress</span></td><td class="impact-amber">[N]-month base ready · awaiting filter</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">10</td><td><strong>🤖 Request Workflow Automation</strong></td><td style="color:var(--muted);font-size:13px">Q2 2025</td><td><span class="status-pill status-done">Completed</span></td><td class="impact-val">-[N]h/day · process 100% automated</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">11</td><td><strong>📱 Digital Channel Launch</strong></td><td style="color:var(--muted);font-size:13px">Q2 2025</td><td><span class="status-pill status-done">Launched</span></td><td class="impact-blue">New digital channel operational</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">12</td><td><strong>🌱 Platform Rollout</strong></td><td style="color:var(--muted);font-size:13px">Q2 2025</td><td><span class="status-pill status-done">Implemented</span></td><td class="impact-blue">Unified system · entire team</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">13</td><td><strong>👥 Customer Reactivation Study</strong></td><td style="color:var(--muted);font-size:13px">Q3 2025</td><td><span class="status-pill status-done">Completed</span></td><td class="impact-blue">Reactivation and retention strategy</td></tr>
+        <tr><td style="color:var(--muted2);font-size:12px">14</td><td><strong>💡 Brand Refresh</strong></td><td style="color:var(--muted);font-size:13px">Q2 2025</td><td><span class="status-pill status-done">Completed</span></td><td class="impact-val">Engagement growth across channels</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-label">[Team]</div>
+  <strong>[Your Name]</strong> · [Your Role]<br>
+  <span>[Company Name] · 2025-2026</span>
+  <span class="credit">Made with <a href="https://arkhen.tech" style="color:var(--red);text-decoration:none">OpenReports</a> — free report templates by Instituto Arkhe</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 55);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

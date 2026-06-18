@@ -23,11 +23,12 @@
           <button data-lang="en" class="active">EN</button>
           <button data-lang="pt">PT</button>
         </div>
-        <a class="star-btn" id="star-btn" href="#" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9L12 2.5z"/></svg>
-          <span id="star-label">Star</span>
-          <span class="star-count" id="star-count" hidden></span>
-        </a>
+        <span class="gh-star">
+          <a class="github-button" href="https://github.com/lukassem1/OpenReports"
+             data-color-scheme="no-preference: light; light: light; dark: light;"
+             data-icon="octicon-star" data-size="large" data-show-count="true"
+             aria-label="Star lukassem1/OpenReports on GitHub">Star</a>
+        </span>
       </nav>
     </div>
   </header>
@@ -99,6 +100,8 @@
     <iframe id="viewer-frame" title="Report preview"></iframe>
   </div>
 
+  <!-- official GitHub star button (live count + click-to-star, straight from GitHub) -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>

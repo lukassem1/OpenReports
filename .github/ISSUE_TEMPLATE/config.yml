@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 🌐 Browse the gallery
+    url: https://lukassem1.github.io/OpenReports/
+    about: See all the templates live before proposing a new one.
+  - name: 📖 How to contribute a template
+    url: https://github.com/lukassem1/OpenReports/blob/main/CONTRIBUTING.md
+    about: Step-by-step guide to add your own template.

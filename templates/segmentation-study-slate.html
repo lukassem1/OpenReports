@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Segmentation Study — [Company Name]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#13151b; --ink2:#3b414d; --mut:#8b909b; --line:#e9e6df; --bg:#faf9f6; --paper:#fff;
+  --em:#3b6ea5; --em-d:#2f5a87; --em-l:#eaf1f8; --gray:#aab0ba; --gray-l:#eef0f2;
+  --amber:#dd8a1c; --amber-l:#fdf3e3; --shadow:0 4px 24px -8px rgba(20,30,25,.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased}
+.disp{font-family:'Space Grotesk',sans-serif}
+.wrap{max-width:1060px;margin:0 auto;padding:0 28px}
+.eyebrow{font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--em-d)}
+section{padding:42px 0}
+
+/* HERO */
+.hero{padding:54px 0 26px}
+.hero h1{font-family:'Space Grotesk';font-size:42px;font-weight:700;line-height:1.08;letter-spacing:-.02em;margin:14px 0 12px;max-width:820px}
+.hero h1 .hl{color:var(--em-d)}
+.hero p{font-size:16px;color:var(--ink2);max-width:680px}
+.pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.pill{display:flex;align-items:baseline;gap:7px;background:var(--paper);border:1px solid var(--line);border-radius:30px;padding:8px 15px;box-shadow:var(--shadow)}
+.pill b{font-family:'Space Grotesk';font-weight:700;font-size:16px}
+.pill.am b{color:var(--amber)} .pill.em b{color:var(--em-d)}
+.pill span{font-size:11.5px;color:var(--mut)}
+
+/* SPLITTER */
+.split{text-align:center;margin-bottom:6px}
+.split .top{display:inline-flex;flex-direction:column;align-items:center;gap:2px;background:var(--paper);border:1px solid var(--line);border-top:3px solid var(--ink);border-radius:14px;padding:12px 22px;box-shadow:var(--shadow)}
+.split .top .big{font-family:'Space Grotesk';font-weight:700;font-size:26px;line-height:1}
+.split .top .s{font-size:11px;color:var(--mut)}
+.split .legs{display:flex;justify-content:center;gap:240px;margin-top:-2px}
+.split .leg{font-size:18px;line-height:1}
+.split .leg.a{color:var(--amber)} .split .leg.e{color:var(--em)}
+.split .nomix{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;color:var(--em-d);background:var(--em-l);border:1px solid #c3d8ee;border-radius:20px;padding:4px 13px}
+
+/* SCHEMA DUO */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+.col{border:1px solid var(--line);border-radius:20px;padding:20px 16px 18px;display:flex;flex-direction:column;align-items:center;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.col.now{background:#fffdf8;border-color:#f1dcb4}
+.col.next{background:linear-gradient(180deg,#f3f8fc,#fff);border-color:#cfdeee}
+.col .ch{font-family:'Space Grotesk';font-weight:700;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;padding:6px 15px;border-radius:30px;margin-bottom:16px}
+.col.now .ch{background:var(--amber-l);color:var(--amber)}
+.col.next .ch{background:var(--em);color:#fff}
+.nd{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:11px 16px;text-align:center;box-shadow:0 2px 12px rgba(20,30,25,.05);min-width:210px;max-width:300px}
+.nd .t{font-family:'Space Grotesk';font-weight:700;font-size:13.5px}
+.nd .s{font-size:10.5px;color:var(--mut);margin-top:2px}
+.nd .big{font-family:'Space Grotesk';font-weight:700;font-size:26px;line-height:1;margin-top:4px}
+.nd.mid{border-top:3px solid var(--gray)}
+.nd.appA{background:linear-gradient(135deg,#e8a93a,#c9781a);color:#fff;border:none;box-shadow:0 14px 30px -10px rgba(200,120,26,.45);min-width:215px}
+.nd.appA .s{color:rgba(255,255,255,.88)}
+.nd.appE{background:linear-gradient(135deg,#4a82bd,#2f5a87);color:#fff;border:none;box-shadow:0 14px 30px -10px rgba(59,110,165,.5);min-width:215px}
+.nd.appE .s{color:rgba(255,255,255,.85)}
+.cv{width:0;height:20px;margin:5px auto 0}
+.cv.live{border-left:2.5px solid var(--em)}
+.cv.liveA{border-left:2.5px solid var(--amber)}
+.ar{font-size:12px;line-height:1;margin-top:-2px}.ar.e{color:var(--em)}.ar.a{color:var(--amber)}
+.flowup{font-size:10.5px;font-weight:700;color:var(--em-d);background:var(--em-l);border:1px solid #c3d8ee;border-radius:20px;padding:3px 11px;margin:4px 0}
+.flowup.a{color:var(--amber);background:var(--amber-l);border-color:#f1dcb4}
+.chips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-top:13px}
+.chip{font-size:10.5px;font-weight:600;border-radius:10px;padding:6px 10px;display:flex;align-items:center;gap:5px;border:1px solid}
+.chip.on{color:var(--em-d);background:var(--em-l);border-color:#bcd3eb}
+.chip.on::before{content:'✓';font-weight:800}
+.chip.am{color:var(--amber);background:var(--amber-l);border-color:#f1dcb4}
+.cap{margin-top:auto;padding-top:14px;text-align:center;font-size:11.5px;color:var(--ink2);line-height:1.5}
+.cap b{color:var(--em-d)}.cap b.a{color:var(--amber)}
+
+/* BENEFITS */
+.bgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.bcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+.bcard .ic{width:38px;height:38px;border-radius:11px;background:var(--em-l);display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:11px}
+.bcard .num{font-family:'Space Grotesk';font-weight:700;font-size:22px;color:var(--em-d);line-height:1}
+.bcard h3{font-family:'Space Grotesk';font-size:14px;font-weight:600;margin:5px 0 5px}
+.bcard p{font-size:12.5px;color:var(--ink2);line-height:1.55}
+.bcard .was{font-size:11px;color:var(--mut);margin-top:9px;padding-top:8px;border-top:1px dashed var(--line)}
+.bcard .was b{color:var(--amber)}
+
+/* TABLES */
+.scen{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.scen table{width:100%;border-collapse:collapse;font-size:12.5px}
+.scen th{font-family:'Space Grotesk';font-weight:600;font-size:11.5px;text-align:left;padding:14px 16px;background:#fbfaf7;border-bottom:1px solid var(--line);vertical-align:top}
+.scen th .n{display:block;font-size:10px;color:var(--mut);font-weight:500;margin-top:2px;letter-spacing:.02em}
+.scen th.s3{background:var(--em-l);color:var(--em-d)}
+.scen th.am{background:var(--amber-l);color:var(--amber)}
+.scen th.num,.scen td.num{text-align:right;font-variant-numeric:tabular-nums}
+.scen td{padding:11px 16px;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top}
+.scen tr:last-child td{border-bottom:none}
+.scen td.k{font-weight:600;color:var(--ink);background:#fcfbf9}
+.scen td.s3{background:#f3f8fc;color:var(--em-d);font-weight:600}
+.scen td.am{background:#fffaf0;color:var(--amber);font-weight:600}
+.scen tr.hi td{background:#fbfaf7}
+.scen tr.hi td.k{background:#f7f6f2}
+.scen tr.tot td{background:#f4f3ef;font-weight:700;color:var(--ink);border-top:2px solid var(--line)}
+.scen tr.tot td.s3{background:#e6eff7}
+.scen tr.tot td.am{background:#fbf1de}
+.scen .pin{display:inline-block;font-size:9.5px;font-weight:800;color:#fff;background:var(--amber);border-radius:6px;padding:1px 6px;margin-left:6px;vertical-align:middle}
+.scen .pin.e{background:var(--em)}
+.note{font-size:11px;color:var(--mut);margin-top:10px;line-height:1.5}
+.note b{color:var(--amber)}
+
+/* DECISION */
+.decision{background:linear-gradient(180deg,#f3f8fc,#fff);border:1px solid #cfdeee;border-radius:18px;padding:24px 26px;box-shadow:var(--shadow)}
+.dsum{font-size:14px;color:var(--ink2);line-height:1.7;max-width:900px;margin-bottom:20px}
+.dsum b{color:var(--em-d)}
+.dbul{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.db{display:flex;gap:12px;align-items:flex-start}
+.dn{flex-shrink:0;width:30px;height:30px;border-radius:50%;background:var(--em);color:#fff;font-family:'Space Grotesk';font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.dn.a{background:var(--amber)}
+.db b{font-family:'Space Grotesk';font-size:14px;display:block;margin-bottom:3px}
+.db p{font-size:12px;color:var(--ink2);line-height:1.55}
+.db .pick{color:var(--em-d);font-weight:600}
+@media(max-width:760px){.dbul{grid-template-columns:1fr}}
+.sec-h{font-family:'Space Grotesk';font-size:24px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+.sec-s{font-size:14px;color:var(--mut);margin-bottom:20px}
+.foot{border-top:1px solid var(--line);padding:20px 0;font-size:11.5px;color:var(--mut)}
+@media(max-width:760px){.hero h1{font-size:31px}.duo{grid-template-columns:1fr}.scen{overflow-x:auto}.split .legs{gap:120px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="eyebrow">[Company Name] · [Department / Team]</div>
+    <h1 class="disp">A single customer base, split into <span class="hl">two tiers that never overlap</span>.</h1>
+    <p>Out of the customer base in scope ([scope]), 3,800 accounts qualify for review under the chosen <b>[segmentation attribute]</b>. Instead of stacking overlapping cuts, this study divides the base into <b>two mutually exclusive tiers</b>: those in the lower band ([Tier A label]) and those in the upper band ([Tier B label]). Each account appears in one tier only.</p>
+    <div class="pills">
+      <div class="pill am"><b>800</b><span>[Tier A label] · [band A range]</span></div>
+      <div class="pill em"><b>3,000</b><span>[Tier B label] · [band B range]</span></div>
+      <div class="pill"><b>950</b><span>meeting [criterion X] (230 + 720)</span></div>
+    </div>
+  </div>
+
+  <!-- SCHEMA DUO -->
+  <section style="padding-top:8px">
+    <div class="eyebrow">The two segment tiers</div>
+    <h2 class="sec-h disp">One base, split without overlap</h2>
+    <p class="sec-s">The 3,800 accounts in scope separate into two exclusive tiers — no account is counted in both.</p>
+
+    <div class="split">
+      <div class="top"><div class="big">3,800</div><div class="s">accounts in scope · split by [segmentation attribute]</div></div>
+      <div class="legs"><span class="leg a">↙</span><span class="leg e">↘</span></div>
+      <div class="nomix">split apart · each account in a single tier · 800 + 3,000 = 3,800</div>
+    </div>
+
+    <div class="duo">
+
+      <!-- TIER A · LOWER BAND -->
+      <div class="col now">
+        <div class="ch">Tier A · [Tier A label] ([band A range])</div>
+        <div class="nd mid"><div class="t">[Tier A label]</div><div class="big">800</div><div class="s">accounts whose [segment metric] falls in the lower band ([band A range])</div></div>
+        <div class="cv liveA"></div><div class="ar a">▼</div>
+        <div class="flowup a">of these, also meeting [criterion X]</div>
+        <div class="nd appA"><div class="t">⛳ Meeting [criterion X]</div><div class="big">230</div><div class="s">260 [unit metric P] · 3,300 [unit metric Q] in scope</div></div>
+        <div class="chips">
+          <div class="chip am">210 [trait P]</div>
+          <div class="chip am">30 [trait Q]</div>
+          <div class="chip am">10 both</div>
+        </div>
+        <div class="cap"><b class="a">[Tier A label]</b>: the lighter band — a good place to test [action A] before committing effort.</div>
+      </div>
+
+      <!-- TIER B · UPPER BAND -->
+      <div class="col next">
+        <div class="ch">Tier B · [Tier B label] ([band B range])</div>
+        <div class="nd mid"><div class="t">[Tier B label]</div><div class="big">3,000</div><div class="s">accounts whose [segment metric] falls in the upper band ([band B range])</div></div>
+        <div class="cv live"></div><div class="ar e">▼</div>
+        <div class="flowup">of these, also meeting [criterion X]</div>
+        <div class="nd appE"><div class="t">⛳ Meeting [criterion X]</div><div class="big">720</div><div class="s">710 [unit metric P] · 40,500 [unit metric Q] in scope</div></div>
+        <div class="chips">
+          <div class="chip on">570 [trait P]</div>
+          <div class="chip on">185 [trait Q]</div>
+          <div class="chip on">35 both</div>
+        </div>
+        <div class="cap">The <b>[Tier B label]</b> group: it concentrates most of the [segment metric] — top priority for a decision.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMPOSITION / BENEFITS -->
+  <section>
+    <div class="eyebrow">Composition of [criterion X] · [Tier B label] band</div>
+    <h2 class="sec-h disp">What sits inside the 720 [Tier B label] accounts</h2>
+    <p class="sec-s">The upper band concentrates almost all of the [criterion X] population — which is why it is the priority.</p>
+    <div class="bgrid">
+      <div class="bcard"><div class="ic">🅰️</div><div class="num">570</div><h3>Accounts with [trait P]</h3>
+        <p>535 show <b>[trait P] only</b>. They add up to <b>710 [unit metric P]</b> across the band.</p>
+        <div class="was">Action: <b>assess [action A]</b> or reassign.</div></div>
+      <div class="bcard"><div class="ic">🅱️</div><div class="num">185</div><h3>Accounts with [trait Q]</h3>
+        <p>150 show <b>[trait Q] only</b>. A total of <b>40,500 [unit metric Q]</b> — the bulk of the population.</p>
+        <div class="was">Action: <b>verify</b> and process.</div></div>
+      <div class="bcard"><div class="ic">🔗</div><div class="num">35</div><h3>[trait P] + [trait Q]</h3>
+        <p>Accounts showing both traits at the same time — the highest exposure per account.</p>
+        <div class="was">Action: <b>priority</b> on the review pass.</div></div>
+      <div class="bcard"><div class="ic">⚠️</div><div class="num">185</div><h3>[trait Q] flagged on [signal Y]</h3>
+        <p>Every account with [trait Q] in this band also triggers <b>[signal Y]</b>.</p>
+        <div class="was">Action: <b>follow-up</b> or justification.</div></div>
+      <div class="bcard"><div class="ic">🧹</div><div class="num">2,280</div><h3>[Tier B label] without [criterion X]</h3>
+        <p>Accounts in the upper band that meet <b>neither trait</b> — nothing to action on this criterion.</p>
+        <div class="was">Action: <b>data cleanup</b> and re-scope.</div></div>
+      <div class="bcard"><div class="ic">🎯</div><div class="num">75%</div><h3>Concentration in 2 [owner type]s</h3>
+        <p>[Owner 1] (350) and [Owner 2] (190) concentrate <b>540 of the 720</b> [Tier B label] accounts meeting [criterion X].</p>
+        <div class="was">Action: <b>targeted plan</b> for those portfolios.</div></div>
+    </div>
+  </section>
+
+  <!-- EXCLUSIVE TIERS COMPARISON -->
+  <section style="padding-top:6px">
+    <div class="eyebrow">The two tiers, side by side</div>
+    <h2 class="sec-h disp">Each metric, without overlap</h2>
+    <p class="sec-s">The tiers are exclusive: the Total column is the sum of both — no account is counted twice.</p>
+    <div class="scen">
+      <table>
+        <thead><tr>
+          <th style="width:37%">Metric</th>
+          <th class="num am">[Tier A label]<span class="n">[band A range]</span></th>
+          <th class="num s3">[Tier B label]<span class="n">[band B range] · priority</span></th>
+          <th class="num">Total<span class="n">in scope</span></th>
+        </tr></thead>
+        <tbody>
+          <tr class="hi"><td class="k">Accounts in tier</td><td class="num am">800</td><td class="num s3">3,000</td><td class="num">3,800</td></tr>
+          <tr class="hi"><td class="k">Meeting [criterion X] ([trait P] or [trait Q])</td><td class="num am">230</td><td class="num s3">720</td><td class="num">950</td></tr>
+          <tr><td class="k">With [trait P]</td><td class="num am">210</td><td class="num s3">570</td><td class="num">780</td></tr>
+          <tr><td class="k">With [trait Q]</td><td class="num am">30</td><td class="num s3">185</td><td class="num">215</td></tr>
+          <tr><td class="k">[trait P] + [trait Q]</td><td class="num am">10</td><td class="num s3">35</td><td class="num">45</td></tr>
+          <tr><td class="k">[trait P] only</td><td class="num am">200</td><td class="num s3">535</td><td class="num">735</td></tr>
+          <tr><td class="k">[trait Q] only</td><td class="num am">20</td><td class="num s3">150</td><td class="num">170</td></tr>
+          <tr><td class="k">[trait Q] flagged on [signal Y]</td><td class="num am">30</td><td class="num s3">185</td><td class="num">215</td></tr>
+          <tr><td class="k">In tier, not meeting [criterion X]</td><td class="num am">570</td><td class="num s3">2,280</td><td class="num">2,850</td></tr>
+          <tr><td class="k">[unit metric P] in scope</td><td class="num am">260</td><td class="num s3">710</td><td class="num">970</td></tr>
+          <tr class="tot"><td class="k">[unit metric Q] in scope</td><td class="num am">3,300</td><td class="num s3">40,500</td><td class="num">43,800</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b>Scope caveat:</b> the base covers [date range], and the most recent period was partial at extraction time ([date]). For a fully comparable window, include a prior period or reprocess once the latest period closes.</p>
+  </section>
+
+  <!-- CONCENTRATION BY OWNER -->
+  <section style="padding-top:6px">
+    <div class="eyebrow">Where the [criterion X] population sits</div>
+    <h2 class="sec-h disp">Accounts meeting [criterion X], by [owner type]</h2>
+    <p class="sec-s">The two tiers per portfolio — to direct action without mixing the groups.</p>
+    <div class="scen">
+      <table>
+        <thead><tr>
+          <th style="width:40%">[owner type]</th>
+          <th class="num am">[Tier A label]</th>
+          <th class="num s3">[Tier B label]</th>
+          <th class="num">Total meeting [criterion X]</th>
+        </tr></thead>
+        <tbody>
+          <tr class="hi"><td class="k">[Owner 1]<span class="pin">TOP</span></td><td class="num am">140</td><td class="num s3">350</td><td class="num">490</td></tr>
+          <tr class="hi"><td class="k">[Owner 2]</td><td class="num am">40</td><td class="num s3">190</td><td class="num">230</td></tr>
+          <tr><td class="k">[Owner 3]</td><td class="num am">33</td><td class="num s3">67</td><td class="num">100</td></tr>
+          <tr><td class="k">[Owner 4]</td><td class="num am">10</td><td class="num s3">32</td><td class="num">42</td></tr>
+          <tr><td class="k">Unassigned</td><td class="num am">0</td><td class="num s3">40</td><td class="num">40</td></tr>
+          <tr><td class="k">[Owner 5]</td><td class="num am">0</td><td class="num s3">30</td><td class="num">30</td></tr>
+          <tr><td class="k">[Owner 6]</td><td class="num am">2</td><td class="num s3">11</td><td class="num">13</td></tr>
+          <tr class="tot"><td class="k">Total</td><td class="num am">230</td><td class="num s3">720</td><td class="num">950</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- DECISION -->
+  <section style="padding-top:6px">
+    <div class="eyebrow">In summary · What to do with each tier</div>
+    <h2 class="sec-h disp">Separate tiers, separate actions</h2>
+    <p class="sec-s">Because the groups do not overlap, each one gets its own action path.</p>
+    <div class="decision">
+      <p class="dsum">The <b>[Tier A label]</b> tier is the <b>lighter band</b>: 800 accounts in the lower band, 230 of them also meeting [criterion X] — where a low-cost [action A] is most likely to pay off. The <b>[Tier B label]</b> tier is the <b>priority queue</b>: 3,000 accounts in the upper band, with 720 meeting [criterion X] and almost the entire population (710 [unit metric P] and 40.5k [unit metric Q]). And there are 2,850 upper-band accounts not meeting [criterion X], which call for re-scoping. Treating each tier at its own pace captures value and keeps the base clean — without mixing populations.</p>
+      <div class="dbul">
+        <div class="db"><span class="dn a">01</span><div><b>Test fast · [Tier A label]</b>
+          <p>230 meeting [criterion X] in the lighter band. Run a low-cost [action A] first. <span class="pick">→ quick, cheap to validate.</span></p></div></div>
+        <div class="db"><span class="dn">02</span><div><b>Decide the priority · [Tier B label]</b>
+          <p>720 meeting [criterion X] in the upper band. Act where there is potential; otherwise re-scope or reassign. <span class="pick">→ start with [Owner 1] and [Owner 2] (540).</span></p></div></div>
+        <div class="db"><span class="dn">03</span><div><b>Clean up · not meeting [criterion X]</b>
+          <p>2,850 upper-band (and 570 lower-band) accounts not meeting [criterion X]: log a note and review the registry. <span class="pick">→ clean the base, focus the effort.</span></p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">Customer Segmentation Study · [scope] · exclusive tiers [Tier A label] and [Tier B label] · base [date range] · internal use · [Company Name]<br>Made with <a href="https://arkhen.tech" style="color:var(--em-d);text-decoration:none">OpenReports</a> — free report templates by Instituto Arkhe</div>
+
+</div>
+</body>
+</html>

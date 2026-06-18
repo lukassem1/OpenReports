@@ -1,0 +1,51 @@
+name: 📊 New template proposal
+description: Propose a new report template — or offer to contribute one yourself.
+title: "[Template] "
+labels: ["template"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the idea! If you'd like to **build it yourself**, see
+        [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md) — PRs are very welcome.
+  - type: input
+    id: name
+    attributes:
+      label: Template name
+      placeholder: e.g. "Quarterly OKR Review"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Sales & Revenue
+        - Financial / P&L
+        - KPI Dashboard
+        - Marketing / Traffic
+        - People / HR
+        - Operations / Project
+        - Strategy / Memo
+        - Annual Review
+        - Analysis / Study
+        - Presentation / Deck
+        - New category (describe below)
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What should it show?
+      placeholder: Sections, charts, tables, the kind of meeting it's for…
+    validations:
+      required: true
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you like to contribute it?
+      options:
+        - "I'd like to build it and open a PR"
+        - "I'm just suggesting it"
+    validations:
+      required: true
