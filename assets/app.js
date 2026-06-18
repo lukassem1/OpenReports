@@ -5,7 +5,7 @@
    ========================================================================== */
 
 /* >>> Set your GitHub repo here (user/repo). Powers the Star button + links. */
-const REPO = "your-user/OpenReports";
+const REPO = "lukassem1/OpenReports";
 const REPO_URL = "https://github.com/" + REPO;
 const ARKHE_URL = "https://arkhen.tech";
 
