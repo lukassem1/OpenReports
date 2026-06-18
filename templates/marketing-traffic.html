@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Marketing &amp; Traffic Report — [Company Name]</title>
+<!--
+  OpenReports template · "Marketing & Traffic Report"
+  Self-contained: no external CSS/JS/fonts. Charts are inline SVG.
+  Replace every [ ... ] placeholder and sample number with your own data.
+-->
+<style>
+  :root{
+    --bg:#faf9f6; --surface:#fff; --surface-2:#f3f1ea;
+    --ink:#1a1a18; --ink-soft:#4a4a45; --muted:#807c72;
+    --line:#e7e4db; --line-strong:#d8d4c8;
+    --accent:#c96442; --accent-soft:#f5ece6; --accent-hover:#b1543a;
+    --good:#3f7d57; --bad:#bb4d3a;
+    --c1:#c96442; --c2:#5b6b73; --c3:#8a8d6f; --c4:#cbb89a; --c5:#9a8f7d;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .page{max-width:980px;margin:0 auto;padding:40px 36px 64px}
+
+  .rhead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:28px}
+  .rhead .eyebrow{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .rhead h1{font-family:var(--serif);font-weight:600;font-size:32px;letter-spacing:-.02em;margin:8px 0 6px}
+  .rhead .sub{color:var(--muted);font-size:14px}
+  .rhead .meta{text-align:right;font-size:13px;color:var(--ink-soft)}
+  .rhead .meta b{display:block;font-size:15px;color:var(--ink)}
+  .logo{display:inline-flex;align-items:center;gap:9px;font-weight:650}
+  .logo .mk{width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--serif)}
+
+  h2.section{font-family:var(--serif);font-size:19px;font-weight:600;margin:34px 0 14px;letter-spacing:-.01em}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .kpi .label{font-size:12.5px;color:var(--muted)}
+  .kpi .val{font-family:var(--serif);font-size:26px;font-weight:600;margin:6px 0 4px}
+  .delta{font-size:12.5px;font-weight:600}
+  .delta.up{color:var(--good)} .delta.down{color:var(--bad)}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;margin-top:6px}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .panel h3{margin:0 0 4px;font-size:15.5px}
+  .panel .hint{margin:0 0 14px;font-size:12.5px;color:var(--muted)}
+
+  /* horizontal channel bars */
+  .hbar{display:grid;grid-template-columns:120px 1fr 64px;align-items:center;gap:12px;margin:10px 0;font-size:13.5px}
+  .hbar .track{height:22px;background:var(--surface-2);border-radius:6px;overflow:hidden}
+  .hbar .fill{height:100%;border-radius:6px;background:var(--c1)}
+  .hbar .val{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft)}
+
+  /* funnel */
+  .funnel{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .frow{display:flex;align-items:center;gap:12px}
+  .fbar{height:34px;border-radius:7px;display:flex;align-items:center;padding:0 12px;color:#fff;font-size:13px;font-weight:600;min-width:60px}
+  .frow:nth-child(1) .fbar{background:var(--c1)}
+  .frow:nth-child(2) .fbar{background:#a85a45}
+  .frow:nth-child(3) .fbar{background:var(--c2)}
+  .frow:nth-child(4) .fbar{background:var(--c3)}
+  .frow:nth-child(5) .fbar{background:#3f7d57}
+  .frow .fmeta{font-size:13px;color:var(--ink-soft);white-space:nowrap}
+  .frow .fmeta b{color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:0 10px 10px;border-bottom:1px solid var(--line)}
+  td{padding:11px 10px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:0}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent-hover)}
+  .tag-good{color:var(--good);font-weight:600} .tag-bad{color:var(--bad);font-weight:600}
+
+  .rfoot{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+  @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.page{padding:28px 20px}.hbar{grid-template-columns:96px 1fr 56px}}
+  @media print{body{background:#fff}.page{max-width:100%}.panel,.kpi{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="rhead">
+    <div>
+      <span class="logo"><span class="mk">A</span>[Company Name]</span>
+      <div class="eyebrow" style="margin-top:14px">Marketing</div>
+      <h1>Marketing &amp; Traffic Report</h1>
+      <div class="sub">Channel performance &amp; acquisition for the marketing review</div>
+    </div>
+    <div class="meta">
+      <b>May 2026</b>
+      Prepared by [Your Name]<br>
+      Source: [GA4 / HubSpot]
+    </div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi"><div class="label">Sessions</div><div class="val">142K</div><span class="delta up">▲ 9.6% MoM</span></div>
+    <div class="kpi"><div class="label">Conversion Rate</div><div class="val">3.4%</div><span class="delta up">▲ 0.5 pp</span></div>
+    <div class="kpi"><div class="label">Blended CAC</div><div class="val">$96</div><span class="delta up">▼ $11</span></div>
+    <div class="kpi"><div class="label">ROAS</div><div class="val">4.2×</div><span class="delta up">▲ 0.6×</span></div>
+  </div>
+
+  <div class="grid2">
+    <!-- Traffic by channel -->
+    <div class="panel">
+      <h3>Traffic by channel</h3>
+      <p class="hint">Share of sessions · May</p>
+      <div class="hbar"><span>Organic search</span><div class="track"><div class="fill" style="width:38%"></div></div><span class="val">54K · 38%</span></div>
+      <div class="hbar"><span>Paid social</span><div class="track"><div class="fill" style="width:24%;background:var(--c2)"></div></div><span class="val">34K · 24%</span></div>
+      <div class="hbar"><span>Paid search</span><div class="track"><div class="fill" style="width:17%;background:var(--c3)"></div></div><span class="val">24K · 17%</span></div>
+      <div class="hbar"><span>Direct</span><div class="track"><div class="fill" style="width:13%;background:var(--c4)"></div></div><span class="val">18K · 13%</span></div>
+      <div class="hbar"><span>Referral / email</span><div class="track"><div class="fill" style="width:8%;background:var(--c5)"></div></div><span class="val">12K · 8%</span></div>
+    </div>
+
+    <!-- Acquisition funnel -->
+    <div class="panel">
+      <h3>Acquisition funnel</h3>
+      <p class="hint">Visitors → customers · May</p>
+      <div class="funnel">
+        <div class="frow"><div class="fbar" style="width:100%">142,000</div><div class="fmeta"><b>Visitors</b></div></div>
+        <div class="frow"><div class="fbar" style="width:62%">8,900</div><div class="fmeta"><b>Leads</b> · 6.3%</div></div>
+        <div class="frow"><div class="fbar" style="width:40%">3,200</div><div class="fmeta"><b>MQL</b> · 36%</div></div>
+        <div class="frow"><div class="fbar" style="width:24%">1,150</div><div class="fmeta"><b>SQL</b> · 36%</div></div>
+        <div class="frow"><div class="fbar" style="width:12%">486</div><div class="fmeta"><b>Customers</b> · 42%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section">Sessions &amp; conversions trend</h2>
+  <div class="panel">
+    <h3>Last 6 months</h3>
+    <p class="hint">Bars = sessions (K) · line = conversion rate (%)</p>
+    <svg viewBox="0 0 720 270" width="100%" role="img" aria-label="Sessions and conversion trend">
+      <g font-size="11" fill="#807c72" font-family="-apple-system,Segoe UI,sans-serif">
+        <line x1="48" y1="30"  x2="700" y2="30"  stroke="#eee7dc"/>
+        <line x1="48" y1="90"  x2="700" y2="90"  stroke="#eee7dc"/>
+        <line x1="48" y1="150" x2="700" y2="150" stroke="#eee7dc"/>
+        <line x1="48" y1="210" x2="700" y2="210" stroke="#d8d4c8"/>
+        <text x="40" y="34"  text-anchor="end">160</text>
+        <text x="40" y="94"  text-anchor="end">107</text>
+        <text x="40" y="154" text-anchor="end">53</text>
+        <text x="40" y="214" text-anchor="end">0</text>
+      </g>
+      <!-- bars sessions K: 112,118,124,129,130,142 ; base 210, scale /160*180 -->
+      <g fill="#c96442">
+        <rect x="76"  y="84"   width="52" height="126" rx="4"/>
+        <rect x="180" y="77.3" width="52" height="132.7" rx="4"/>
+        <rect x="284" y="70.5" width="52" height="139.5" rx="4"/>
+        <rect x="388" y="64.9" width="52" height="145.1" rx="4"/>
+        <rect x="492" y="63.8" width="52" height="146.2" rx="4"/>
+        <rect x="596" y="50.3" width="52" height="159.8" rx="4"/>
+      </g>
+      <g font-size="12" font-weight="600" fill="#1a1a18" text-anchor="middle" font-family="-apple-system,Segoe UI,sans-serif">
+        <text x="102" y="77">112</text><text x="206" y="70">118</text><text x="310" y="63">124</text>
+        <text x="414" y="58">129</text><text x="518" y="57">130</text><text x="622" y="43">142</text>
+      </g>
+      <!-- conversion %: 2.6,2.8,2.9,3.0,2.9,3.4 ; map 0..5% over y 210..30 (range 180) y=210-(v/5*180) -->
+      <polyline fill="none" stroke="#5b6b73" stroke-width="2.5"
+        points="102,116.4 206,109.2 310,105.6 414,102 518,105.6 622,87.6"/>
+      <g fill="#5b6b73">
+        <circle cx="102" cy="116.4" r="3.4"/><circle cx="206" cy="109.2" r="3.4"/><circle cx="310" cy="105.6" r="3.4"/>
+        <circle cx="414" cy="102" r="3.4"/><circle cx="518" cy="105.6" r="3.4"/><circle cx="622" cy="87.6" r="3.8"/>
+      </g>
+      <g font-size="12" fill="#4a4a45" text-anchor="middle" font-family="-apple-system,Segoe UI,sans-serif">
+        <text x="102" y="234">Dec</text><text x="206" y="234">Jan</text><text x="310" y="234">Feb</text>
+        <text x="414" y="234">Mar</text><text x="518" y="234">Apr</text><text x="622" y="234">May</text>
+      </g>
+    </svg>
+    <div style="display:flex;gap:16px;font-size:12.5px;color:var(--ink-soft);margin-top:10px">
+      <span><i style="width:10px;height:10px;border-radius:3px;display:inline-block;background:var(--c1)"></i> Sessions</span>
+      <span><i style="width:10px;height:10px;border-radius:3px;display:inline-block;background:var(--c2)"></i> Conversion rate</span>
+    </div>
+  </div>
+
+  <h2 class="section">Campaign performance</h2>
+  <div class="panel">
+    <table>
+      <thead><tr><th>Campaign</th><th class="num">Spend</th><th class="num">Leads</th><th class="num">CAC</th><th class="num">ROAS</th></tr></thead>
+      <tbody>
+        <tr><td>[Brand — Search]</td><td class="num">$18,400</td><td class="num">2,140</td><td class="num">$64</td><td class="num"><span class="tag-good">5.8×</span></td></tr>
+        <tr><td>[Retargeting — Meta]</td><td class="num">$12,900</td><td class="num">1,520</td><td class="num">$78</td><td class="num"><span class="tag-good">4.9×</span></td></tr>
+        <tr><td>[Prospecting — Meta]</td><td class="num">$22,600</td><td class="num">1,810</td><td class="num">$112</td><td class="num"><span class="tag-good">3.4×</span></td></tr>
+        <tr><td>[LinkedIn — ABM]</td><td class="num">$9,800</td><td class="num">410</td><td class="num">$186</td><td class="num"><span class="tag-bad">1.9×</span></td></tr>
+        <tr><td>[Newsletter sponsor]</td><td class="num">$4,200</td><td class="num">320</td><td class="num">$96</td><td class="num"><span class="pill">3.1×</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="rfoot">
+    <span>[Company Name] · Confidential — internal use only</span>
+    <span>Template: OpenReports · Marketing &amp; Traffic</span>
+  </footer>
+
+</div>
+</body>
+</html>

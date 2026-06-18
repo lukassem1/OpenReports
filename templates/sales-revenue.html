@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sales &amp; Revenue Review — [Company Name]</title>
+<!--
+  OpenReports template · "Sales & Revenue Review"
+  Self-contained: no external CSS, JS or fonts. Charts are inline SVG.
+  Replace every value marked [ ... ] or sample number with your own data.
+-->
+<style>
+  :root{
+    --bg:#faf9f6; --surface:#fff; --surface-2:#f3f1ea;
+    --ink:#1a1a18; --ink-soft:#4a4a45; --muted:#807c72;
+    --line:#e7e4db; --line-strong:#d8d4c8;
+    --accent:#c96442; --accent-soft:#f5ece6; --accent-hover:#b1543a;
+    --good:#3f7d57; --bad:#bb4d3a;
+    --c1:#c96442; --c2:#5b6b73; --c3:#8a8d6f; --c4:#cbb89a;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .page{max-width:980px;margin:0 auto;padding:40px 36px 64px}
+
+  .rhead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:28px}
+  .rhead .eyebrow{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .rhead h1{font-family:var(--serif);font-weight:600;font-size:32px;letter-spacing:-.02em;margin:8px 0 6px}
+  .rhead .sub{color:var(--muted);font-size:14px}
+  .rhead .meta{text-align:right;font-size:13px;color:var(--ink-soft)}
+  .rhead .meta b{display:block;font-size:15px;color:var(--ink)}
+  .logo{display:inline-flex;align-items:center;gap:9px;font-weight:650}
+  .logo .mk{width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--serif)}
+
+  h2.section{font-family:var(--serif);font-size:19px;font-weight:600;margin:34px 0 14px;letter-spacing:-.01em}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 16px 14px}
+  .kpi .label{font-size:12.5px;color:var(--muted);letter-spacing:.02em}
+  .kpi .val{font-family:var(--serif);font-size:26px;font-weight:600;margin:6px 0 4px;letter-spacing:-.01em}
+  .delta{font-size:12.5px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+  .delta.up{color:var(--good)} .delta.down{color:var(--bad)}
+
+  .grid2{display:grid;grid-template-columns:1.35fr 1fr;gap:20px;align-items:start}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .panel h3{margin:0 0 4px;font-size:15.5px}
+  .panel .hint{margin:0 0 14px;font-size:12.5px;color:var(--muted)}
+
+  /* funnel */
+  .funnel{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+  .frow{display:flex;align-items:center;gap:12px}
+  .fbar{height:34px;border-radius:7px;background:var(--c2);display:flex;align-items:center;padding:0 12px;color:#fff;font-size:13px;font-weight:600;min-width:64px}
+  .frow:nth-child(1) .fbar{background:var(--c1)}
+  .frow:nth-child(2) .fbar{background:#a85a45}
+  .frow:nth-child(3) .fbar{background:var(--c2)}
+  .frow:nth-child(4) .fbar{background:var(--c3)}
+  .frow .fmeta{font-size:13px;color:var(--ink-soft);white-space:nowrap}
+  .frow .fmeta b{color:var(--ink)}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;padding:0 10px 10px;border-bottom:1px solid var(--line)}
+  td{padding:11px 10px;border-bottom:1px solid var(--line)}
+  tr:last-child td{border-bottom:0}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .pill{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:var(--accent-soft);color:var(--accent-hover)}
+
+  .rank{width:26px;height:26px;border-radius:50%;background:var(--surface-2);display:inline-grid;place-items:center;font-size:12.5px;font-weight:700;color:var(--ink-soft)}
+  .rank.top{background:var(--accent);color:#fff}
+
+  .legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-soft);margin-top:12px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+  .rfoot{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+  @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.page{padding:28px 20px}}
+  @media print{body{background:#fff}.page{max-width:100%}.panel,.kpi{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ===== Header ===== -->
+  <header class="rhead">
+    <div>
+      <span class="logo"><span class="mk">A</span>[Company Name]</span>
+      <div class="eyebrow" style="margin-top:14px">Commercial Review</div>
+      <h1>Sales &amp; Revenue Report</h1>
+      <div class="sub">Monthly performance for the leadership meeting</div>
+    </div>
+    <div class="meta">
+      <b>May 2026</b>
+      Prepared by [Your Name]<br>
+      Generated [June 1, 2026]
+    </div>
+  </header>
+
+  <!-- ===== KPI cards ===== -->
+  <div class="kpis">
+    <div class="kpi">
+      <div class="label">Total Revenue</div>
+      <div class="val">$486K</div>
+      <span class="delta up">▲ 12.4% vs. Apr</span>
+    </div>
+    <div class="kpi">
+      <div class="label">vs. Target ($520K)</div>
+      <div class="val">93.5%</div>
+      <span class="delta down">▼ 6.5% to goal</span>
+    </div>
+    <div class="kpi">
+      <div class="label">New Deals Closed</div>
+      <div class="val">38</div>
+      <span class="delta up">▲ 5 vs. Apr</span>
+    </div>
+    <div class="kpi">
+      <div class="label">Avg. Deal Size</div>
+      <div class="val">$12.8K</div>
+      <span class="delta up">▲ 3.1%</span>
+    </div>
+  </div>
+
+  <!-- ===== Revenue vs Target chart ===== -->
+  <h2 class="section">Revenue vs. target</h2>
+  <div class="panel">
+    <h3>Last 6 months</h3>
+    <p class="hint">Bars = actual revenue · line = monthly target (in $K)</p>
+    <svg viewBox="0 0 720 280" width="100%" role="img" aria-label="Revenue versus target bar chart">
+      <!-- gridlines + y labels -->
+      <g font-size="11" fill="#807c72" font-family="-apple-system,Segoe UI,sans-serif">
+        <line x1="56" y1="30"  x2="700" y2="30"  stroke="#eee7dc"/>
+        <line x1="56" y1="85"  x2="700" y2="85"  stroke="#eee7dc"/>
+        <line x1="56" y1="140" x2="700" y2="140" stroke="#eee7dc"/>
+        <line x1="56" y1="195" x2="700" y2="195" stroke="#eee7dc"/>
+        <line x1="56" y1="230" x2="700" y2="230" stroke="#d8d4c8"/>
+        <text x="48" y="34"  text-anchor="end">600</text>
+        <text x="48" y="89"  text-anchor="end">450</text>
+        <text x="48" y="144" text-anchor="end">300</text>
+        <text x="48" y="199" text-anchor="end">150</text>
+        <text x="48" y="234" text-anchor="end">0</text>
+      </g>
+      <!-- bars: x base 80, step 105, width 56. height scale: 230 - val/600*200 -->
+      <g fill="#c96442">
+        <rect x="84"  y="103.3" width="56" height="126.7" rx="4"/><!-- 380 -->
+        <rect x="189" y="93.3"  width="56" height="136.7" rx="4"/><!-- 410 -->
+        <rect x="294" y="86.7"  width="56" height="143.3" rx="4"/><!-- 430 -->
+        <rect x="399" y="80"    width="56" height="150"   rx="4"/><!-- 450 -->
+        <rect x="504" y="86.7"  width="56" height="143.3" rx="4"/><!-- 432 -->
+        <rect x="609" y="68"    width="56" height="162"   rx="4"/><!-- 486 -->
+      </g>
+      <!-- value labels -->
+      <g font-size="12" font-weight="600" fill="#1a1a18" text-anchor="middle" font-family="-apple-system,Segoe UI,sans-serif">
+        <text x="112" y="96">380</text>
+        <text x="217" y="86">410</text>
+        <text x="322" y="79">430</text>
+        <text x="427" y="73">450</text>
+        <text x="532" y="79">432</text>
+        <text x="637" y="61">486</text>
+      </g>
+      <!-- target line: y = 230 - target/600*200 ; targets 400,420,440,460,480,520 -->
+      <polyline fill="none" stroke="#5b6b73" stroke-width="2.5" stroke-dasharray="5 4"
+        points="112,96.7 217,90 322,83.3 427,76.7 532,70 637,56.7"/>
+      <g fill="#5b6b73">
+        <circle cx="112" cy="96.7" r="3.5"/><circle cx="217" cy="90" r="3.5"/>
+        <circle cx="322" cy="83.3" r="3.5"/><circle cx="427" cy="76.7" r="3.5"/>
+        <circle cx="532" cy="70" r="3.5"/><circle cx="637" cy="56.7" r="3.5"/>
+      </g>
+      <!-- x labels -->
+      <g font-size="12" fill="#4a4a45" text-anchor="middle" font-family="-apple-system,Segoe UI,sans-serif">
+        <text x="112" y="252">Dec</text><text x="217" y="252">Jan</text>
+        <text x="322" y="252">Feb</text><text x="427" y="252">Mar</text>
+        <text x="532" y="252">Apr</text><text x="637" y="252">May</text>
+      </g>
+    </svg>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--c1)"></i> Actual revenue</span>
+      <span><i class="dot" style="background:var(--c2)"></i> Monthly target</span>
+    </div>
+  </div>
+
+  <!-- ===== Funnel + Top products ===== -->
+  <div class="grid2" style="margin-top:20px">
+    <div class="panel">
+      <h3>Top products by revenue</h3>
+      <p class="hint">Share of May revenue</p>
+      <table>
+        <thead><tr><th>Product</th><th class="num">Deals</th><th class="num">Revenue</th><th class="num">Share</th></tr></thead>
+        <tbody>
+          <tr><td>[Product A] — Enterprise</td><td class="num">11</td><td class="num">$182K</td><td class="num"><span class="pill">37%</span></td></tr>
+          <tr><td>[Product B] — Pro</td><td class="num">14</td><td class="num">$138K</td><td class="num"><span class="pill">28%</span></td></tr>
+          <tr><td>[Product C] — Add-ons</td><td class="num">9</td><td class="num">$96K</td><td class="num"><span class="pill">20%</span></td></tr>
+          <tr><td>[Product D] — Services</td><td class="num">4</td><td class="num">$70K</td><td class="num"><span class="pill">15%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h3>Sales funnel</h3>
+      <p class="hint">May, all channels</p>
+      <div class="funnel">
+        <div class="frow"><div class="fbar" style="width:100%">1,240</div><div class="fmeta"><b>Leads</b></div></div>
+        <div class="frow"><div class="fbar" style="width:74%">920</div><div class="fmeta"><b>Qualified</b> · 74%</div></div>
+        <div class="frow"><div class="fbar" style="width:33%">410</div><div class="fmeta"><b>Proposals</b> · 33%</div></div>
+        <div class="frow"><div class="fbar" style="width:14%">170</div><div class="fmeta"><b>Negotiation</b> · 14%</div></div>
+        <div class="frow"><div class="fbar" style="width:8%;background:#3f7d57">38</div><div class="fmeta"><b>Won</b> · 3.1%</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Rep leaderboard ===== -->
+  <h2 class="section">Sales rep leaderboard</h2>
+  <div class="panel">
+    <table>
+      <thead><tr><th style="width:48px">#</th><th>Rep</th><th class="num">Deals</th><th class="num">Revenue</th><th class="num">Quota attainment</th></tr></thead>
+      <tbody>
+        <tr><td><span class="rank top">1</span></td><td>[Rep One]</td><td class="num">12</td><td class="num">$148K</td><td class="num">118%</td></tr>
+        <tr><td><span class="rank">2</span></td><td>[Rep Two]</td><td class="num">9</td><td class="num">$121K</td><td class="num">104%</td></tr>
+        <tr><td><span class="rank">3</span></td><td>[Rep Three]</td><td class="num">8</td><td class="num">$96K</td><td class="num">91%</td></tr>
+        <tr><td><span class="rank">4</span></td><td>[Rep Four]</td><td class="num">6</td><td class="num">$71K</td><td class="num">78%</td></tr>
+        <tr><td><span class="rank">5</span></td><td>[Rep Five]</td><td class="num">3</td><td class="num">$50K</td><td class="num">62%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="rfoot">
+    <span>[Company Name] · Confidential — internal use only</span>
+    <span>Template: OpenReports · Sales &amp; Revenue</span>
+  </footer>
+
+</div>
+</body>
+</html>

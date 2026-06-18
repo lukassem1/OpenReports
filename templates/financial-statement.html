@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Financial Statement — [Company Name]</title>
+<!--
+  OpenReports template · "Financial Statement (P&L)"
+  Self-contained: no external CSS/JS/fonts. Charts are inline SVG.
+  Replace every [ ... ] placeholder and sample number with your own data.
+-->
+<style>
+  :root{
+    --bg:#faf9f6; --surface:#fff; --surface-2:#f3f1ea;
+    --ink:#1a1a18; --ink-soft:#4a4a45; --muted:#807c72;
+    --line:#e7e4db; --line-strong:#d8d4c8;
+    --accent:#c96442; --accent-soft:#f5ece6; --accent-hover:#b1543a;
+    --good:#3f7d57; --bad:#bb4d3a;
+    --c1:#c96442; --c2:#5b6b73; --c3:#8a8d6f; --c4:#cbb89a; --c5:#9a8f7d;
+    --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+  .page{max-width:980px;margin:0 auto;padding:40px 36px 64px}
+
+  .rhead{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;border-bottom:2px solid var(--ink);padding-bottom:18px;margin-bottom:26px}
+  .rhead .eyebrow{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:600}
+  .rhead h1{font-family:var(--serif);font-weight:600;font-size:32px;letter-spacing:-.02em;margin:8px 0 6px}
+  .rhead .sub{color:var(--muted);font-size:14px}
+  .rhead .meta{text-align:right;font-size:13px;color:var(--ink-soft)}
+  .rhead .meta b{display:block;font-size:15px;color:var(--ink)}
+  .logo{display:inline-flex;align-items:center;gap:9px;font-weight:650}
+  .logo .mk{width:28px;height:28px;border-radius:8px;background:var(--accent);color:#fff;display:grid;place-items:center;font-family:var(--serif)}
+
+  h2.section{font-family:var(--serif);font-size:19px;font-weight:600;margin:34px 0 14px;letter-spacing:-.01em}
+
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .kpi .label{font-size:12.5px;color:var(--muted)}
+  .kpi .val{font-family:var(--serif);font-size:25px;font-weight:600;margin:6px 0 4px}
+  .delta{font-size:12.5px;font-weight:600}
+  .delta.up{color:var(--good)} .delta.down{color:var(--bad)}
+
+  .grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start;margin-top:6px}
+  .panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .panel h3{margin:0 0 4px;font-size:15.5px}
+  .panel .hint{margin:0 0 14px;font-size:12.5px;color:var(--muted)}
+
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  .pl td,.pl th{padding:9px 10px}
+  th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;border-bottom:1px solid var(--line)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  .pl tbody td{border-bottom:1px solid var(--line)}
+  .pl tr.group td{font-weight:600;color:var(--ink)}
+  .pl tr.sub td:first-child{padding-left:26px;color:var(--ink-soft)}
+  .pl tr.total td{border-top:2px solid var(--ink);border-bottom:0;font-weight:700;font-size:15px}
+  .pl tr.total.net td{color:var(--good)}
+  .pos{color:var(--good)} .neg{color:var(--bad)}
+
+  .legend{display:flex;flex-direction:column;gap:9px;margin-top:6px;font-size:13px}
+  .legend .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .legend .lbl{display:inline-flex;align-items:center;gap:8px;color:var(--ink-soft)}
+  .dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+  .legend b{font-variant-numeric:tabular-nums}
+
+  .rfoot{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+  @media (max-width:760px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.page{padding:28px 20px}}
+  @media print{body{background:#fff}.page{max-width:100%}.panel,.kpi{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="rhead">
+    <div>
+      <span class="logo"><span class="mk">A</span>[Company Name]</span>
+      <div class="eyebrow" style="margin-top:14px">Finance</div>
+      <h1>Financial Statement</h1>
+      <div class="sub">Income statement &amp; cash position for the board meeting</div>
+    </div>
+    <div class="meta">
+      <b>Q2 2026 · May</b>
+      Prepared by [Finance Team]<br>
+      Currency: USD ($)
+    </div>
+  </header>
+
+  <div class="kpis">
+    <div class="kpi"><div class="label">Revenue</div><div class="val">$486K</div><span class="delta up">▲ 12.4% MoM</span></div>
+    <div class="kpi"><div class="label">Gross Margin</div><div class="val">62%</div><span class="delta up">▲ 1.5 pp</span></div>
+    <div class="kpi"><div class="label">Net Profit</div><div class="val">$84K</div><span class="delta up">▲ 18%</span></div>
+    <div class="kpi"><div class="label">Cash on Hand</div><div class="val">$1.24M</div><span class="delta up">▲ $84K</span></div>
+  </div>
+
+  <h2 class="section">Income statement (P&amp;L)</h2>
+  <div class="panel">
+    <table class="pl">
+      <thead>
+        <tr><th>Line item</th><th class="num">This month</th><th class="num">Prev. month</th><th class="num">% of rev.</th></tr>
+      </thead>
+      <tbody>
+        <tr class="group"><td>Revenue</td><td class="num">$486,000</td><td class="num">$432,000</td><td class="num">100%</td></tr>
+        <tr class="sub"><td>Product sales</td><td class="num">$398,000</td><td class="num">$351,000</td><td class="num">82%</td></tr>
+        <tr class="sub"><td>Services</td><td class="num">$88,000</td><td class="num">$81,000</td><td class="num">18%</td></tr>
+
+        <tr class="group"><td>Cost of goods sold</td><td class="num neg">($185,000)</td><td class="num neg">($169,000)</td><td class="num">38%</td></tr>
+        <tr class="total"><td>Gross profit</td><td class="num">$301,000</td><td class="num">$263,000</td><td class="num">62%</td></tr>
+
+        <tr class="group"><td>Operating expenses</td><td class="num neg">($217,000)</td><td class="num neg">($192,000)</td><td class="num">45%</td></tr>
+        <tr class="sub"><td>Salaries &amp; benefits</td><td class="num">($128,000)</td><td class="num">($120,000)</td><td class="num">26%</td></tr>
+        <tr class="sub"><td>Marketing</td><td class="num">($44,000)</td><td class="num">($31,000)</td><td class="num">9%</td></tr>
+        <tr class="sub"><td>Software &amp; tools</td><td class="num">($21,000)</td><td class="num">($19,000)</td><td class="num">4%</td></tr>
+        <tr class="sub"><td>Office &amp; other</td><td class="num">($24,000)</td><td class="num">($22,000)</td><td class="num">5%</td></tr>
+
+        <tr class="total net"><td>Net profit</td><td class="num">$84,000</td><td class="num">$71,000</td><td class="num">17%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid2">
+    <!-- Margin trend -->
+    <div class="panel">
+      <h3>Margin trend</h3>
+      <p class="hint">Gross &amp; net margin, last 6 months (%)</p>
+      <svg viewBox="0 0 680 250" width="100%" role="img" aria-label="Margin trend line chart">
+        <g font-size="11" fill="#807c72" font-family="-apple-system,Segoe UI,sans-serif">
+          <line x1="40" y1="30"  x2="660" y2="30"  stroke="#eee7dc"/>
+          <line x1="40" y1="90"  x2="660" y2="90"  stroke="#eee7dc"/>
+          <line x1="40" y1="150" x2="660" y2="150" stroke="#eee7dc"/>
+          <line x1="40" y1="200" x2="660" y2="200" stroke="#d8d4c8"/>
+          <text x="32" y="34"  text-anchor="end">70</text>
+          <text x="32" y="94"  text-anchor="end">47</text>
+          <text x="32" y="154" text-anchor="end">23</text>
+          <text x="32" y="204" text-anchor="end">0</text>
+        </g>
+        <!-- gross margin: 58,59,60,61,60.5,62  scale y=200-(v/70*170) -->
+        <polyline fill="none" stroke="#c96442" stroke-width="2.6"
+          points="70,59.1 188,56.7 306,54.3 424,51.9 542,53.1 660,49.4"/>
+        <!-- net margin: 12,13,14,15,16.4,17 -->
+        <polyline fill="none" stroke="#5b6b73" stroke-width="2.6"
+          points="70,170.9 188,168.4 306,166.0 424,163.6 542,160.2 660,158.7"/>
+        <g fill="#c96442"><circle cx="70" cy="59.1" r="3.4"/><circle cx="660" cy="49.4" r="3.8"/></g>
+        <g fill="#5b6b73"><circle cx="70" cy="170.9" r="3.4"/><circle cx="660" cy="158.7" r="3.8"/></g>
+        <g font-size="12" fill="#4a4a45" text-anchor="middle" font-family="-apple-system,Segoe UI,sans-serif">
+          <text x="70" y="224">Dec</text><text x="188" y="224">Jan</text><text x="306" y="224">Feb</text>
+          <text x="424" y="224">Mar</text><text x="542" y="224">Apr</text><text x="660" y="224">May</text>
+        </g>
+      </svg>
+      <div style="display:flex;gap:16px;font-size:12.5px;color:var(--ink-soft);margin-top:8px">
+        <span><i class="dot" style="background:var(--c1)"></i> Gross margin</span>
+        <span><i class="dot" style="background:var(--c2)"></i> Net margin</span>
+      </div>
+    </div>
+
+    <!-- Expense breakdown donut -->
+    <div class="panel">
+      <h3>Operating expenses</h3>
+      <p class="hint">May breakdown</p>
+      <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+        <svg viewBox="0 0 120 120" width="130" height="130" role="img" aria-label="Expense breakdown donut">
+          <!-- circumference = 2*pi*45 ≈ 282.7 ; shares: 59,20,10,11 -->
+          <g transform="rotate(-90 60 60)" fill="none" stroke-width="20">
+            <circle cx="60" cy="60" r="45" stroke="#c96442" stroke-dasharray="166.8 282.7"/>
+            <circle cx="60" cy="60" r="45" stroke="#5b6b73" stroke-dasharray="56.5 282.7" stroke-dashoffset="-166.8"/>
+            <circle cx="60" cy="60" r="45" stroke="#8a8d6f" stroke-dasharray="28.3 282.7" stroke-dashoffset="-223.3"/>
+            <circle cx="60" cy="60" r="45" stroke="#cbb89a" stroke-dasharray="31.1 282.7" stroke-dashoffset="-251.6"/>
+          </g>
+          <text x="60" y="58" text-anchor="middle" font-family="Georgia,serif" font-size="19" font-weight="600" fill="#1a1a18">$217K</text>
+          <text x="60" y="74" text-anchor="middle" font-size="9.5" fill="#807c72">total opex</text>
+        </svg>
+        <div class="legend" style="flex:1;min-width:150px">
+          <div class="row"><span class="lbl"><i class="dot" style="background:var(--c1)"></i>Salaries</span><b>$128K · 59%</b></div>
+          <div class="row"><span class="lbl"><i class="dot" style="background:var(--c2)"></i>Marketing</span><b>$44K · 20%</b></div>
+          <div class="row"><span class="lbl"><i class="dot" style="background:var(--c3)"></i>Software</span><b>$21K · 10%</b></div>
+          <div class="row"><span class="lbl"><i class="dot" style="background:var(--c4)"></i>Office &amp; other</span><b>$24K · 11%</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="section">Cash flow summary</h2>
+  <div class="panel">
+    <table class="pl">
+      <thead><tr><th>Activity</th><th class="num">Inflow</th><th class="num">Outflow</th><th class="num">Net</th></tr></thead>
+      <tbody>
+        <tr><td>Operating</td><td class="num pos">$486,000</td><td class="num neg">($402,000)</td><td class="num">$84,000</td></tr>
+        <tr><td>Investing</td><td class="num pos">$0</td><td class="num neg">($28,000)</td><td class="num neg">($28,000)</td></tr>
+        <tr><td>Financing</td><td class="num pos">$30,000</td><td class="num neg">($2,000)</td><td class="num">$28,000</td></tr>
+        <tr class="total"><td>Net change in cash</td><td class="num"></td><td class="num"></td><td class="num pos">+$84,000</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="rfoot">
+    <span>[Company Name] · Confidential — for the board only</span>
+    <span>Template: OpenReports · Financial Statement</span>
+  </footer>
+
+</div>
+</body>
+</html>
