@@ -48,21 +48,21 @@ const REPORTS = [
     },
   },
   {
-    id: "people-hr", category: "people", charts: "embedded", soon: true,
+    id: "people-hr", category: "people", charts: "embedded",
     file: "templates/people-hr.html",
     title: { en: "People & HR Report", pt: "Relatório de Pessoas & RH" },
     description: {
-      en: "Headcount, hiring funnel, attrition and engagement for the people meeting. On the roadmap — vote for it on GitHub.",
-      pt: "Headcount, funil de contratação, turnover e engajamento para a reunião de pessoas. No roadmap — vote no GitHub.",
+      en: "Headcount by department, hiring funnel, attrition trend and open roles for the people meeting. Pure inline SVG — zero dependencies.",
+      pt: "Headcount por área, funil de contratação, tendência de turnover e vagas abertas para a reunião de pessoas. SVG embutido — zero dependências.",
     },
   },
   {
-    id: "operations-project", category: "operations", charts: "embedded", soon: true,
+    id: "operations-project", category: "operations", charts: "embedded",
     file: "templates/operations-project.html",
     title: { en: "Operations & Project Status", pt: "Status de Operações & Projetos" },
     description: {
-      en: "Project health, milestones, SLAs and throughput for ops and delivery reviews. On the roadmap — vote for it on GitHub.",
-      pt: "Saúde de projetos, marcos, SLAs e throughput para reuniões de operações e entregas. No roadmap — vote no GitHub.",
+      en: "Project status with progress bars, throughput trend, on-time SLA delivery and a milestone timeline. Fully self-contained.",
+      pt: "Status de projetos com barras de progresso, throughput, entrega no prazo (SLA) e timeline de marcos. Totalmente autossuficiente.",
     },
   },
 ];

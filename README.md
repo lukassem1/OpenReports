@@ -36,8 +36,8 @@ exact same design.
 | Financial Statement (P&L) | Financial / P&L | Inline SVG (self-contained) |
 | Executive KPI Dashboard | KPI Dashboard | Chart.js (interactive, CDN) |
 | Marketing & Traffic Report | Marketing / Traffic | Inline SVG (self-contained) |
-| People & HR Report | People / HR | _on the roadmap_ |
-| Operations & Project Status | Operations / Project | _on the roadmap_ |
+| People & HR Report | People / HR | Inline SVG (self-contained) |
+| Operations & Project Status | Operations / Project | Inline SVG (self-contained) |
 
 Two chart styles, filterable in the gallery:
 
@@ -58,7 +58,9 @@ Two chart styles, filterable in the gallery:
     ├── sales-revenue.html
     ├── financial-statement.html
     ├── kpi-dashboard.html
-    └── marketing-traffic.html
+    ├── marketing-traffic.html
+    ├── people-hr.html
+    └── operations-project.html
 ```
 
 ## Running locally
