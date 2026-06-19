@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Pipeline &amp; Forecast — [Company Name]</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:        #2563eb;
+    --blue-700:    #1d4ed8;
+    --blue-soft:   #eff6ff;
+    --blue-border: #bfdbfe;
+    --emerald:     #059669;
+    --emerald-600: #10b981;
+    --emerald-soft:#ecfdf5;
+    --emerald-border:#a7f3d0;
+    --ink:    #0b1220;
+    --slate-900: #0f172a;
+    --slate-700: #334155;
+    --slate-600: #475569;
+    --slate-500: #64748b;
+    --slate-400: #94a3b8;
+    --slate-300: #cbd5e1;
+    --slate-200: #e2e8f0;
+    --slate-100: #f1f5f9;
+    --slate-50:  #f8fafc;
+    --bg: #eef2f8;
+    --card: #ffffff;
+    --border: #e6eaf0;
+    --up: #059669;
+    --up-soft: #ecfdf5;
+    --down: #dc2626;
+    --down-soft: #fef2f2;
+    --warn: #d97706;
+    --warn-soft: #fffbeb;
+    --track: #eef1f6;
+    --shadow-sm: 0 1px 2px rgba(15,23,42,0.05), 0 1px 3px rgba(15,23,42,0.04);
+    --shadow: 0 4px 14px rgba(15,23,42,0.06);
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--slate-900);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 32px 64px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    background: linear-gradient(135deg, #0b2a6b 0%, #1d4ed8 52%, #047857 130%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 30px 32px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  header::after {
+    content: '';
+    position: absolute; right: -60px; top: -60px;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.12), transparent 70%);
+  }
+  .head-top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px; position: relative; z-index: 1;
+  }
+  .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: #bfdbfe; margin-bottom: 10px;
+  }
+  header h1 {
+    font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1.1;
+  }
+  header h1 span { color: rgba(255,255,255,0.62); font-weight: 600; }
+  .head-sub { font-size: 13.5px; color: rgba(255,255,255,0.78); margin-top: 8px; max-width: 520px; }
+  .head-meta { text-align: right; font-size: 12.5px; color: rgba(255,255,255,0.78); }
+  .period {
+    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+    color: #fff; background: rgba(255,255,255,0.16);
+    border: 1px solid rgba(255,255,255,0.28);
+    padding: 5px 12px; border-radius: 6px; margin-bottom: 10px;
+  }
+  .head-meta .meta-line { display: block; line-height: 1.7; }
+  .head-meta .meta-line strong { color: #fff; font-weight: 600; }
+
+  /* ── SECTION HEADINGS ── */
+  .sec-head {
+    display: flex; align-items: baseline; gap: 12px;
+    margin: 40px 0 18px;
+  }
+  .sec-head h2 {
+    font-size: 13px; font-weight: 800; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--slate-700);
+  }
+  .sec-head .rule { flex: 1; height: 1px; background: var(--border); }
+  .sec-head .count { font-size: 12px; color: var(--slate-400); font-weight: 600; }
+
+  /* ── KPI GRID ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .kpi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px 18px 16px;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .kpi-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 3px; background: var(--blue); opacity: 0.9;
+  }
+  .kpi-card.k-emerald::before { background: var(--emerald); }
+  .kpi-card.k-warn::before { background: var(--warn); }
+
+  .kpi-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.6px;
+    text-transform: uppercase; color: var(--slate-500);
+    margin-bottom: 12px;
+  }
+  .kpi-value {
+    font-size: 30px; font-weight: 800; letter-spacing: -1px;
+    line-height: 1; color: var(--slate-900);
+  }
+  .kpi-value .unit { font-size: 15px; font-weight: 600; color: var(--slate-400); margin-left: 2px; }
+  .kpi-foot {
+    display: flex; align-items: center; gap: 8px; margin-top: 14px;
+    font-size: 11.5px; color: var(--slate-500); font-weight: 500;
+  }
+  .kpi-delta {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 700;
+    padding: 3px 8px; border-radius: 100px;
+  }
+  .kpi-delta.up { color: var(--up); background: var(--up-soft); }
+  .kpi-delta.down { color: var(--down); background: var(--down-soft); }
+  .kpi-delta.flat { color: var(--slate-500); background: var(--slate-100); }
+  .kpi-delta svg { width: 11px; height: 11px; }
+
+  /* ── PANELS ── */
+  .panel {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; box-shadow: var(--shadow-sm);
+    padding: 24px 26px;
+  }
+  .panel-grid {
+    display: grid; grid-template-columns: 1.35fr 1fr; gap: 18px;
+  }
+  .panel h3 {
+    font-size: 14px; font-weight: 700; color: var(--slate-900);
+    margin-bottom: 4px;
+  }
+  .panel .hint { font-size: 12px; color: var(--slate-400); margin-bottom: 20px; }
+
+  /* ── FUNNEL (inline SVG) ── */
+  .funnel-svg { width: 100%; height: auto; display: block; }
+  .legend {
+    display: flex; gap: 18px; flex-wrap: wrap; margin-top: 16px;
+    font-size: 11.5px; color: var(--slate-500); font-weight: 500;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+
+  /* ── GAUGE / FORECAST ── */
+  .gauge-wrap { display: flex; flex-direction: column; align-items: center; }
+  .gauge-stat {
+    text-align: center; margin-top: 6px;
+  }
+  .gauge-stat .big {
+    font-size: 34px; font-weight: 800; letter-spacing: -1px; color: var(--emerald);
+  }
+  .gauge-stat .lbl { font-size: 11.5px; color: var(--slate-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; }
+  .gauge-rows { width: 100%; margin-top: 22px; }
+  .gauge-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 11px 0; border-top: 1px solid var(--slate-100);
+    font-size: 12.5px;
+  }
+  .gauge-row .k { color: var(--slate-500); font-weight: 500; }
+  .gauge-row .v { font-weight: 700; color: var(--slate-900); font-variant-numeric: tabular-nums; }
+  .gauge-row .v.green { color: var(--emerald); }
+
+  /* ── TABLES ── */
+  .table-wrap {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-sm);
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    text-align: left; font-size: 10.5px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--slate-500);
+    padding: 13px 16px; background: var(--slate-50);
+    border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  thead th.num, tbody td.num { text-align: right; }
+  tbody td {
+    padding: 13px 16px; font-size: 13px; color: var(--slate-700);
+    border-bottom: 1px solid var(--slate-100); vertical-align: middle;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--slate-50); }
+  tbody td.primary { font-weight: 600; color: var(--slate-900); }
+  tbody td.primary small { display: block; font-size: 11px; font-weight: 500; color: var(--slate-400); margin-top: 2px; }
+  .tnum { font-variant-numeric: tabular-nums; font-weight: 700; }
+  tfoot td {
+    padding: 13px 16px; font-size: 13px; font-weight: 800; color: var(--slate-900);
+    background: var(--slate-50); border-top: 2px solid var(--border);
+  }
+  tfoot td.num { text-align: right; font-variant-numeric: tabular-nums; }
+
+  .stage-pill, .pill {
+    display: inline-block; font-size: 10.5px; font-weight: 700;
+    padding: 2px 9px; border-radius: 100px; white-space: nowrap;
+  }
+  .stage-pill.s1 { color: var(--slate-600); background: var(--slate-100); border: 1px solid var(--slate-200); }
+  .stage-pill.s2 { color: var(--blue-700); background: var(--blue-soft); border: 1px solid var(--blue-border); }
+  .stage-pill.s3 { color: #7c3aed; background: #f5f3ff; border: 1px solid #ddd6fe; }
+  .stage-pill.s4 { color: var(--warn); background: var(--warn-soft); border: 1px solid #fde68a; }
+  .stage-pill.s5 { color: var(--emerald); background: var(--emerald-soft); border: 1px solid var(--emerald-border); }
+
+  /* probability mini-bar */
+  .prob { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+  .prob-track { width: 56px; height: 6px; border-radius: 100px; background: var(--track); overflow: hidden; }
+  .prob-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--blue), var(--emerald-600)); }
+  .prob-num { font-size: 12px; font-weight: 700; color: var(--slate-700); font-variant-numeric: tabular-nums; min-width: 32px; }
+
+  .avatar {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; border-radius: 50%; margin-right: 8px;
+    font-size: 10px; font-weight: 700; color: #fff; background: var(--blue);
+    vertical-align: middle;
+  }
+  .owner-cell { display: inline-flex; align-items: center; }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 48px; padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+    font-size: 12px; color: var(--slate-500);
+  }
+  footer strong { color: var(--slate-700); }
+  footer a { color: var(--blue); text-decoration: none; font-weight: 600; }
+  footer .credit { color: var(--slate-400); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 920px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .panel-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .sheet { padding: 24px 16px 48px; }
+    .kpi-grid { grid-template-columns: 1fr; }
+    header { padding: 24px 20px; }
+    .head-meta { text-align: left; }
+    .table-scroll { overflow-x: auto; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; }
+    .sheet { max-width: none; padding: 0; }
+    header { background: #1d4ed8 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .kpi-card, .panel, .table-wrap { box-shadow: none; }
+    .sec-head, .kpi-grid, .panel, .table-wrap { break-inside: avoid; }
+    header { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <header>
+    <div class="head-top">
+      <div class="head-left">
+        <div class="eyebrow">Revenue Operations</div>
+        <h1>Sales Pipeline &amp; Forecast <span>— [Company Name]</span></h1>
+        <div class="head-sub">Open pipeline, weighted forecast and quota attainment for the current selling period.</div>
+      </div>
+      <div class="head-meta">
+        <span class="period">[Q3 2026]</span>
+        <span class="meta-line">Owner: <strong>[Sales Ops]</strong></span>
+        <span class="meta-line">Region: <strong>[All Segments]</strong></span>
+        <span class="meta-line">Updated: <strong>[Jun 2026]</strong></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- KPI CARDS -->
+  <div class="sec-head">
+    <h2>Pipeline Snapshot</h2>
+    <div class="rule"></div>
+    <span class="count">[120] open deals · vs. [prior quarter]</span>
+  </div>
+
+  <div class="kpi-grid">
+
+    <div class="kpi-card">
+      <div class="kpi-label">Pipeline Value</div>
+      <div class="kpi-value">$[4.8]<span class="unit">M</span></div>
+      <div class="kpi-foot">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+[14]%</span>
+        <span>total open</span>
+      </div>
+    </div>
+
+    <div class="kpi-card k-emerald">
+      <div class="kpi-label">Weighted Forecast</div>
+      <div class="kpi-value">$[1.6]<span class="unit">M</span></div>
+      <div class="kpi-foot">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+[9]%</span>
+        <span>probability-adjusted</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-label">Coverage Ratio</div>
+      <div class="kpi-value">[3.0]<span class="unit">x</span></div>
+      <div class="kpi-foot">
+        <span class="kpi-delta flat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14"/></svg>[0.1]x</span>
+        <span>pipeline ÷ quota</span>
+      </div>
+    </div>
+
+    <div class="kpi-card k-warn">
+      <div class="kpi-label">Avg Deal Size</div>
+      <div class="kpi-value">$[40]<span class="unit">k</span></div>
+      <div class="kpi-foot">
+        <span class="kpi-delta down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12l7 7 7-7"/></svg>-[5]%</span>
+        <span>across open deals</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PIPELINE FUNNEL + FORECAST GAUGE -->
+  <div class="sec-head">
+    <h2>Pipeline by Stage &amp; Forecast vs Quota</h2>
+    <div class="rule"></div>
+    <span class="count">value · stage-to-stage conversion</span>
+  </div>
+
+  <div class="panel-grid">
+
+    <!-- FUNNEL -->
+    <div class="panel">
+      <h3>Pipeline by stage</h3>
+      <div class="hint">Open value per stage, with conversion to the next stage.</div>
+
+      <!-- Inline SVG horizontal funnel: 5 stages -->
+      <svg class="funnel-svg" viewBox="0 0 600 300" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Pipeline funnel by stage">
+        <!-- bars: x grows from left label column; widths scale to value -->
+        <!-- Stage 1 -->
+        <g>
+          <rect x="140" y="14" width="430" height="40" rx="6" fill="#2563eb"/>
+          <text x="132" y="38" text-anchor="end" font-size="12.5" font-weight="700" fill="#334155" font-family="Inter,sans-serif">[Lead]</text>
+          <text x="150" y="38" font-size="12.5" font-weight="700" fill="#ffffff" font-family="Inter,sans-serif">$[1.40]M</text>
+          <text x="560" y="38" text-anchor="end" font-size="11.5" font-weight="600" fill="#dbeafe" font-family="Inter,sans-serif">[40] deals</text>
+        </g>
+        <!-- conversion 1->2 -->
+        <text x="355" y="72" text-anchor="middle" font-size="10.5" font-weight="700" fill="#64748b" font-family="Inter,sans-serif">↓ [64]% advance</text>
+        <!-- Stage 2 -->
+        <g>
+          <rect x="140" y="80" width="345" height="40" rx="6" fill="#1d4ed8"/>
+          <text x="132" y="104" text-anchor="end" font-size="12.5" font-weight="700" fill="#334155" font-family="Inter,sans-serif">[Qualified]</text>
+          <text x="150" y="104" font-size="12.5" font-weight="700" fill="#ffffff" font-family="Inter,sans-serif">$[1.12]M</text>
+          <text x="475" y="104" text-anchor="end" font-size="11.5" font-weight="600" fill="#dbeafe" font-family="Inter,sans-serif">[30] deals</text>
+        </g>
+        <text x="312" y="138" text-anchor="middle" font-size="10.5" font-weight="700" fill="#64748b" font-family="Inter,sans-serif">↓ [70]% advance</text>
+        <!-- Stage 3 -->
+        <g>
+          <rect x="140" y="146" width="270" height="40" rx="6" fill="#0e7490"/>
+          <text x="132" y="170" text-anchor="end" font-size="12.5" font-weight="700" fill="#334155" font-family="Inter,sans-serif">[Proposal]</text>
+          <text x="150" y="170" font-size="12.5" font-weight="700" fill="#ffffff" font-family="Inter,sans-serif">$[0.90]M</text>
+          <text x="400" y="170" text-anchor="end" font-size="11.5" font-weight="600" fill="#cffafe" font-family="Inter,sans-serif">[18] deals</text>
+        </g>
+        <text x="275" y="204" text-anchor="middle" font-size="10.5" font-weight="700" fill="#64748b" font-family="Inter,sans-serif">↓ [61]% advance</text>
+        <!-- Stage 4 -->
+        <g>
+          <rect x="140" y="212" width="175" height="40" rx="6" fill="#0d9488"/>
+          <text x="132" y="236" text-anchor="end" font-size="12.5" font-weight="700" fill="#334155" font-family="Inter,sans-serif">[Negotiation]</text>
+          <text x="150" y="236" font-size="12.5" font-weight="700" fill="#ffffff" font-family="Inter,sans-serif">$[0.55]M</text>
+          <text x="305" y="236" text-anchor="end" font-size="11.5" font-weight="600" fill="#ccfbf1" font-family="Inter,sans-serif">[8]</text>
+        </g>
+        <text x="227" y="270" text-anchor="middle" font-size="10.5" font-weight="700" fill="#64748b" font-family="Inter,sans-serif">↓ [80]% advance</text>
+        <!-- Stage 5 -->
+        <g>
+          <rect x="140" y="278" width="115" height="20" rx="6" fill="#059669"/>
+          <text x="132" y="293" text-anchor="end" font-size="12.5" font-weight="700" fill="#334155" font-family="Inter,sans-serif">[Closing]</text>
+          <text x="150" y="293" font-size="11" font-weight="700" fill="#ffffff" font-family="Inter,sans-serif">$[0.44]M · [5]</text>
+        </g>
+      </svg>
+
+      <div class="legend">
+        <span><i style="background:#2563eb"></i>Early stage</span>
+        <span><i style="background:#0d9488"></i>Late stage</span>
+        <span><i style="background:#059669"></i>Commit</span>
+      </div>
+    </div>
+
+    <!-- FORECAST GAUGE -->
+    <div class="panel">
+      <h3>Weighted forecast vs quota</h3>
+      <div class="hint">Where the probability-adjusted forecast lands against the [Q3 2026] quota.</div>
+
+      <div class="gauge-wrap">
+        <!-- Inline SVG semicircular gauge: 80% attainment -->
+        <svg width="240" height="148" viewBox="0 0 240 148" role="img" aria-label="Forecast attainment gauge">
+          <!-- track -->
+          <path d="M 20 130 A 100 100 0 0 1 220 130" fill="none" stroke="#eef1f6" stroke-width="22" stroke-linecap="round"/>
+          <!-- fill: 80% of half-circle (~144deg). Dash on a 100-radius arc length pi*100=314 -->
+          <path d="M 20 130 A 100 100 0 0 1 220 130" fill="none" stroke="url(#gaugeGrad)" stroke-width="22" stroke-linecap="round" stroke-dasharray="251 314"/>
+          <!-- quota marker at 100% (right end) -->
+          <line x1="220" y1="118" x2="220" y2="142" stroke="#0f172a" stroke-width="2.5"/>
+          <defs>
+            <linearGradient id="gaugeGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#2563eb"/>
+              <stop offset="1" stop-color="#10b981"/>
+            </linearGradient>
+          </defs>
+          <text x="120" y="116" text-anchor="middle" font-size="36" font-weight="800" fill="#059669" font-family="Inter,sans-serif">[80]%</text>
+          <text x="120" y="138" text-anchor="middle" font-size="11" font-weight="600" fill="#64748b" letter-spacing="0.8" font-family="Inter,sans-serif">OF QUOTA</text>
+        </svg>
+
+        <div class="gauge-rows">
+          <div class="gauge-row"><span class="k">Quota ([Q3 2026])</span><span class="v">$[2.00]M</span></div>
+          <div class="gauge-row"><span class="k">Weighted forecast</span><span class="v green">$[1.60]M</span></div>
+          <div class="gauge-row"><span class="k">Closed-won to date</span><span class="v">$[0.95]M</span></div>
+          <div class="gauge-row"><span class="k">Gap to quota</span><span class="v">$[0.40]M</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TOP DEALS -->
+  <div class="sec-head">
+    <h2>Top Open Deals</h2>
+    <div class="rule"></div>
+    <span class="count">by value · [8] of [120] deals</span>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Deal</th>
+          <th>Stage</th>
+          <th class="num">Value</th>
+          <th class="num">Probability</th>
+          <th>Close date</th>
+          <th>Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="primary">[Acme Corp — Platform]<small>[Enterprise]</small></td>
+          <td><span class="stage-pill s4">[Negotiation]</span></td>
+          <td class="num tnum">$[180]k</td>
+          <td class="num"><span class="prob"><span class="prob-track"><span class="prob-fill" style="width:75%"></span></span><span class="prob-num">[75]%</span></span></td>
+          <td>[Aug 12, 2026]</td>
+          <td><span class="owner-cell"><span class="avatar">[AM]</span>[Alex M.]</span></td>
+        </tr>
+        <tr>
+          <td class="primary">[Globex — Expansion]<small>[Upsell]</small></td>
+          <td><span class="stage-pill s5">[Closing]</span></td>
+          <td class="num tnum">[150]k</td>
+          <td class="num"><span class="prob"><span class="prob-track"><span class="prob-fill" style="width:90%"></span></span><span class="prob-num">[90]%</span></span></td>
+          <td>[Jul 28, 2026]</td>
+          <td><span class="owner-cell"><span class="avatar" style="background:#059669">[BK]</span>[Bea K.]</span></td>
+        </tr>
+        <tr>
+          <td class="primary">[Initech — Renewal+]<small>[Renewal]</small></td>
+          <td><span class="stage-pill s3">[Proposal]</span></td>
+          <td class="num tnum">$[120]k</td>
+          <td class="num"><span class="prob"><span class="prob-track"><span class="prob-fill" style="width:55%"></span></span><span class="prob-num">[55]%</span></span></td>
+          <td>[Sep 04, 2026]</td>
+          <td><span class="owner-cell"><span class="avatar" style="background:#7c3aed">[CR]</span>[Cory R.]</span></td>
+        </tr>
+        <tr>
+          <td class="primary">[Umbrella — New Logo]<small>[New business]</small></td>
+          <td><span class="stage-pill s2">[Qualified]</span></td>
+          <td class="num tnum">$[95]k</td>
+          <td class="num"><span class="prob"><span class="prob-track"><span class="prob-fill" style="width:40%"></span></span><span class="prob-num">[40]%</span></span></td>
+          <td>[Sep 22, 2026]</td>
+          <td><span class="owner-cell"><span class="avatar">[AM]</span>[Alex M.]</span></td>
+        </tr>
+        <tr>
+          <td class="primary">[Soylent — Multi-year]<small>[Enterprise]</small></td>
+          <td><span class="stage-pill s4">[Negotiation]</span></td>
+          <td class="num tnum">$[85]k</td>
+          <td class="num"><span class="prob"><span class="prob-track"><span class="prob-fill" style="width:70%"></span></span><span class="prob-num">[70]%</span></span></td>
+          <td>[Aug 30, 2026]</td>
+          <td><span class="owner-cell"><span class="avatar" style="background:#059669">[BK]</span>[Bea K.]</span></td>
+        </tr>
+        <tr>
+          <td class="primary">[Hooli — Pilot]<small>[New business]</small></td>
+          <td><span class="stage-pill s3">[Proposal]</span></td>
+          <td class="num tnum">$[70]k</td>
+          <td class="num"><span class="prob"><span class="prob-track"><span class="prob-fill" style="width:50%"></span></span><span class="prob-num">[50]%</span></span></td>
+          <td>[Sep 15, 2026]</td>
+          <td><span class="owner-cell"><span class="avatar" style="background:#7c3aed">[CR]</span>[Cory R.]</span></td>
+        </tr>
+        <tr>
+          <td class="primary">[Vandelay — Add-on]<small>[Upsell]</small></td>
+          <td><span class="stage-pill s2">[Qualified]</span></td>
+          <td class="num tnum">$[60]k</td>
+          <td class="num"><span class="prob"><span class="prob-track"><span class="prob-fill" style="width:35%"></span></span><span class="prob-num">[35]%</span></span></td>
+          <td>[Oct 06, 2026]</td>
+          <td><span class="owner-cell"><span class="avatar">[AM]</span>[Alex M.]</span></td>
+        </tr>
+        <tr>
+          <td class="primary">[Stark — Discovery]<small>[New business]</small></td>
+          <td><span class="stage-pill s1">[Lead]</span></td>
+          <td class="num tnum">$[50]k</td>
+          <td class="num"><span class="prob"><span class="prob-track"><span class="prob-fill" style="width:20%"></span></span><span class="prob-num">[20]%</span></span></td>
+          <td>[Oct 20, 2026]</td>
+          <td><span class="owner-cell"><span class="avatar" style="background:#059669">[BK]</span>[Bea K.]</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="2">Top [8] deals</td>
+          <td class="num">$[810]k</td>
+          <td class="num">[54]% avg</td>
+          <td colspan="2"></td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+  </div>
+
+  <!-- BY-REP SUMMARY -->
+  <div class="sec-head">
+    <h2>Pipeline by Rep</h2>
+    <div class="rule"></div>
+    <span class="count">open pipeline · weighted forecast · quota attainment</span>
+  </div>
+
+  <div class="table-wrap">
+    <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th>Rep</th>
+          <th class="num">Open deals</th>
+          <th class="num">Pipeline</th>
+          <th class="num">Weighted</th>
+          <th class="num">Quota</th>
+          <th class="num">Attainment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="primary"><span class="owner-cell"><span class="avatar">[AM]</span>[Alex M.]</span></td>
+          <td class="num tnum">[42]</td>
+          <td class="num tnum">$[1.7]M</td>
+          <td class="num tnum">$[0.60]M</td>
+          <td class="num tnum">$[0.70]M</td>
+          <td class="num"><span class="pill" style="color:var(--emerald);background:var(--emerald-soft);border:1px solid var(--emerald-border)">[86]%</span></td>
+        </tr>
+        <tr>
+          <td class="primary"><span class="owner-cell"><span class="avatar" style="background:#059669">[BK]</span>[Bea K.]</span></td>
+          <td class="num tnum">[38]</td>
+          <td class="num tnum">$[1.5]M</td>
+          <td class="num tnum">$[0.58]M</td>
+          <td class="num tnum">$[0.70]M</td>
+          <td class="num"><span class="pill" style="color:var(--emerald);background:var(--emerald-soft);border:1px solid var(--emerald-border)">[83]%</span></td>
+        </tr>
+        <tr>
+          <td class="primary"><span class="owner-cell"><span class="avatar" style="background:#7c3aed">[CR]</span>[Cory R.]</span></td>
+          <td class="num tnum">[28]</td>
+          <td class="num tnum">$[1.1]M</td>
+          <td class="num tnum">$[0.32]M</td>
+          <td class="num tnum">$[0.60]M</td>
+          <td class="num"><span class="pill" style="color:var(--warn);background:var(--warn-soft);border:1px solid #fde68a">[53]%</span></td>
+        </tr>
+        <tr>
+          <td class="primary"><span class="owner-cell"><span class="avatar" style="background:#64748b">[DP]</span>[Dana P.]</span></td>
+          <td class="num tnum">[12]</td>
+          <td class="num tnum">$[0.5]M</td>
+          <td class="num tnum">$[0.10]M</td>
+          <td class="num tnum">$[0.40]M</td>
+          <td class="num"><span class="pill" style="color:var(--down);background:var(--down-soft);border:1px solid #fecaca">[25]%</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>Team total</td>
+          <td class="num">[120]</td>
+          <td class="num">$[4.8]M</td>
+          <td class="num">$[1.60]M</td>
+          <td class="num">$[2.40]M</td>
+          <td class="num">[67]%</td>
+        </tr>
+      </tfoot>
+    </table>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span><strong>[Company Name]</strong> · Sales Pipeline &amp; Forecast · [Q3 2026]</span>
+    <span class="credit">Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe</span>
+  </footer>
+
+</div>
+</body>
+</html>

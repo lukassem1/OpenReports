@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Competitive Analysis — [Company Name]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f4f4f8;
+  --surface:#ffffff;
+  --surface2:#f8f8fc;
+  --indigo:#4f46e5;
+  --indigo-deep:#3730a3;
+  --indigo-light:#eef2ff;
+  --indigo-mid:#818cf8;
+  --ink:#15131f;
+  --text:#1e1b2e;
+  --text2:#403c52;
+  --muted:#6b6880;
+  --border:#e6e4ee;
+  --border2:#cfccdd;
+  --green:#15a06a;
+  --green-light:#ecfdf5;
+  --amber:#d97706;
+  --amber-light:#fffbeb;
+  --red:#e11d48;
+  --red-light:#fff1f3;
+  --shadow:0 1px 2px rgba(30,27,46,.05),0 2px 6px rgba(30,27,46,.06);
+  --shadow-md:0 10px 30px -10px rgba(55,48,163,.30);
+  --radius:14px;
+}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  background-image:radial-gradient(circle at 88% -6%,rgba(79,70,229,.10),transparent 46%);
+  color:var(--text);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1060px;margin:0 auto;padding:40px 28px 56px}
+a{color:inherit}
+
+/* ── HEADER ── */
+.header{
+  background:linear-gradient(135deg,#312e81 0%,#4f46e5 60%,#6366f1 100%);
+  border-radius:var(--radius);padding:36px 38px;color:#fff;
+  position:relative;overflow:hidden;box-shadow:var(--shadow-md)}
+.header::after{content:'';position:absolute;right:-50px;bottom:-90px;width:280px;height:280px;
+  border-radius:50%;background:rgba(255,255,255,.07)}
+.header::before{content:'';position:absolute;left:-30px;top:-60px;width:160px;height:160px;
+  border-radius:50%;background:rgba(255,255,255,.05)}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.66);margin-bottom:14px;position:relative}
+.eyebrow::before{content:'';width:22px;height:2px;background:rgba(255,255,255,.5);border-radius:2px}
+.h-title{font-size:32px;font-weight:800;letter-spacing:-.02em;line-height:1.12;margin-bottom:8px;position:relative}
+.h-sub{font-size:14.5px;color:rgba(255,255,255,.74);max-width:58ch;position:relative}
+.h-meta{display:flex;gap:30px;flex-wrap:wrap;margin-top:22px;position:relative}
+.h-meta div{font-size:12px;color:rgba(255,255,255,.6)}
+.h-meta .k{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:4px;color:rgba(255,255,255,.46)}
+.h-meta strong{color:#fff;font-weight:600;font-size:14px}
+
+/* ── SECTION ── */
+section{margin-top:36px}
+.s-title{display:flex;align-items:baseline;gap:12px;margin-bottom:6px}
+.s-title h2{font-size:19px;font-weight:800;letter-spacing:-.01em;color:var(--ink)}
+.s-title .n{font-size:12px;font-weight:700;color:var(--indigo);background:var(--indigo-light);
+  border-radius:6px;padding:3px 9px;letter-spacing:.05em}
+.s-desc{font-size:13.5px;color:var(--muted);margin-bottom:18px;max-width:70ch}
+
+/* ── MATRIX TABLE ── */
+.matrix-wrap{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.matrix{width:100%;border-collapse:collapse}
+.matrix th,.matrix td{padding:14px 16px;text-align:center;border-bottom:1px solid var(--border)}
+.matrix thead th{font-size:12px;font-weight:700;color:var(--text);background:var(--surface2);
+  letter-spacing:.02em;border-bottom:2px solid var(--border2)}
+.matrix thead th.us{background:var(--indigo-light);color:var(--indigo-deep)}
+.matrix th.dim,.matrix td.dim{text-align:left;font-weight:600;color:var(--text);font-size:13.5px;
+  white-space:nowrap;background:var(--surface2)}
+.matrix td.dim small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:1px}
+.matrix tbody tr:last-child td{border-bottom:none}
+.matrix tbody td.us{background:rgba(79,70,229,.045)}
+.matrix tbody tr:hover td{background:var(--surface2)}
+.matrix tbody tr:hover td.us{background:rgba(79,70,229,.08)}
+.matrix tbody tr:hover td.dim{background:#f1f0f7}
+/* marks */
+.mk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-size:14px;font-weight:800}
+.mk.yes{background:var(--green-light);color:var(--green)}
+.mk.part{background:var(--amber-light);color:var(--amber)}
+.mk.no{background:var(--red-light);color:var(--red)}
+/* rating dots */
+.rate{display:inline-flex;gap:3px;align-items:center}
+.rate i{width:8px;height:8px;border-radius:50%;background:var(--border2);display:inline-block}
+.rate i.on{background:var(--indigo)}
+.rate.us i.on{background:var(--indigo-deep)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend .mk{width:20px;height:20px;font-size:12px}
+
+/* ── QUADRANT (SVG) ── */
+.quad-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;
+  padding:20px 22px 16px;box-shadow:var(--shadow)}
+.quad-svg{width:100%;height:auto;display:block}
+.quad-legend{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:10px;font-size:12.5px;color:var(--text2)}
+.quad-legend span{display:inline-flex;align-items:center;gap:8px}
+.quad-legend i{width:12px;height:12px;border-radius:50%;display:inline-block}
+
+/* ── COMPETITOR CARDS ── */
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.cc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow)}
+.cc-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.cc-badge{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:16px;color:#fff;flex:0 0 auto}
+.cc-head h3{font-size:16px;font-weight:700;color:var(--ink)}
+.cc-head .tag{font-size:11px;color:var(--muted);font-weight:500}
+.cc-sec{margin-top:12px}
+.cc-sec .lab{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.cc-sec.str .lab{color:var(--green)}
+.cc-sec.weak .lab{color:var(--red)}
+.cc-sec ul{list-style:none}
+.cc-sec li{font-size:13.5px;color:var(--text2);padding:4px 0 4px 18px;position:relative;line-height:1.5}
+.cc-sec.str li::before{content:'+';position:absolute;left:0;color:var(--green);font-weight:800}
+.cc-sec.weak li::before{content:'–';position:absolute;left:0;color:var(--red);font-weight:800}
+
+/* ── WIN / WATCH ── */
+.summary{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.sum{border-radius:14px;padding:24px 26px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.sum.win{background:linear-gradient(180deg,var(--green-light),var(--surface));border-color:#bbf7d0}
+.sum.watch{background:linear-gradient(180deg,var(--amber-light),var(--surface));border-color:#fde68a}
+.sum h3{font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:9px}
+.sum.win h3{color:var(--green)}
+.sum.watch h3{color:var(--amber)}
+.sum h3 .em{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.sum.win h3 .em{background:#d1fae5}
+.sum.watch h3 .em{background:#fef3c7}
+.sum ul{list-style:none}
+.sum li{font-size:14px;color:var(--text2);padding:8px 0 8px 22px;position:relative;border-top:1px solid rgba(0,0,0,.05);line-height:1.5}
+.sum li:first-child{border-top:none}
+.sum.win li::before{content:'★';position:absolute;left:0;color:var(--green)}
+.sum.watch li::before{content:'!';position:absolute;left:2px;color:var(--amber);font-weight:800}
+
+/* ── FOOTER ── */
+.footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--border);
+  text-align:center;font-size:12.5px;color:var(--muted)}
+.footer a{color:var(--indigo);font-weight:600;text-decoration:none}
+.footer a:hover{text-decoration:underline}
+
+@media (max-width:780px){
+  .cards,.summary{grid-template-columns:1fr}
+  .h-title{font-size:25px}
+  .matrix th,.matrix td{padding:11px 9px;font-size:12px}
+  .matrix td.dim small{display:none}
+}
+@media print{
+  body{background:#fff;background-image:none}
+  .wrap{max-width:none;padding:0}
+  .header,.matrix-wrap,.quad-card,.cc,.sum{box-shadow:none}
+  section,.cc,.sum{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="eyebrow">Strategy · Competitive Analysis</div>
+    <h1 class="h-title">Competitive Landscape — [Company Name]</h1>
+    <p class="h-sub">A side-by-side view of [Company Name] against key competitors across product, pricing, and go-to-market — with positioning and where we win.</p>
+    <div class="h-meta">
+      <div><span class="k">Prepared by</span><strong>[Author / Team]</strong></div>
+      <div><span class="k">Market</span><strong>[Category / Segment]</strong></div>
+      <div><span class="k">As of</span><strong>Q0 2025</strong></div>
+      <div><span class="k">Players compared</span><strong>4</strong></div>
+    </div>
+  </header>
+
+  <!-- MATRIX -->
+  <section>
+    <div class="s-title"><span class="n">01</span><h2>Comparison matrix</h2></div>
+    <p class="s-desc">Feature and capability coverage across players. Use ✓ / partial / ✕ for binary features and 1–5 rating dots for graded dimensions. Replace all values with your own assessment.</p>
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th class="dim">Dimension</th>
+            <th class="us">[Company Name]</th>
+            <th>[Competitor A]</th>
+            <th>[Competitor B]</th>
+            <th>[Competitor C]</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dim">Core feature set<small>Breadth of platform</small></td>
+            <td class="us"><span class="mk yes">✓</span></td>
+            <td><span class="mk yes">✓</span></td>
+            <td><span class="mk part">~</span></td>
+            <td><span class="mk yes">✓</span></td>
+          </tr>
+          <tr>
+            <td class="dim">Pricing<small>Value vs. list price</small></td>
+            <td class="us"><span class="rate us"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td>
+            <td><span class="rate"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+            <td><span class="rate"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+            <td><span class="rate"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td>
+          </tr>
+          <tr>
+            <td class="dim">Integrations<small>Ecosystem & APIs</small></td>
+            <td class="us"><span class="mk yes">✓</span></td>
+            <td><span class="mk part">~</span></td>
+            <td><span class="mk no">✕</span></td>
+            <td><span class="mk yes">✓</span></td>
+          </tr>
+          <tr>
+            <td class="dim">Ease of use<small>Onboarding & UX</small></td>
+            <td class="us"><span class="rate us"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+            <td><span class="rate"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+            <td><span class="rate"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td>
+            <td><span class="rate"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+          </tr>
+          <tr>
+            <td class="dim">Enterprise / security<small>SSO, compliance</small></td>
+            <td class="us"><span class="mk part">~</span></td>
+            <td><span class="mk yes">✓</span></td>
+            <td><span class="mk yes">✓</span></td>
+            <td><span class="mk no">✕</span></td>
+          </tr>
+          <tr>
+            <td class="dim">Support & SLAs<small>Responsiveness</small></td>
+            <td class="us"><span class="mk yes">✓</span></td>
+            <td><span class="mk part">~</span></td>
+            <td><span class="mk yes">✓</span></td>
+            <td><span class="mk part">~</span></td>
+          </tr>
+          <tr>
+            <td class="dim">Market presence<small>Brand & share</small></td>
+            <td class="us"><span class="rate us"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span></td>
+            <td><span class="rate"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+            <td><span class="rate"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span></td>
+            <td><span class="rate"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span><span class="mk yes">✓</span> Full support</span>
+      <span><span class="mk part">~</span> Partial</span>
+      <span><span class="mk no">✕</span> Not offered</span>
+      <span><span class="rate"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i></span> Rating 1–5</span>
+    </div>
+  </section>
+
+  <!-- QUADRANT -->
+  <section>
+    <div class="s-title"><span class="n">02</span><h2>Positioning quadrant</h2></div>
+    <p class="s-desc">Relative placement on two axes. Replace axis labels and dot positions to reflect your market — here: market presence (horizontal) vs. product capability (vertical).</p>
+    <div class="quad-card">
+      <svg class="quad-svg" viewBox="0 0 720 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Positioning quadrant chart">
+        <defs>
+          <linearGradient id="qbg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#eef2ff"/>
+            <stop offset="1" stop-color="#f8f8fc"/>
+          </linearGradient>
+        </defs>
+        <!-- plot area -->
+        <rect x="80" y="30" width="560" height="360" rx="10" fill="url(#qbg)" stroke="#e6e4ee"/>
+        <!-- quadrant shading: top-right "Leaders" -->
+        <rect x="360" y="30" width="280" height="180" fill="#4f46e5" opacity="0.06"/>
+        <!-- mid axes -->
+        <line x1="360" y1="30" x2="360" y2="390" stroke="#cfccdd" stroke-width="1.5" stroke-dasharray="5 5"/>
+        <line x1="80" y1="210" x2="640" y2="210" stroke="#cfccdd" stroke-width="1.5" stroke-dasharray="5 5"/>
+        <!-- axis arrows -->
+        <line x1="80" y1="390" x2="640" y2="390" stroke="#403c52" stroke-width="2"/>
+        <line x1="80" y1="390" x2="80" y2="30" stroke="#403c52" stroke-width="2"/>
+        <polygon points="640,390 630,385 630,395" fill="#403c52"/>
+        <polygon points="80,30 75,40 85,40" fill="#403c52"/>
+        <!-- axis labels -->
+        <text x="360" y="430" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#403c52">Market presence →</text>
+        <text x="34" y="210" text-anchor="middle" font-family="Inter,sans-serif" font-size="14" font-weight="700" fill="#403c52" transform="rotate(-90 34 210)">Product capability →</text>
+        <!-- quadrant corner labels -->
+        <text x="500" y="55" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#4f46e5" opacity="0.8">LEADERS</text>
+        <text x="220" y="55" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#6b6880">CHALLENGERS</text>
+        <text x="220" y="378" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#6b6880">NICHE</text>
+        <text x="500" y="378" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#6b6880">ESTABLISHED</text>
+
+        <!-- Company (us) — high capability, mid presence -->
+        <circle cx="430" cy="110" r="13" fill="#4f46e5" stroke="#fff" stroke-width="3"/>
+        <text x="430" y="92" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" font-weight="800" fill="#3730a3">[Company Name]</text>
+
+        <!-- Competitor A — established leader -->
+        <circle cx="540" cy="150" r="11" fill="#818cf8" stroke="#fff" stroke-width="3"/>
+        <text x="540" y="175" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#403c52">[Competitor A]</text>
+
+        <!-- Competitor B — established, lower capability -->
+        <circle cx="500" cy="290" r="11" fill="#a5b4fc" stroke="#fff" stroke-width="3"/>
+        <text x="500" y="315" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#403c52">[Competitor B]</text>
+
+        <!-- Competitor C — niche -->
+        <circle cx="215" cy="300" r="11" fill="#c7d2fe" stroke="#fff" stroke-width="3"/>
+        <text x="215" y="325" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#403c52">[Competitor C]</text>
+      </svg>
+      <div class="quad-legend">
+        <span><i style="background:#4f46e5"></i> [Company Name]</span>
+        <span><i style="background:#818cf8"></i> [Competitor A]</span>
+        <span><i style="background:#a5b4fc"></i> [Competitor B]</span>
+        <span><i style="background:#c7d2fe"></i> [Competitor C]</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPETITOR CARDS -->
+  <section>
+    <div class="s-title"><span class="n">03</span><h2>Competitor profiles</h2></div>
+    <p class="s-desc">A quick strength/weakness read on each rival. Keep these to the few points that actually shape your strategy.</p>
+    <div class="cards">
+
+      <div class="cc">
+        <div class="cc-head">
+          <div class="cc-badge" style="background:#818cf8">A</div>
+          <div><h3>[Competitor A]</h3><div class="tag">Established market leader</div></div>
+        </div>
+        <div class="cc-sec str"><div class="lab">Strengths</div>
+          <ul><li>Strong brand and largest market share</li><li>Mature enterprise & security features</li></ul></div>
+        <div class="cc-sec weak"><div class="lab">Weaknesses</div>
+          <ul><li>Higher price point and slower releases</li><li>Dated UX, steeper onboarding</li></ul></div>
+      </div>
+
+      <div class="cc">
+        <div class="cc-head">
+          <div class="cc-badge" style="background:#a5b4fc">B</div>
+          <div><h3>[Competitor B]</h3><div class="tag">Fast follower</div></div>
+        </div>
+        <div class="cc-sec str"><div class="lab">Strengths</div>
+          <ul><li>Solid support and reliable SLAs</li><li>Good enterprise/security posture</li></ul></div>
+        <div class="cc-sec weak"><div class="lab">Weaknesses</div>
+          <ul><li>Thin integration ecosystem</li><li>Narrower feature breadth</li></ul></div>
+      </div>
+
+      <div class="cc">
+        <div class="cc-head">
+          <div class="cc-badge" style="background:#c7d2fe;color:#3730a3">C</div>
+          <div><h3>[Competitor C]</h3><div class="tag">Niche / low-cost player</div></div>
+        </div>
+        <div class="cc-sec str"><div class="lab">Strengths</div>
+          <ul><li>Aggressive, low pricing</li><li>Broad integration support</li></ul></div>
+        <div class="cc-sec weak"><div class="lab">Weaknesses</div>
+          <ul><li>Limited enterprise & compliance</li><li>Weaker brand and small footprint</li></ul></div>
+      </div>
+
+      <div class="cc" style="border-color:var(--indigo-mid)">
+        <div class="cc-head">
+          <div class="cc-badge" style="background:#4f46e5">●</div>
+          <div><h3>[Company Name]</h3><div class="tag">Our position</div></div>
+        </div>
+        <div class="cc-sec str"><div class="lab">Strengths</div>
+          <ul><li>Best-in-class ease of use & onboarding</li><li>Strong value at a competitive price</li></ul></div>
+        <div class="cc-sec weak"><div class="lab">Gaps to close</div>
+          <ul><li>Enterprise/security still maturing</li><li>Lower brand awareness than leaders</li></ul></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WIN / WATCH -->
+  <section>
+    <div class="s-title"><span class="n">04</span><h2>Where we win &amp; watch-outs</h2></div>
+    <div class="summary">
+      <div class="sum win">
+        <h3><span class="em">★</span> Where we win</h3>
+        <ul>
+          <li>Superior usability and fastest time-to-value vs. all competitors.</li>
+          <li>Compelling price-to-value for [target segment].</li>
+          <li>Open integration ecosystem that competitors [B] can't match.</li>
+        </ul>
+      </div>
+      <div class="sum watch">
+        <h3><span class="em">!</span> Watch-outs</h3>
+        <ul>
+          <li>[Competitor A] may close our UX gap with [upcoming release].</li>
+          <li>Enterprise buyers may favour rivals until our security features mature.</li>
+          <li>[Competitor C]'s pricing pressure could squeeze the low end.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe
+  </div>
+
+</div>
+</body>
+</html>

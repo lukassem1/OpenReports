@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Campaign Retrospective — [Company Name]</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --coral:      #ff5a4d;
+    --coral-700:  #e63e30;
+    --coral-soft: #fff1ef;
+    --coral-border:#ffd4cd;
+    --orange:     #ff8a3d;
+    --orange-soft:#fff5ec;
+    --amber:      #f5a524;
+    --rose:       #ff4d7d;
+
+    --ink-900: #1a1414;
+    --ink-800: #2b2222;
+    --ink-700: #4a3f3f;
+    --ink-500: #837575;
+    --ink-400: #a99e9e;
+    --ink-300: #cdc4c4;
+    --ink-200: #e8e0df;
+    --ink-100: #f3eeed;
+    --ink-50:  #faf7f6;
+
+    --bg: #fbf6f4;
+    --card: #ffffff;
+    --border: #efe6e4;
+
+    --good: #16a34a;
+    --good-soft: #effaf2;
+    --good-border: #bcecca;
+    --warn: #d97706;
+    --warn-soft: #fff7eb;
+    --warn-border: #fadfa6;
+    --bad: #dc2626;
+    --bad-soft: #fef1f1;
+    --bad-border: #f6c9c9;
+
+    --track: #f0e9e7;
+    --shadow-sm: 0 1px 2px rgba(40,20,20,0.05), 0 2px 6px rgba(40,20,20,0.04);
+    --shadow: 0 10px 30px rgba(230,62,48,0.08);
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink-900);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 40px 32px 64px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    background: linear-gradient(125deg, var(--coral-700) 0%, var(--coral) 48%, var(--orange) 100%);
+    border-radius: 20px;
+    padding: 34px 34px 30px;
+    color: #fff;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  header::after {
+    content: ''; position: absolute; right: -60px; top: -80px;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.18), rgba(255,255,255,0) 70%);
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
+    padding: 5px 12px; border-radius: 100px; margin-bottom: 16px;
+  }
+  .badge .dot { width: 7px; height: 7px; border-radius: 50%; background: #fff; }
+  header h1 {
+    font-family: 'Sora', sans-serif;
+    font-size: 34px; font-weight: 800; letter-spacing: -0.8px; line-height: 1.08;
+    position: relative; z-index: 1;
+  }
+  header h1 .light { font-weight: 500; opacity: 0.85; }
+  .head-meta {
+    display: flex; flex-wrap: wrap; gap: 10px 28px;
+    margin-top: 20px; position: relative; z-index: 1;
+  }
+  .hm { display: flex; flex-direction: column; gap: 2px; }
+  .hm .k { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: 0.75; }
+  .hm .v { font-size: 14.5px; font-weight: 700; }
+  .channel-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; position: relative; z-index: 1; }
+  .ctag {
+    font-size: 11.5px; font-weight: 600;
+    background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.28);
+    padding: 4px 11px; border-radius: 7px;
+  }
+
+  /* ── SECTION HEAD ── */
+  .sec-head {
+    display: flex; align-items: center; gap: 12px;
+    margin: 40px 0 18px;
+  }
+  .sec-head .num-chip {
+    font-family: 'Sora', sans-serif;
+    width: 26px; height: 26px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: var(--coral-700);
+    background: var(--coral-soft); border: 1px solid var(--coral-border);
+    border-radius: 8px;
+  }
+  .sec-head h2 {
+    font-family: 'Sora', sans-serif;
+    font-size: 16px; font-weight: 700; letter-spacing: -0.3px; color: var(--ink-900);
+  }
+  .sec-head .rule { flex: 1; height: 1px; background: var(--border); }
+  .sec-head .count { font-size: 12px; color: var(--ink-400); font-weight: 600; }
+
+  /* ── GOAL VS RESULT KPI CARDS ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .kpi-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px 18px 16px; box-shadow: var(--shadow-sm);
+    position: relative; overflow: hidden;
+  }
+  .kpi-card::before {
+    content: ''; position: absolute; left: 0; top: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--coral), var(--orange));
+  }
+  .kpi-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.6px;
+    text-transform: uppercase; color: var(--ink-500); margin-bottom: 12px;
+  }
+  .kpi-value {
+    font-family: 'Sora', sans-serif;
+    font-size: 30px; font-weight: 800; letter-spacing: -1px; line-height: 1; color: var(--ink-900);
+  }
+  .kpi-value .unit { font-size: 14px; font-weight: 600; color: var(--ink-400); margin-left: 1px; }
+  .kpi-target { font-size: 11.5px; color: var(--ink-400); margin-top: 7px; }
+  .kpi-target b { color: var(--ink-700); font-weight: 700; }
+
+  .goal-bar { height: 7px; border-radius: 100px; background: var(--track); overflow: hidden; margin-top: 13px; }
+  .goal-bar > div { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--coral), var(--orange)); }
+  .goal-bar.over > div { background: linear-gradient(90deg, var(--good), #34c46a); }
+  .goal-bar.under > div { background: linear-gradient(90deg, var(--amber), var(--warn)); }
+  .kpi-pct {
+    display: flex; align-items: center; gap: 6px; margin-top: 9px;
+    font-size: 12px; font-weight: 700;
+  }
+  .kpi-pct .tag {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 8px; border-radius: 100px; font-size: 11.5px;
+  }
+  .kpi-pct .tag.hit { color: var(--good); background: var(--good-soft); border: 1px solid var(--good-border); }
+  .kpi-pct .tag.near { color: var(--warn); background: var(--warn-soft); border: 1px solid var(--warn-border); }
+  .kpi-pct .tag.miss { color: var(--bad); background: var(--bad-soft); border: 1px solid var(--bad-border); }
+  .kpi-pct .of { color: var(--ink-400); font-weight: 500; }
+
+  /* ── CHANNEL PERFORMANCE (bars + table) ── */
+  .panel {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 24px 26px; box-shadow: var(--shadow-sm);
+  }
+  .channels { display: grid; gap: 16px; margin-bottom: 26px; }
+  .chan-row { display: grid; grid-template-columns: 130px 1fr 92px; align-items: center; gap: 14px; }
+  .chan-name { font-size: 13px; font-weight: 700; color: var(--ink-900); }
+  .chan-name small { display: block; font-size: 11px; font-weight: 500; color: var(--ink-400); margin-top: 1px; }
+  .chan-track { height: 26px; border-radius: 7px; background: var(--ink-50); overflow: hidden; position: relative; }
+  .chan-fill {
+    height: 100%; border-radius: 7px; display: flex; align-items: center;
+    padding-left: 10px; color: #fff; font-size: 11.5px; font-weight: 700;
+  }
+  .chan-fill.c1 { background: linear-gradient(90deg, var(--coral-700), var(--coral)); }
+  .chan-fill.c2 { background: linear-gradient(90deg, var(--coral), var(--orange)); }
+  .chan-fill.c3 { background: linear-gradient(90deg, var(--orange), var(--amber)); }
+  .chan-fill.c4 { background: linear-gradient(90deg, var(--rose), var(--coral)); }
+  .chan-cac { text-align: right; font-size: 13px; font-weight: 700; color: var(--ink-800); font-variant-numeric: tabular-nums; }
+  .chan-cac small { display: block; font-size: 10px; font-weight: 600; color: var(--ink-400); text-transform: uppercase; letter-spacing: 0.5px; }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    text-align: left; font-size: 10.5px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--ink-500);
+    padding: 12px 14px; background: var(--ink-50); border-bottom: 1px solid var(--border);
+  }
+  thead th.num, tbody td.num { text-align: right; }
+  tbody td { padding: 12px 14px; font-size: 13px; color: var(--ink-700); border-bottom: 1px solid var(--ink-100); }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr.total td { background: var(--coral-soft); font-weight: 700; color: var(--ink-900); border-bottom: none; }
+  tbody td.lead { font-weight: 700; color: var(--ink-900); }
+  .swatch { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 8px; vertical-align: middle; }
+  .sw1 { background: var(--coral-700); } .sw2 { background: var(--coral); }
+  .sw3 { background: var(--orange); } .sw4 { background: var(--rose); }
+  .tnum { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .table-wrap { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+
+  /* ── TIMELINE ── */
+  .timeline { position: relative; padding-left: 6px; }
+  .tl-item { display: grid; grid-template-columns: 96px 1fr; gap: 18px; position: relative; padding-bottom: 22px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before {
+    content: ''; position: absolute; left: 103px; top: 22px; bottom: -4px;
+    width: 2px; background: var(--ink-200);
+  }
+  .tl-item:last-child::before { display: none; }
+  .tl-date { font-size: 12px; font-weight: 700; color: var(--coral-700); text-align: right; padding-top: 2px; }
+  .tl-date small { display: block; font-size: 10.5px; font-weight: 600; color: var(--ink-400); }
+  .tl-body { position: relative; padding-left: 22px; }
+  .tl-body::before {
+    content: ''; position: absolute; left: -7px; top: 4px;
+    width: 13px; height: 13px; border-radius: 50%;
+    background: #fff; border: 3px solid var(--coral); z-index: 1;
+  }
+  .tl-title { font-size: 13.5px; font-weight: 700; color: var(--ink-900); }
+  .tl-desc { font-size: 12.5px; color: var(--ink-500); margin-top: 2px; }
+
+  /* ── RETRO 3-COLUMN ── */
+  .retro-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .retro-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 22px; box-shadow: var(--shadow-sm);
+    border-top: 3px solid var(--ink-300);
+  }
+  .retro-card.win { border-top-color: var(--good); }
+  .retro-card.lose { border-top-color: var(--bad); }
+  .retro-card.next { border-top-color: var(--coral); }
+  .retro-head { display: flex; align-items: center; gap: 9px; margin-bottom: 14px; }
+  .retro-ic {
+    width: 28px; height: 28px; border-radius: 8px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .retro-ic svg { width: 15px; height: 15px; }
+  .win .retro-ic { background: var(--good-soft); color: var(--good); }
+  .lose .retro-ic { background: var(--bad-soft); color: var(--bad); }
+  .next .retro-ic { background: var(--coral-soft); color: var(--coral-700); }
+  .retro-head h3 { font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700; color: var(--ink-900); }
+  .retro-list { list-style: none; display: grid; gap: 11px; }
+  .retro-list li { font-size: 13px; color: var(--ink-700); padding-left: 18px; position: relative; line-height: 1.45; }
+  .retro-list li::before {
+    content: ''; position: absolute; left: 0; top: 7px;
+    width: 6px; height: 6px; border-radius: 2px;
+  }
+  .win .retro-list li::before { background: var(--good); }
+  .lose .retro-list li::before { background: var(--bad); }
+  .next .retro-list li::before { background: var(--coral); }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 46px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-500);
+  }
+  footer strong { color: var(--ink-700); }
+  footer a { color: var(--coral-700); text-decoration: none; font-weight: 600; }
+  footer .credit { color: var(--ink-400); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .retro-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .sheet { padding: 24px 14px 48px; }
+    header { padding: 26px 22px; }
+    header h1 { font-size: 26px; }
+    .kpi-grid { grid-template-columns: 1fr; }
+    .chan-row { grid-template-columns: 1fr; gap: 6px; }
+    .chan-cac { text-align: left; }
+    .tl-item { grid-template-columns: 70px 1fr; gap: 12px; }
+    .tl-item::before { left: 78px; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; }
+    .sheet { max-width: none; padding: 0; }
+    header, .kpi-card, .panel, .retro-card, .table-wrap { box-shadow: none; break-inside: avoid; }
+    .sec-head { break-after: avoid; }
+    header, .chan-fill, .goal-bar > div, .kpi-card::before {
+      -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <header>
+    <span class="badge"><span class="dot"></span>Campaign Retrospective</span>
+    <h1>[Spring Launch Campaign] <span class="light">— [Company Name]</span></h1>
+    <div class="head-meta">
+      <div class="hm"><span class="k">Period</span><span class="v">[Mar 1 – Apr 30, 2026]</span></div>
+      <div class="hm"><span class="k">Objective</span><span class="v">[Lead generation]</span></div>
+      <div class="hm"><span class="k">Total spend</span><span class="v">[$120,000]</span></div>
+      <div class="hm"><span class="k">Owner</span><span class="v">[Marketing Team]</span></div>
+    </div>
+    <div class="channel-tags">
+      <span class="ctag">Paid Search</span>
+      <span class="ctag">Paid Social</span>
+      <span class="ctag">Email</span>
+      <span class="ctag">Display</span>
+      <span class="ctag">[+ Influencer]</span>
+    </div>
+  </header>
+
+  <!-- GOAL VS RESULT -->
+  <div class="sec-head">
+    <span class="num-chip">1</span>
+    <h2>Goal vs. Result</h2>
+    <div class="rule"></div>
+    <span class="count">[4] headline KPIs · target vs. actual</span>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">[Reach]</div>
+      <div class="kpi-value">[2.4]<span class="unit">M</span></div>
+      <div class="kpi-target">Target <b>[2.0M]</b></div>
+      <div class="goal-bar over"><div style="width:100%"></div></div>
+      <div class="kpi-pct"><span class="tag hit">[120%]</span><span class="of">to goal</span></div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-label">[Leads]</div>
+      <div class="kpi-value">[8,400]</div>
+      <div class="kpi-target">Target <b>[8,000]</b></div>
+      <div class="goal-bar over"><div style="width:100%"></div></div>
+      <div class="kpi-pct"><span class="tag hit">[105%]</span><span class="of">to goal</span></div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-label">[Conversions]</div>
+      <div class="kpi-value">[1,260]</div>
+      <div class="kpi-target">Target <b>[1,500]</b></div>
+      <div class="goal-bar under"><div style="width:84%"></div></div>
+      <div class="kpi-pct"><span class="tag near">[84%]</span><span class="of">to goal</span></div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-label">[ROAS]</div>
+      <div class="kpi-value">[3.2]<span class="unit">x</span></div>
+      <div class="kpi-target">Target <b>[4.0x]</b></div>
+      <div class="goal-bar under"><div style="width:80%"></div></div>
+      <div class="kpi-pct"><span class="tag miss">[80%]</span><span class="of">to goal</span></div>
+    </div>
+  </div>
+
+  <!-- CHANNEL PERFORMANCE -->
+  <div class="sec-head">
+    <span class="num-chip">2</span>
+    <h2>Channel Performance</h2>
+    <div class="rule"></div>
+    <span class="count">Leads by channel · spend &amp; CAC</span>
+  </div>
+
+  <div class="panel">
+    <!-- inline-SVG-free bar comparison: leads contribution per channel -->
+    <div class="channels">
+      <div class="chan-row">
+        <div class="chan-name">[Paid Search]<small>[$48,000 spend]</small></div>
+        <div class="chan-track"><div class="chan-fill c1" style="width:100%">[3,200 leads]</div></div>
+        <div class="chan-cac">[$15]<small>CAC</small></div>
+      </div>
+      <div class="chan-row">
+        <div class="chan-name">[Paid Social]<small>[$36,000 spend]</small></div>
+        <div class="chan-track"><div class="chan-fill c2" style="width:78%">[2,500 leads]</div></div>
+        <div class="chan-cac">[$14]<small>CAC</small></div>
+      </div>
+      <div class="chan-row">
+        <div class="chan-name">[Email]<small>[$12,000 spend]</small></div>
+        <div class="chan-track"><div class="chan-fill c3" style="width:53%">[1,700 leads]</div></div>
+        <div class="chan-cac">[$7]<small>CAC</small></div>
+      </div>
+      <div class="chan-row">
+        <div class="chan-name">[Display]<small>[$24,000 spend]</small></div>
+        <div class="chan-track"><div class="chan-fill c4" style="width:31%">[1,000 leads]</div></div>
+        <div class="chan-cac">[$24]<small>CAC</small></div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Channel</th>
+            <th class="num">Spend</th>
+            <th class="num">Leads</th>
+            <th class="num">Conversions</th>
+            <th class="num">CAC</th>
+            <th class="num">Share</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="lead"><span class="swatch sw1"></span>[Paid Search]</td>
+            <td class="num tnum">[$48,000]</td>
+            <td class="num tnum">[3,200]</td>
+            <td class="num tnum">[520]</td>
+            <td class="num tnum">[$15]</td>
+            <td class="num tnum">[38%]</td>
+          </tr>
+          <tr>
+            <td class="lead"><span class="swatch sw2"></span>[Paid Social]</td>
+            <td class="num tnum">[$36,000]</td>
+            <td class="num tnum">[2,500]</td>
+            <td class="num tnum">[360]</td>
+            <td class="num tnum">[$14]</td>
+            <td class="num tnum">[30%]</td>
+          </tr>
+          <tr>
+            <td class="lead"><span class="swatch sw3"></span>[Email]</td>
+            <td class="num tnum">[$12,000]</td>
+            <td class="num tnum">[1,700]</td>
+            <td class="num tnum">[260]</td>
+            <td class="num tnum">[$7]</td>
+            <td class="num tnum">[20%]</td>
+          </tr>
+          <tr>
+            <td class="lead"><span class="swatch sw4"></span>[Display]</td>
+            <td class="num tnum">[$24,000]</td>
+            <td class="num tnum">[1,000]</td>
+            <td class="num tnum">[120]</td>
+            <td class="num tnum">[$24]</td>
+            <td class="num tnum">[12%]</td>
+          </tr>
+          <tr class="total">
+            <td>Total</td>
+            <td class="num tnum">[$120,000]</td>
+            <td class="num tnum">[8,400]</td>
+            <td class="num tnum">[1,260]</td>
+            <td class="num tnum">[$14]</td>
+            <td class="num tnum">[100%]</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="sec-head">
+    <span class="num-chip">3</span>
+    <h2>Campaign Timeline</h2>
+    <div class="rule"></div>
+    <span class="count">[5] key moments</span>
+  </div>
+
+  <div class="panel">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">[Mar 1]<small>[Week 1]</small></div>
+        <div class="tl-body">
+          <div class="tl-title">[Campaign launch]</div>
+          <div class="tl-desc">[Paid search and social go live across all core audiences; creative set A in rotation.]</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">[Mar 15]<small>[Week 3]</small></div>
+        <div class="tl-body">
+          <div class="tl-title">[Mid-flight creative refresh]</div>
+          <div class="tl-desc">[Swapped underperforming display banners for creative set B; CTR up ~[18%].]</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">[Apr 1]<small>[Week 5]</small></div>
+        <div class="tl-body">
+          <div class="tl-title">[Budget reallocation]</div>
+          <div class="tl-desc">[Shifted [$10k] from display into paid search to chase lower CAC.]</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">[Apr 18]<small>[Week 7]</small></div>
+        <div class="tl-body">
+          <div class="tl-title">[Email re-engagement send]</div>
+          <div class="tl-desc">[Nurture sequence to warm leads; drove [+260] conversions at lowest CAC.]</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">[Apr 30]<small>[Week 9]</small></div>
+        <div class="tl-body">
+          <div class="tl-title">[Campaign close]</div>
+          <div class="tl-desc">[Final reporting and retro; full results compiled for review.]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHAT WORKED / DIDN'T / NEXT -->
+  <div class="sec-head">
+    <span class="num-chip">4</span>
+    <h2>Retro: What Worked, What Didn't, Next Time</h2>
+    <div class="rule"></div>
+    <span class="count">Team learnings</span>
+  </div>
+
+  <div class="retro-grid">
+    <div class="retro-card win">
+      <div class="retro-head">
+        <span class="retro-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span>
+        <h3>What worked</h3>
+      </div>
+      <ul class="retro-list">
+        <li>[Email delivered the lowest CAC at [$7] — far below the [$14] blended average.]</li>
+        <li>[Reach beat target by [20%]; top-of-funnel audiences were well-sized.]</li>
+        <li>[Mid-flight creative refresh lifted display CTR by [~18%].]</li>
+        <li>[Paid search scaled efficiently when budget was added.]</li>
+      </ul>
+    </div>
+
+    <div class="retro-card lose">
+      <div class="retro-head">
+        <span class="retro-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+        <h3>What didn't</h3>
+      </div>
+      <ul class="retro-list">
+        <li>[Conversions landed at [84%] of goal — the offer page under-converted.]</li>
+        <li>[ROAS finished at [3.2x] vs a [4.0x] target.]</li>
+        <li>[Display had the highest CAC at [$24] with the weakest lead quality.]</li>
+        <li>[Late budget reallocation cost ~[2 weeks] of efficiency.]</li>
+      </ul>
+    </div>
+
+    <div class="retro-card next">
+      <div class="retro-head">
+        <span class="retro-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+        <h3>Next time</h3>
+      </div>
+      <ul class="retro-list">
+        <li>[Front-load budget into email and paid search; cap display at [10%].]</li>
+        <li>[A/B test the landing page before launch to protect conversion rate.]</li>
+        <li>[Set weekly CAC checkpoints to reallocate spend faster.]</li>
+        <li>[Define a stricter lead-quality threshold for display.]</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span><strong>[Company Name]</strong> · Campaign Retrospective · [Spring Launch Campaign] · [Mar–Apr 2026]</span>
+    <span class="credit">Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe</span>
+  </footer>
+
+</div>
+</body>
+</html>

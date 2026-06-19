@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recruiting Funnel — [Company Name]</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal:      #14b8a6;
+    --teal-700:  #0f766e;
+    --teal-800:  #115e59;
+    --teal-soft: #effdfa;
+    --teal-border:#a7f3e4;
+    --green:     #22c55e;
+    --green-700: #15803d;
+    --green-soft:#f0fdf4;
+    --green-border:#bbf7d0;
+    --lime:      #84cc16;
+
+    --ink-900: #0c1f1c;
+    --ink-800: #14302b;
+    --ink-700: #355049;
+    --ink-500: #5e7a72;
+    --ink-400: #93a8a1;
+    --ink-300: #c0d0cb;
+    --ink-200: #e0eae7;
+    --ink-100: #eef4f2;
+    --ink-50:  #f6faf9;
+
+    --bg: #f2f8f6;
+    --card: #ffffff;
+    --border: #e2ece9;
+
+    --good: #16a34a;
+    --good-soft: #f0fdf4;
+    --good-border: #bbf7d0;
+    --warn: #d97706;
+    --warn-soft: #fffbeb;
+    --warn-border: #fde68a;
+    --bad: #e11d48;
+    --bad-soft: #fff1f3;
+    --bad-border: #fbcdd6;
+
+    --track: #e6efec;
+    --shadow-sm: 0 1px 2px rgba(12,31,28,0.05), 0 2px 6px rgba(12,31,28,0.04);
+    --shadow: 0 8px 28px rgba(15,118,110,0.08);
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink-900);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet { max-width: 1080px; margin: 0 auto; padding: 40px 32px 64px; }
+
+  /* ── HEADER ── */
+  header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    flex-wrap: wrap; gap: 20px;
+    padding: 4px 0 24px; margin-bottom: 8px;
+    border-bottom: 3px solid var(--teal-700);
+  }
+  .head-left .eyebrow {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--teal-700); margin-bottom: 10px;
+  }
+  .head-left .eyebrow .pin {
+    width: 22px; height: 22px; border-radius: 7px;
+    background: var(--teal-soft); border: 1px solid var(--teal-border);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .head-left .eyebrow .pin svg { width: 12px; height: 12px; color: var(--teal-700); }
+  .head-left h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 30px; font-weight: 700; letter-spacing: -0.8px; line-height: 1.1; color: var(--ink-900);
+  }
+  .head-left h1 span { color: var(--ink-400); font-weight: 500; }
+  .head-left .subtitle { font-size: 13.5px; color: var(--ink-500); margin-top: 7px; }
+  .head-right { text-align: right; font-size: 12.5px; color: var(--ink-500); }
+  .head-right .period {
+    display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
+    color: var(--teal-800); background: var(--teal-soft); border: 1px solid var(--teal-border);
+    padding: 5px 12px; border-radius: 7px; margin-bottom: 9px;
+  }
+  .head-right .meta-line { display: block; line-height: 1.7; }
+  .head-right .meta-line strong { color: var(--ink-700); font-weight: 600; }
+
+  /* ── SECTION HEAD ── */
+  .sec-head { display: flex; align-items: baseline; gap: 12px; margin: 40px 0 18px; }
+  .sec-head h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px; font-weight: 700; letter-spacing: -0.2px; color: var(--ink-900);
+  }
+  .sec-head .rule { flex: 1; height: 1px; background: var(--border); }
+  .sec-head .count { font-size: 12px; color: var(--ink-400); font-weight: 600; }
+
+  /* ── KPI CARDS ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .kpi-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 18px 18px 16px; box-shadow: var(--shadow-sm);
+    position: relative; overflow: hidden;
+  }
+  .kpi-card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(var(--teal), var(--green)); opacity: 0.95;
+  }
+  .kpi-ic {
+    width: 30px; height: 30px; border-radius: 9px; margin-bottom: 14px;
+    background: var(--teal-soft); border: 1px solid var(--teal-border);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .kpi-ic svg { width: 16px; height: 16px; color: var(--teal-700); }
+  .kpi-label { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--ink-500); margin-bottom: 8px; }
+  .kpi-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 30px; font-weight: 700; letter-spacing: -1px; line-height: 1; color: var(--ink-900);
+  }
+  .kpi-value .unit { font-size: 14px; font-weight: 600; color: var(--ink-400); margin-left: 2px; }
+  .kpi-meta { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .kpi-delta {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 100px;
+  }
+  .kpi-delta.up { color: var(--good); background: var(--good-soft); }
+  .kpi-delta.down { color: var(--bad); background: var(--bad-soft); }
+  .kpi-delta.flat { color: var(--ink-500); background: var(--ink-100); }
+  .kpi-delta svg { width: 11px; height: 11px; }
+  .kpi-vs { font-size: 10.5px; color: var(--ink-400); font-weight: 500; }
+
+  /* ── FUNNEL ── */
+  .panel {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 26px; box-shadow: var(--shadow-sm);
+  }
+  .funnel-svg { width: 100%; height: auto; display: block; }
+  .funnel-legend {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px;
+    border-top: 1px solid var(--ink-100); padding-top: 18px;
+  }
+  .fl-item {
+    flex: 1; min-width: 130px;
+    background: var(--ink-50); border: 1px solid var(--ink-100);
+    border-radius: 10px; padding: 12px 14px;
+  }
+  .fl-stage { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--ink-500); }
+  .fl-count {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 22px; font-weight: 700; color: var(--ink-900); letter-spacing: -0.5px; margin-top: 4px;
+  }
+  .fl-conv { font-size: 11.5px; color: var(--ink-400); margin-top: 3px; }
+  .fl-conv b { color: var(--teal-700); font-weight: 700; }
+
+  /* ── SOURCE TABLE ── */
+  .table-wrap { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow-sm); background: var(--card); }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    text-align: left; font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--ink-500); padding: 13px 16px; background: var(--ink-50); border-bottom: 1px solid var(--border);
+  }
+  thead th.num, tbody td.num { text-align: right; }
+  tbody td { padding: 13px 16px; font-size: 13px; color: var(--ink-700); border-bottom: 1px solid var(--ink-100); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover td { background: var(--ink-50); }
+  tbody tr.total td { background: var(--teal-soft); font-weight: 700; color: var(--ink-900); }
+  tbody td.src { font-weight: 700; color: var(--ink-900); }
+  .tnum { font-variant-numeric: tabular-nums; font-weight: 600; }
+
+  /* conv mini-bar */
+  .cbar-cell { width: 120px; }
+  .cbar { height: 7px; border-radius: 100px; background: var(--track); overflow: hidden; }
+  .cbar > div { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--teal), var(--green)); }
+
+  .pill { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 10px; border-radius: 100px; white-space: nowrap; }
+  .pill.screen { color: var(--ink-700); background: var(--ink-100); border: 1px solid var(--ink-200); }
+  .pill.interview { color: var(--warn); background: var(--warn-soft); border: 1px solid var(--warn-border); }
+  .pill.offer { color: var(--teal-800); background: var(--teal-soft); border: 1px solid var(--teal-border); }
+  .pill.hire { color: var(--good); background: var(--good-soft); border: 1px solid var(--good-border); }
+  .pill.sourcing { color: var(--bad); background: var(--bad-soft); border: 1px solid var(--bad-border); }
+
+  .days { font-variant-numeric: tabular-nums; font-weight: 700; }
+  .days.warn { color: var(--warn); }
+  .days.bad { color: var(--bad); }
+
+  .owner { display: inline-flex; align-items: center; gap: 8px; }
+  .ava {
+    width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: #fff; letter-spacing: 0.3px;
+    background: linear-gradient(135deg, var(--teal), var(--green));
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 46px; padding-top: 24px; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--ink-500);
+  }
+  footer strong { color: var(--ink-700); }
+  footer a { color: var(--teal-700); text-decoration: none; font-weight: 600; }
+  footer .credit { color: var(--ink-400); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .fl-item { min-width: calc(50% - 5px); }
+  }
+  @media (max-width: 600px) {
+    .sheet { padding: 28px 14px 48px; }
+    .kpi-grid { grid-template-columns: 1fr; }
+    header { flex-direction: column; align-items: flex-start; }
+    .head-right { text-align: left; }
+    .cbar-cell { display: none; }
+    .fl-item { min-width: 100%; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; }
+    .sheet { max-width: none; padding: 0; }
+    .kpi-card, .panel, .table-wrap { box-shadow: none; break-inside: avoid; }
+    .sec-head { break-after: avoid; }
+    .kpi-card::before, .cbar > div, .ava, .funnel-svg { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <header>
+    <div class="head-left">
+      <div class="eyebrow">
+        <span class="pin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+        Recruiting Funnel
+      </div>
+      <h1>Hiring Funnel Report <span>— [Company Name]</span></h1>
+      <div class="subtitle">Pipeline health, conversion and source effectiveness across open roles.</div>
+    </div>
+    <div class="head-right">
+      <span class="period">[Q2 2026]</span>
+      <span class="meta-line">Owner: <strong>[Talent Acquisition]</strong></span>
+      <span class="meta-line">Prepared for: <strong>[Hiring Managers]</strong></span>
+      <span class="meta-line">Updated: <strong>[Jun 2026]</strong></span>
+    </div>
+  </header>
+
+  <!-- KPI CARDS -->
+  <div class="sec-head">
+    <h2>Headline Metrics</h2>
+    <div class="rule"></div>
+    <span class="count">[4] KPIs · vs. [prior quarter]</span>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v16"/></svg></div>
+      <div class="kpi-label">[Open Roles]</div>
+      <div class="kpi-value">[24]</div>
+      <div class="kpi-meta">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+[3]</span>
+        <span class="kpi-vs">vs. [21] last quarter</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+      <div class="kpi-label">[In Pipeline]</div>
+      <div class="kpi-value">[1,200]</div>
+      <div class="kpi-meta">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+[14%]</span>
+        <span class="kpi-vs">vs. [1,050] last quarter</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <div class="kpi-label">[Avg. Time-to-Hire]</div>
+      <div class="kpi-value">[32]<span class="unit">days</span></div>
+      <div class="kpi-meta">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12l7 7 7-7"/></svg>−[4] days</span>
+        <span class="kpi-vs">vs. [36] last quarter</span>
+      </div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+      <div class="kpi-label">[Offer-Accept Rate]</div>
+      <div class="kpi-value">[82]<span class="unit">%</span></div>
+      <div class="kpi-meta">
+        <span class="kpi-delta up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 19V5M5 12l7-7 7 7"/></svg>+[5]pp</span>
+        <span class="kpi-vs">vs. [77]% last quarter</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FUNNEL -->
+  <div class="sec-head">
+    <h2>Hiring Funnel</h2>
+    <div class="rule"></div>
+    <span class="count">Applications → Hire · stage-to-stage conversion</span>
+  </div>
+
+  <div class="panel">
+    <!-- Inline SVG funnel: 5 tapering bars, each centred, with stage-to-stage conversion arrows -->
+    <svg class="funnel-svg" viewBox="0 0 720 300" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Hiring funnel from applications to hire">
+      <defs>
+        <linearGradient id="fg" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#14b8a6"/>
+          <stop offset="1" stop-color="#22c55e"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Stage 1: Applications (width 600) -->
+      <rect x="60"  y="20"  width="600" height="44" rx="8" fill="url(#fg)" opacity="0.95"/>
+      <text x="360" y="47" text-anchor="middle" fill="#fff" font-family="Space Grotesk, sans-serif" font-size="15" font-weight="700">[Applications] · [1,200]</text>
+
+      <!-- Stage 2: Screen (width 420) -->
+      <rect x="150" y="76"  width="420" height="44" rx="8" fill="url(#fg)" opacity="0.82"/>
+      <text x="360" y="103" text-anchor="middle" fill="#fff" font-family="Space Grotesk, sans-serif" font-size="15" font-weight="700">[Screen] · [480]</text>
+
+      <!-- Stage 3: Interview (width 252) -->
+      <rect x="234" y="132" width="252" height="44" rx="8" fill="url(#fg)" opacity="0.7"/>
+      <text x="360" y="159" text-anchor="middle" fill="#fff" font-family="Space Grotesk, sans-serif" font-size="14" font-weight="700">[Interview] · [180]</text>
+
+      <!-- Stage 4: Offer (width 132) -->
+      <rect x="294" y="188" width="132" height="44" rx="8" fill="url(#fg)" opacity="0.58"/>
+      <text x="360" y="215" text-anchor="middle" fill="#fff" font-family="Space Grotesk, sans-serif" font-size="13" font-weight="700">[Offer] · [55]</text>
+
+      <!-- Stage 5: Hire (width 84) -->
+      <rect x="318" y="244" width="84"  height="44" rx="8" fill="#0f766e"/>
+      <text x="360" y="271" text-anchor="middle" fill="#fff" font-family="Space Grotesk, sans-serif" font-size="13" font-weight="700">[Hire] · [45]</text>
+
+      <!-- conversion labels (right side) -->
+      <text x="676" y="91"  text-anchor="end" fill="#5e7a72" font-family="Inter, sans-serif" font-size="12" font-weight="700">[40%] →</text>
+      <text x="676" y="147" text-anchor="end" fill="#5e7a72" font-family="Inter, sans-serif" font-size="12" font-weight="700">[38%] →</text>
+      <text x="676" y="203" text-anchor="end" fill="#5e7a72" font-family="Inter, sans-serif" font-size="12" font-weight="700">[31%] →</text>
+      <text x="676" y="259" text-anchor="end" fill="#5e7a72" font-family="Inter, sans-serif" font-size="12" font-weight="700">[82%] →</text>
+    </svg>
+
+    <div class="funnel-legend">
+      <div class="fl-item">
+        <div class="fl-stage">[Applications]</div>
+        <div class="fl-count">[1,200]</div>
+        <div class="fl-conv">top of funnel</div>
+      </div>
+      <div class="fl-item">
+        <div class="fl-stage">[Screen]</div>
+        <div class="fl-count">[480]</div>
+        <div class="fl-conv"><b>[40%]</b> from apps</div>
+      </div>
+      <div class="fl-item">
+        <div class="fl-stage">[Interview]</div>
+        <div class="fl-count">[180]</div>
+        <div class="fl-conv"><b>[38%]</b> from screen</div>
+      </div>
+      <div class="fl-item">
+        <div class="fl-stage">[Offer]</div>
+        <div class="fl-count">[55]</div>
+        <div class="fl-conv"><b>[31%]</b> from interview</div>
+      </div>
+      <div class="fl-item">
+        <div class="fl-stage">[Hire]</div>
+        <div class="fl-count">[45]</div>
+        <div class="fl-conv"><b>[82%]</b> offer-accept</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOURCE EFFECTIVENESS -->
+  <div class="sec-head">
+    <h2>Source Effectiveness</h2>
+    <div class="rule"></div>
+    <span class="count">[5] channels · candidates → hires</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Source</th>
+          <th class="num">Candidates</th>
+          <th class="num">Interviews</th>
+          <th class="num">Hires</th>
+          <th class="num">Conversion</th>
+          <th class="cbar-cell"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="src">[Referrals]</td>
+          <td class="num tnum">[180]</td>
+          <td class="num tnum">[54]</td>
+          <td class="num tnum">[18]</td>
+          <td class="num tnum">[10.0%]</td>
+          <td class="cbar-cell"><div class="cbar"><div style="width:100%"></div></div></td>
+        </tr>
+        <tr>
+          <td class="src">[Job Boards]</td>
+          <td class="num tnum">[560]</td>
+          <td class="num tnum">[62]</td>
+          <td class="num tnum">[12]</td>
+          <td class="num tnum">[2.1%]</td>
+          <td class="cbar-cell"><div class="cbar"><div style="width:21%"></div></div></td>
+        </tr>
+        <tr>
+          <td class="src">[Inbound / Careers Page]</td>
+          <td class="num tnum">[240]</td>
+          <td class="num tnum">[34]</td>
+          <td class="num tnum">[8]</td>
+          <td class="num tnum">[3.3%]</td>
+          <td class="cbar-cell"><div class="cbar"><div style="width:33%"></div></div></td>
+        </tr>
+        <tr>
+          <td class="src">[Sourced / Outbound]</td>
+          <td class="num tnum">[160]</td>
+          <td class="num tnum">[22]</td>
+          <td class="num tnum">[5]</td>
+          <td class="num tnum">[3.1%]</td>
+          <td class="cbar-cell"><div class="cbar"><div style="width:31%"></div></div></td>
+        </tr>
+        <tr>
+          <td class="src">[Agency]</td>
+          <td class="num tnum">[60]</td>
+          <td class="num tnum">[8]</td>
+          <td class="num tnum">[2]</td>
+          <td class="num tnum">[3.3%]</td>
+          <td class="cbar-cell"><div class="cbar"><div style="width:33%"></div></div></td>
+        </tr>
+        <tr class="total">
+          <td>Total</td>
+          <td class="num tnum">[1,200]</td>
+          <td class="num tnum">[180]</td>
+          <td class="num tnum">[45]</td>
+          <td class="num tnum">[3.8%]</td>
+          <td class="cbar-cell"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- OPEN ROLES -->
+  <div class="sec-head">
+    <h2>Open Roles</h2>
+    <div class="rule"></div>
+    <span class="count">[8] of [24] roles</span>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Department</th>
+          <th>Stage</th>
+          <th class="num">Days Open</th>
+          <th>Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="src">[Senior Software Engineer]</td>
+          <td>[Engineering]</td>
+          <td><span class="pill interview">Interview</span></td>
+          <td class="num days">[28]</td>
+          <td><span class="owner"><span class="ava">AR</span>[A. Recruiter]</span></td>
+        </tr>
+        <tr>
+          <td class="src">[Product Manager]</td>
+          <td>[Product]</td>
+          <td><span class="pill offer">Offer</span></td>
+          <td class="num days">[41]</td>
+          <td><span class="owner"><span class="ava">BR</span>[B. Recruiter]</span></td>
+        </tr>
+        <tr>
+          <td class="src">[Account Executive]</td>
+          <td>[Sales]</td>
+          <td><span class="pill screen">Screen</span></td>
+          <td class="num days">[12]</td>
+          <td><span class="owner"><span class="ava">CR</span>[C. Recruiter]</span></td>
+        </tr>
+        <tr>
+          <td class="src">[Data Analyst]</td>
+          <td>[Analytics]</td>
+          <td><span class="pill hire">Hired</span></td>
+          <td class="num days">[24]</td>
+          <td><span class="owner"><span class="ava">AR</span>[A. Recruiter]</span></td>
+        </tr>
+        <tr>
+          <td class="src">[UX Designer]</td>
+          <td>[Design]</td>
+          <td><span class="pill interview">Interview</span></td>
+          <td class="num days warn">[52]</td>
+          <td><span class="owner"><span class="ava">BR</span>[B. Recruiter]</span></td>
+        </tr>
+        <tr>
+          <td class="src">[Customer Success Manager]</td>
+          <td>[Customer Success]</td>
+          <td><span class="pill screen">Screen</span></td>
+          <td class="num days">[19]</td>
+          <td><span class="owner"><span class="ava">CR</span>[C. Recruiter]</span></td>
+        </tr>
+        <tr>
+          <td class="src">[Marketing Lead]</td>
+          <td>[Marketing]</td>
+          <td><span class="pill sourcing">Sourcing</span></td>
+          <td class="num days bad">[68]</td>
+          <td><span class="owner"><span class="ava">AR</span>[A. Recruiter]</span></td>
+        </tr>
+        <tr>
+          <td class="src">[Finance Associate]</td>
+          <td>[Finance]</td>
+          <td><span class="pill offer">Offer</span></td>
+          <td class="num days">[35]</td>
+          <td><span class="owner"><span class="ava">BR</span>[B. Recruiter]</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span><strong>[Company Name]</strong> · Recruiting Funnel Report · [Q2 2026]</span>
+    <span class="credit">Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe</span>
+  </footer>
+
+</div>
+</body>
+</html>

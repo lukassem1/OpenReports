@@ -236,6 +236,60 @@ const REPORTS = [
       pt: "Métricas de suporte: tickets, SLA de primeira resposta, CSAT, backlog e tempo de resolução, com quebra por categoria. SVG inline. Slate.",
     },
   },
+  {
+    id: "sales-pipeline", category: "sales", charts: "embedded",
+    file: "templates/sales-pipeline.html",
+    title: { en: "Sales Pipeline & Forecast", pt: "Pipeline & Forecast de Vendas" },
+    description: {
+      en: "Pipeline by stage with conversion, weighted forecast vs quota, a top-deals table and a by-rep summary. Inline SVG. Blue/emerald.",
+      pt: "Pipeline por estágio com conversão, forecast ponderado vs meta, tabela de top deals e resumo por vendedor. SVG inline. Azul/emerald.",
+    },
+  },
+  {
+    id: "budget-variance", category: "financial", charts: "embedded",
+    file: "templates/budget-variance.html",
+    title: { en: "Budget vs Actual (Variance)", pt: "Orçado vs Realizado (Variação)" },
+    description: {
+      en: "Budget vs actual by line item with variance % and over/under traffic-light pills, plus a diverging variance bar chart. Inline SVG. Navy.",
+      pt: "Orçado vs realizado por linha com variação % e pílulas de over/under, mais gráfico de variação divergente. SVG inline. Navy.",
+    },
+  },
+  {
+    id: "campaign-retro", category: "marketing", charts: "embedded",
+    file: "templates/campaign-retro.html",
+    title: { en: "Campaign Retrospective", pt: "Retrospectiva de Campanha" },
+    description: {
+      en: "A single-campaign retro: goal-vs-result KPIs, channel breakdown, a timeline and a what-worked / what-didn't / next-time section. Coral.",
+      pt: "Retro de uma campanha: KPIs meta-vs-resultado, quebra por canal, timeline e seção do que funcionou / não funcionou / próxima vez. Coral.",
+    },
+  },
+  {
+    id: "recruiting-funnel", category: "people", charts: "embedded",
+    file: "templates/recruiting-funnel.html",
+    title: { en: "Recruiting / Hiring Funnel", pt: "Funil de Recrutamento" },
+    description: {
+      en: "Hiring funnel (applications → hire) with conversion, source effectiveness and an open-roles table. Inline SVG. Teal.",
+      pt: "Funil de contratação (candidaturas → contratado) com conversão, efetividade por fonte e tabela de vagas abertas. SVG inline. Teal.",
+    },
+  },
+  {
+    id: "incident-postmortem", category: "operations", charts: "embedded",
+    file: "templates/incident-postmortem.html",
+    title: { en: "Incident Postmortem", pt: "Postmortem de Incidente" },
+    description: {
+      en: "An incident one-pager: severity, impact metrics, an event timeline, root cause, what-went-well/didn't and an action-items table. Red/slate.",
+      pt: "One-pager de incidente: severidade, métricas de impacto, timeline de eventos, causa-raiz e tabela de ações. Vermelho/slate.",
+    },
+  },
+  {
+    id: "competitive-analysis", category: "strategy", charts: "embedded",
+    file: "templates/competitive-analysis.html",
+    title: { en: "Competitive Analysis", pt: "Análise Competitiva" },
+    description: {
+      en: "A competitor comparison matrix, an inline-SVG 2×2 positioning quadrant, per-competitor strengths/weaknesses and a where-we-win summary. Indigo.",
+      pt: "Matriz de comparação de concorrentes, quadrante 2×2 de posicionamento em SVG, forças/fraquezas por concorrente e resumo. Indigo.",
+    },
+  },
 ];
 
 const CATEGORIES = [
