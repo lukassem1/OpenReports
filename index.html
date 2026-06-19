@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>OpenReports — Beautiful report templates, ready for AI</title>
   <meta name="description" content="A free, open library of static HTML report templates for managerial meetings. Pick a design, download it, and let your AI rebuild it with your data." />
-  <link rel="stylesheet" href="assets/style.css?v=7" />
+  <link rel="stylesheet" href="assets/style.css?v=8" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23c96442'/><text x='50' y='70' font-size='62' text-anchor='middle' fill='white' font-family='Georgia'>O</text></svg>" />
 </head>
 <body>
@@ -33,28 +33,38 @@
   </header>
 
   <main>
-    <section class="wrap hero" id="how">
-      <h1 id="hero-title">Beautiful report templates, <em>ready for AI</em>.</h1>
-      <p class="lead" id="hero-lead">
-        A free, open library of static HTML reports for your managerial meetings.
-        Pick a design you love, download the file, and tell your AI:
-        <em>“make my report in this exact design.”</em>
-      </p>
-      <div class="steps">
-        <div class="step">
-          <div class="n">1</div>
-          <h3 id="step1-h">Browse &amp; pick</h3>
-          <p id="step1-p">Find a report design that fits your meeting — sales, finance, KPIs, marketing.</p>
+    <section class="hero" id="how">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="wrap hero-inner">
+        <div class="hero-badge" id="hero-badge"></div>
+        <h1 id="hero-title">Beautiful report templates, <em>ready for AI</em>.</h1>
+        <p class="lead" id="hero-lead">
+          A free, open library of static HTML reports for your managerial meetings.
+          Pick a design you love, download the file, and tell your AI:
+          <em>“make my report in this exact design.”</em>
+        </p>
+        <div class="hero-cta">
+          <a class="cta cta-primary" id="cta-browse" href="#gallery">Browse templates</a>
+          <a class="cta cta-ghost" id="cta-star" href="https://github.com/lukassem1/OpenReports" target="_blank" rel="noopener">★ Star on GitHub</a>
         </div>
-        <div class="step">
-          <div class="n">2</div>
-          <h3 id="step2-h">Download or copy the prompt</h3>
-          <p id="step2-p">Grab the self-contained HTML file and the ready-made prompt with one click.</p>
-        </div>
-        <div class="step">
-          <div class="n">3</div>
-          <h3 id="step3-h">Drop it in your AI chat</h3>
-          <p id="step3-p">Attach the file, paste your data, and get your own polished report back.</p>
+        <div class="hero-stats" id="hero-stats"></div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+            <h3 id="step1-h">Browse &amp; pick</h3>
+            <p id="step1-p">Find a report design that fits your meeting — sales, finance, KPIs, marketing.</p>
+          </div>
+          <div class="step">
+            <div class="step-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg></div>
+            <h3 id="step2-h">Download or copy the prompt</h3>
+            <p id="step2-p">Grab the self-contained HTML file and the ready-made prompt with one click.</p>
+          </div>
+          <div class="step">
+            <div class="step-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 11.5a8 8 0 0 1-8 8H7l-4 3V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 7.5Z"/></svg></div>
+            <h3 id="step3-h">Drop it in your AI chat</h3>
+            <p id="step3-p">Attach the file, paste your data, and get your own polished report back.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -82,6 +92,7 @@
       </div>
       <div class="count" id="count"></div>
       <div class="grid" id="grid"><!-- cards injected --></div>
+      <nav class="pager" id="pager" aria-label="Pagination"></nav>
     </section>
   </main>
 
@@ -105,6 +116,6 @@
     <iframe id="viewer-frame" title="Report preview"></iframe>
   </div>
 
-  <script src="assets/app.js?v=7"></script>
+  <script src="assets/app.js?v=8"></script>
 </body>
 </html>

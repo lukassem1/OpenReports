@@ -320,6 +320,11 @@ const T = {
     step3h: "Drop it in your AI chat", step3p: "Attach the file, paste your data, and get your own polished report back.",
     fAll: "All charts", fEmbedded: "Self-contained", fInteractive: "Interactive",
     sortFeatured: "Featured", sortDownloads: "Most downloaded",
+    prev: "‹ Prev", next: "Next ›",
+    heroBadge: "free, MIT-licensed report templates",
+    ctaBrowse: "Browse templates", ctaStar: "Star on GitHub",
+    statTemplates: "templates", statCategories: "categories",
+    statContained: "self-contained", statLicense: "license",
     searchPh: "Search templates…",
     count: (n) => `${n} template${n === 1 ? "" : "s"}`,
     preview: "Preview", download: "Download", copy: "Copy AI prompt",
@@ -341,6 +346,11 @@ const T = {
     step3h: "Cole no chat da sua IA", step3p: "Anexe o arquivo, cole seus dados e receba seu relatório pronto.",
     fAll: "Todos", fEmbedded: "Autossuficiente", fInteractive: "Interativo",
     sortFeatured: "Em destaque", sortDownloads: "Mais baixados",
+    prev: "‹ Anterior", next: "Próxima ›",
+    heroBadge: "modelos de relatório gratuitos, licença MIT",
+    ctaBrowse: "Ver modelos", ctaStar: "Estrela no GitHub",
+    statTemplates: "modelos", statCategories: "categorias",
+    statContained: "autossuficiente", statLicense: "licença",
     searchPh: "Buscar modelos…",
     count: (n) => `${n} modelo${n === 1 ? "" : "s"}`,
     preview: "Visualizar", download: "Baixar", copy: "Copiar prompt de IA",
@@ -356,7 +366,8 @@ const T = {
 };
 
 let lang = localStorage.getItem("or-lang") || "en";
-const state = { category: "all", charts: "all", q: "", sort: "featured" };
+const PAGE_SIZE = 12;
+const state = { category: "all", charts: "all", q: "", sort: "featured", page: 1 };
 const $ = (id) => document.getElementById(id);
 const tr = (o) => (o && o[lang]) || (o && o.en) || o;
 
@@ -492,10 +503,17 @@ function render() {
     list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
   }
 
-  grid.innerHTML = list.length
-    ? list.map(cardHTML).join("")
+  const total = list.length;
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if (state.page > pages) state.page = pages;
+  const startIdx = (state.page - 1) * PAGE_SIZE;
+  const pageItems = list.slice(startIdx, startIdx + PAGE_SIZE);
+
+  grid.innerHTML = pageItems.length
+    ? pageItems.map(cardHTML).join("")
     : `<div class="empty">${T[lang].empty}</div>`;
-  $("count").textContent = T[lang].count(list.length);
+  $("count").textContent = T[lang].count(total);
+  renderPagination(pages);
 
   grid.querySelectorAll("[data-prompt]").forEach((b) =>
     b.addEventListener("click", () => copyText(buildPrompt(byId(b.dataset.prompt)), T[lang].copied)));
@@ -524,9 +542,33 @@ function buildChips() {
       box.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
       chip.classList.add("active");
       state.category = chip.dataset.cat;
+      state.page = 1;
       render();
     });
   });
+}
+
+/* ---------- pagination ---------- */
+function renderPagination(pages) {
+  const pager = $("pager");
+  if (!pager) return;
+  if (pages <= 1) { pager.innerHTML = ""; return; }
+  const s = T[lang];
+  let html = `<button class="pg-btn" data-pg="prev" ${state.page === 1 ? "disabled" : ""}>${s.prev}</button>`;
+  for (let p = 1; p <= pages; p++)
+    html += `<button class="pg-num ${p === state.page ? "active" : ""}" data-pg="${p}">${p}</button>`;
+  html += `<button class="pg-btn" data-pg="next" ${state.page === pages ? "disabled" : ""}>${s.next}</button>`;
+  pager.innerHTML = html;
+  pager.querySelectorAll("[data-pg]").forEach((b) =>
+    b.addEventListener("click", () => {
+      const v = b.dataset.pg;
+      if (v === "prev") state.page = Math.max(1, state.page - 1);
+      else if (v === "next") state.page = Math.min(pages, state.page + 1);
+      else state.page = parseInt(v, 10) || 1;
+      render();
+      const g = $("gallery");
+      if (g) window.scrollTo({ top: g.offsetTop - 60, behavior: "smooth" });
+    }));
 }
 
 /* ---------- viewer (full page in-site, preserves gallery scroll) ---------- */
@@ -572,9 +614,25 @@ function applyLang() {
     $("viewer-back-label").textContent = s.viewerBack;
     $("viewer-open-label").textContent = s.viewerOpen;
     $("viewer-download-label").textContent = s.viewerDownload;
+    decorateHero();
   } catch (e) { console.error("OpenReports: i18n labels failed", e); }
   buildChips();
   render();
+}
+
+/* Dynamic hero badge, CTAs and stats (auto-counts templates & categories). */
+function decorateHero() {
+  const s = T[lang];
+  const tc = REPORTS.length;
+  const cc = CATEGORIES.length - 1; // minus "All"
+  const set = (id, html) => { const el = $(id); if (el) el.innerHTML = html; };
+  set("hero-badge", `<span class="spark">✦</span> ${tc} ${s.heroBadge}`);
+  set("cta-browse", s.ctaBrowse);
+  set("cta-star", `★ ${s.ctaStar}`);
+  set("hero-stats", [
+    [tc, s.statTemplates], [cc, s.statCategories],
+    ["100%", s.statContained], ["MIT", s.statLicense],
+  ].map(([n, l]) => `<span><b>${n}</b> ${l}</span>`).join(""));
 }
 
 function setLang(l) {
@@ -614,19 +672,19 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('.seg [data-charts]').forEach((b) =>
       b.addEventListener("click", () => {
         document.querySelectorAll('.seg [data-charts]').forEach((x) => x.classList.remove("active"));
-        b.classList.add("active"); state.charts = b.dataset.charts; render();
+        b.classList.add("active"); state.charts = b.dataset.charts; state.page = 1; render();
       }));
     // sort: Featured vs Most downloaded
     document.querySelectorAll('#sort-seg button').forEach((b) =>
       b.addEventListener("click", () => {
         document.querySelectorAll('#sort-seg button').forEach((x) => x.classList.remove("active"));
-        b.classList.add("active"); state.sort = b.dataset.sort; render();
+        b.classList.add("active"); state.sort = b.dataset.sort; state.page = 1; render();
       }));
     let searchT;
     $("search-input").addEventListener("input", (e) => {
       const v = e.target.value;
       clearTimeout(searchT);
-      searchT = setTimeout(() => { state.q = v; render(); }, 220);
+      searchT = setTimeout(() => { state.q = v; state.page = 1; render(); }, 220);
     });
     document.querySelectorAll("#lang-toggle button").forEach((b) =>
       b.addEventListener("click", () => setLang(b.dataset.lang)));
