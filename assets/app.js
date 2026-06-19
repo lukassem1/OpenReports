@@ -363,7 +363,7 @@ const CATEGORIES = [
 const T = {
   en: {
     navHow: "How it works", navTemplates: "Templates",
-    heroTitle: 'Beautiful report templates, <em>ready for AI</em>.',
+    heroTitle: 'Templates for <em>management reports</em>, built with AI.',
     heroLead: 'A free, open library of static HTML reports for your managerial meetings. Pick a design you love, download the file, and tell your AI: <em>“make my report in this exact design.”</em>',
     step1h: "Browse & pick", step1p: "Find a report design that fits your meeting — sales, finance, KPIs, marketing.",
     step2h: "Download or copy the prompt", step2p: "Grab the self-contained HTML file and the ready-made prompt with one click.",
@@ -389,7 +389,7 @@ const T = {
   },
   pt: {
     navHow: "Como funciona", navTemplates: "Modelos",
-    heroTitle: 'Relatórios lindos, <em>prontos pra IA</em>.',
+    heroTitle: 'Templates para <em>relatórios gerenciais</em>, feitos com IA.',
     heroLead: 'Uma biblioteca aberta e gratuita de relatórios em HTML estático para suas reuniões gerenciais. Escolha um design, baixe o arquivo e peça pra sua IA: <em>“faça meu relatório nesse mesmo design.”</em>',
     step1h: "Navegue & escolha", step1p: "Ache um design que combine com sua reunião — vendas, finanças, KPIs, marketing.",
     step2h: "Baixe ou copie o prompt", step2p: "Pegue o HTML autossuficiente e o prompt pronto com um clique.",
