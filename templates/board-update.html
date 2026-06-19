@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investor Update — [Company Name]</title>
+<!--
+  OpenReports template · "Investor / Board Update (one-pager)"
+  Concise editorial monthly update. Colour scheme: Warm Navy / Parchment.
+  Fonts via Google Fonts (graceful Georgia / system fallback offline).
+  Every [ ... ] placeholder and round example number is sample copy —
+  replace it all with your own. Re-skin entirely from :root. No chart library.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ---- Warm Navy / Parchment scheme — change these to re-skin ---- */
+    --navy:#1c2a3a;          /* primary ink · deep navy */
+    --navy-soft:#3a506b;     /* secondary ink */
+    --accent:#b5651d;        /* warm amber accent */
+    --accent-soft:#d89a52;
+    --paper:#f6f1e7;         /* page background · parchment */
+    --paper-2:#fbf8f1;       /* elevated surface */
+    --card:#ffffff;          /* cards */
+    --ink:#22272e;           /* body text */
+    --ink-soft:#5e6670;      /* muted text */
+    --line:#e3dccb;          /* borders */
+    --good:#2f7d56;          /* positive · green */
+    --bad:#b23a3a;           /* negative · red */
+    --shadow:0 1px 2px rgba(28,42,58,.06), 0 14px 34px rgba(28,42,58,.08);
+    --shadow-sm:0 1px 2px rgba(28,42,58,.05), 0 5px 16px rgba(28,42,58,.07);
+    --radius:16px;
+    --radius-sm:10px;
+    --maxw:880px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1200px 600px at 100% -10%, rgba(181,101,29,.06), transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--accent);color:#fff}
+
+  h1,h2,h3,h4{font-family:'Fraunces',Georgia,serif;font-weight:600;letter-spacing:-.01em;line-height:1.12;color:var(--navy);margin:0}
+  .mono{font-family:'JetBrains Mono',monospace}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  .sheet{
+    max-width:var(--maxw);
+    margin:36px auto;
+    padding:0 22px;
+  }
+  .page{
+    background:var(--paper-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:44px 48px 30px;
+    position:relative;
+    overflow:hidden;
+  }
+  .page::before{
+    content:"";position:absolute;left:0;top:0;height:6px;width:100%;
+    background:linear-gradient(90deg,var(--navy),var(--accent) 70%,var(--accent-soft));
+  }
+
+  /* ---- header ---- */
+  header.head{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    gap:24px;flex-wrap:wrap;
+    padding-bottom:22px;margin-bottom:26px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .mark{
+    width:40px;height:40px;border-radius:11px;flex:none;
+    background:linear-gradient(140deg,var(--navy),var(--navy-soft));
+    display:grid;place-items:center;color:var(--paper-2);
+    font-family:'Fraunces',serif;font-weight:600;font-size:1.25rem;
+    box-shadow:var(--shadow-sm);
+  }
+  .brand .co{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;color:var(--navy);line-height:1.1}
+  .brand .sub{font-size:.78rem;color:var(--ink-soft);letter-spacing:.02em}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--accent);font-weight:600;margin:0 0 8px;
+  }
+  .head .meta{text-align:right;font-size:.82rem;color:var(--ink-soft);line-height:1.5}
+  .head .meta b{color:var(--navy);font-weight:600}
+  h1.title{font-size:2.05rem;margin-top:4px}
+  h1.title .month{color:var(--accent)}
+
+  /* ---- headline metrics ---- */
+  .metrics{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 30px;
+  }
+  .metric{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:16px 16px 14px;box-shadow:var(--shadow-sm);
+  }
+  .metric .lab{
+    font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.13em;
+    text-transform:uppercase;color:var(--ink-soft);margin-bottom:8px;
+  }
+  .metric .val{font-family:'Fraunces',serif;font-weight:600;font-size:1.62rem;color:var(--navy);line-height:1}
+  .metric .delta{font-size:.76rem;font-weight:600;margin-top:7px;display:inline-flex;align-items:center;gap:4px}
+  .delta.up{color:var(--good)}
+  .delta.down{color:var(--bad)}
+  .delta .arr{font-size:.7rem}
+
+  /* ---- TL;DR ---- */
+  .tldr{
+    background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:var(--radius-sm);padding:18px 20px;margin:0 0 30px;box-shadow:var(--shadow-sm);
+  }
+  .tldr h2{font-size:.82rem;font-family:'JetBrains Mono',monospace;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:8px}
+  .tldr p{margin:0;font-size:1.02rem;line-height:1.6;color:var(--ink)}
+  .tldr p .lede{font-family:'Fraunces',serif;font-weight:600;color:var(--navy)}
+
+  /* ---- two columns ---- */
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:0 0 30px}
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:20px 22px;box-shadow:var(--shadow-sm);
+  }
+  .panel h3{font-size:1.12rem;display:flex;align-items:center;gap:9px;margin-bottom:12px}
+  .panel h3 .dot{width:10px;height:10px;border-radius:50%;flex:none}
+  .high .dot{background:var(--good)}
+  .low .dot{background:var(--bad)}
+  .panel ul{list-style:none;margin:0;padding:0}
+  .panel li{position:relative;padding-left:22px;margin-bottom:11px;font-size:.93rem;line-height:1.5;color:var(--ink)}
+  .panel li:last-child{margin-bottom:0}
+  .panel li::before{
+    content:"";position:absolute;left:2px;top:7px;width:9px;height:9px;border-radius:2px;transform:rotate(45deg);
+  }
+  .high li::before{background:var(--good)}
+  .low li::before{background:var(--bad)}
+  .panel li b{color:var(--navy);font-weight:600}
+
+  /* ---- key asks ---- */
+  .asks{
+    background:linear-gradient(150deg,var(--navy),var(--navy-soft));
+    color:var(--paper-2);border-radius:var(--radius);padding:24px 26px;margin:0 0 30px;
+    box-shadow:var(--shadow);
+  }
+  .asks h2{color:var(--paper-2);font-size:1.28rem;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+  .asks h2 .tag{
+    font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.16em;
+    background:var(--accent);color:#fff;padding:4px 9px;border-radius:6px;font-weight:600;
+    text-transform:uppercase;
+  }
+  .asks ol{margin:0;padding-left:20px}
+  .asks li{margin-bottom:10px;font-size:.95rem;line-height:1.55;color:#eee4d3}
+  .asks li:last-child{margin-bottom:0}
+  .asks li b{color:#fff;font-weight:600}
+
+  /* ---- KPI table ---- */
+  .kpi h2{font-size:1.3rem;margin-bottom:4px}
+  .kpi .note{font-size:.8rem;color:var(--ink-soft);margin:0 0 14px}
+  table{width:100%;border-collapse:collapse;font-size:.9rem;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden}
+  thead th{
+    font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:600;text-align:right;padding:12px 16px;
+    background:var(--paper);border-bottom:1px solid var(--line);
+  }
+  thead th:first-child{text-align:left}
+  tbody td{padding:12px 16px;text-align:right;border-bottom:1px solid var(--line);color:var(--ink)}
+  tbody td:first-child{text-align:left;font-weight:600;color:var(--navy)}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:nth-child(even){background:rgba(181,101,29,.03)}
+  td .tgt{color:var(--ink-soft)}
+  .pill{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:600;
+    padding:2px 8px;border-radius:20px}
+  .pill.ok{background:rgba(47,125,86,.12);color:var(--good)}
+  .pill.warn{background:rgba(181,101,29,.14);color:var(--accent)}
+  .pill.miss{background:rgba(178,58,58,.12);color:var(--bad)}
+
+  /* ---- footer ---- */
+  footer.foot{
+    margin-top:26px;padding-top:18px;border-top:1px solid var(--line);
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-size:.78rem;color:var(--ink-soft);
+  }
+  footer.foot .conf{font-family:'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;font-size:.66rem}
+
+  /* ---- responsive ---- */
+  @media (max-width:720px){
+    .page{padding:30px 22px 24px}
+    .metrics{grid-template-columns:repeat(2,1fr)}
+    .cols{grid-template-columns:1fr}
+    h1.title{font-size:1.7rem}
+    .head .meta{text-align:left}
+  }
+  @media (max-width:430px){
+    .metrics{grid-template-columns:1fr}
+  }
+
+  /* ---- print ---- */
+  @media print{
+    body{background:#fff}
+    .sheet{margin:0;padding:0}
+    .page{box-shadow:none;border:none;border-radius:0;padding:18px}
+    .metric,.panel,.tldr,table,.asks{box-shadow:none}
+    .asks{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <article class="page">
+
+    <!-- HEADER -->
+    <header class="head">
+      <div>
+        <p class="eyebrow">Investor &amp; Board Update</p>
+        <div class="brand">
+          <div class="mark">[C]</div>
+          <div>
+            <div class="co">[Company Name]</div>
+            <div class="sub">[One-line company descriptor — what you do]</div>
+          </div>
+        </div>
+        <h1 class="title">Monthly Update — <span class="month">[Month YYYY]</span></h1>
+      </div>
+      <div class="meta">
+        <div><b>Prepared by</b> [Founder Name], [Title]</div>
+        <div><b>Distribution</b> [Board &amp; Investors]</div>
+        <div><b>Issued</b> [DD Mon YYYY]</div>
+        <div class="mono" style="margin-top:6px;color:var(--accent)">CONFIDENTIAL</div>
+      </div>
+    </header>
+
+    <!-- HEADLINE METRICS -->
+    <section class="metrics" aria-label="Headline metrics">
+      <div class="metric">
+        <div class="lab">[MRR / Revenue]</div>
+        <div class="val">$[120]k</div>
+        <div class="delta up"><span class="arr">▲</span> [+8]% MoM</div>
+      </div>
+      <div class="metric">
+        <div class="lab">Growth (MoM)</div>
+        <div class="val">[8]%</div>
+        <div class="delta up"><span class="arr">▲</span> vs [6]% last</div>
+      </div>
+      <div class="metric">
+        <div class="lab">Runway</div>
+        <div class="val">[14] mo</div>
+        <div class="delta down"><span class="arr">▼</span> [−1] mo MoM</div>
+      </div>
+      <div class="metric">
+        <div class="lab">Net burn</div>
+        <div class="val">$[60]k</div>
+        <div class="delta up"><span class="arr">▼</span> [−5]% MoM</div>
+      </div>
+    </section>
+
+    <!-- TL;DR -->
+    <section class="tldr">
+      <h2>TL;DR</h2>
+      <p><span class="lede">[A solid month.]</span> [In one short paragraph, summarise the headline for a busy reader: where revenue landed, the single most important win, the single biggest concern, and what you need from the board this month. Keep it to three or four sentences — round, illustrative numbers only, e.g. [Company Name] grew [MRR] to about $[120]k (~[+8]% MoM) while holding net burn near $[60]k, leaving roughly [14] months of runway.]</p>
+    </section>
+
+    <!-- HIGHLIGHTS / LOWLIGHTS -->
+    <section class="cols">
+      <div class="panel high">
+        <h3><span class="dot"></span>Highlights</h3>
+        <ul>
+          <li><b>[Launched [Feature]]</b> — [adopted by ~[40]% of active accounts in the first two weeks.]</li>
+          <li><b>[Closed [Customer segment]]</b> — [signed [5] new logos, including [2] above $[20]k ACV.]</li>
+          <li><b>[Hired [Role]]</b> — [filled the [VP/Lead] seat; team now at [18] people.]</li>
+          <li><b>[Efficiency]</b> — [CAC payback improved to ~[10] months from [13].]</li>
+        </ul>
+      </div>
+      <div class="panel low">
+        <h3><span class="dot"></span>Lowlights</h3>
+        <ul>
+          <li><b>[Churn ticked up]</b> — [logo churn rose to ~[3]% on two [segment] accounts.]</li>
+          <li><b>[Pipeline soft]</b> — [top-of-funnel down ~[15]% vs plan in [region/channel].]</li>
+          <li><b>[Hiring gap]</b> — [[Role] search slipped a month; impacting [roadmap item].]</li>
+          <li><b>[Infra cost]</b> — [cloud spend ran ~[10]% over budget; mitigation underway.]</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- KEY ASKS -->
+    <section class="asks">
+      <h2><span class="tag">Key asks</span>How the board can help</h2>
+      <ol>
+        <li><b>[Intros]</b> — [warm introductions to [2–3] prospects in [target segment]; list shared separately.]</li>
+        <li><b>[Hiring]</b> — [referrals for the [Senior Role] search — sourcing is the gating factor on [initiative].]</li>
+        <li><b>[Decision]</b> — [sign-off on the [Plan / Budget item] so we can commit by [date].]</li>
+      </ol>
+    </section>
+
+    <!-- KPI TABLE -->
+    <section class="kpi">
+      <h2>Key metrics</h2>
+      <p class="note">This month vs last month vs target — replace every value with your own.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>This month</th>
+            <th>Last month</th>
+            <th>Target</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>[MRR]</td>
+            <td>$[120]k</td>
+            <td>$[111]k</td>
+            <td class="tgt">$[125]k</td>
+            <td><span class="pill warn">On track</span></td>
+          </tr>
+          <tr>
+            <td>New ARR added</td>
+            <td>$[90]k</td>
+            <td>$[75]k</td>
+            <td class="tgt">$[85]k</td>
+            <td><span class="pill ok">Ahead</span></td>
+          </tr>
+          <tr>
+            <td>Net revenue retention</td>
+            <td>[108]%</td>
+            <td>[106]%</td>
+            <td class="tgt">[110]%</td>
+            <td><span class="pill warn">On track</span></td>
+          </tr>
+          <tr>
+            <td>Logo churn</td>
+            <td>[3.0]%</td>
+            <td>[2.2]%</td>
+            <td class="tgt">[2.0]%</td>
+            <td><span class="pill miss">Behind</span></td>
+          </tr>
+          <tr>
+            <td>Net burn</td>
+            <td>$[60]k</td>
+            <td>$[63]k</td>
+            <td class="tgt">$[65]k</td>
+            <td><span class="pill ok">Ahead</span></td>
+          </tr>
+          <tr>
+            <td>Runway</td>
+            <td>[14] mo</td>
+            <td>[15] mo</td>
+            <td class="tgt">[12]+ mo</td>
+            <td><span class="pill ok">Healthy</span></td>
+          </tr>
+          <tr>
+            <td>Active customers</td>
+            <td>[320]</td>
+            <td>[305]</td>
+            <td class="tgt">[330]</td>
+            <td><span class="pill warn">On track</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="foot">
+      <span class="conf">[Company Name] · Confidential — for board &amp; investors only</span>
+      <span>Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe.</span>
+    </footer>
+
+  </article>
+</div>
+</body>
+</html>

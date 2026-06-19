@@ -182,6 +182,60 @@ const REPORTS = [
       pt: "Scorecard de uma página: cards de KPI com sparklines em SVG e deltas, barras de progresso até a meta e tabela compacta. Autossuficiente. Slate.",
     },
   },
+  {
+    id: "okr-tracker", category: "okr", charts: "embedded",
+    file: "templates/okr-tracker.html",
+    title: { en: "OKR Tracker", pt: "Tracker de OKRs" },
+    description: {
+      en: "Quarterly OKRs & goals: objectives with key-result progress bars, confidence pills (on track / at risk / off track) and owners. Self-contained. Indigo.",
+      pt: "OKRs & metas do trimestre: objetivos com barras de progresso dos resultados-chave, pílulas de confiança e responsáveis. Autossuficiente. Indigo.",
+    },
+  },
+  {
+    id: "customer-success", category: "success", charts: "embedded",
+    file: "templates/customer-success.html",
+    title: { en: "Customer Success / NPS Report", pt: "Relatório de Customer Success / NPS" },
+    description: {
+      en: "NPS, net retention, churn and health: KPI cards, an NPS breakdown, a retention trend and a top-accounts health table. Inline SVG. Teal.",
+      pt: "NPS, retenção líquida, churn e health: cards de KPI, quebra de NPS, tendência de retenção e tabela de saúde das contas. SVG inline. Teal.",
+    },
+  },
+  {
+    id: "board-update", category: "strategy", charts: "embedded",
+    file: "templates/board-update.html",
+    title: { en: "Investor / Board Update", pt: "Update de Investidores / Conselho" },
+    description: {
+      en: "A concise monthly investor one-pager: headline metrics, TL;DR, highlights & lowlights, key asks and a KPI table. Editorial serif. Navy.",
+      pt: "One-pager executivo mensal: métricas-chave, TL;DR, destaques e pontos de atenção, pedidos e tabela de KPIs. Editorial em serifa. Navy.",
+    },
+  },
+  {
+    id: "product-analytics", category: "product", charts: "embedded",
+    file: "templates/product-analytics.html",
+    title: { en: "Product Analytics", pt: "Analytics de Produto" },
+    description: {
+      en: "Activation, retention and adoption: KPI cards, a retention cohort heatmap, feature-adoption bars and an activation funnel. Inline SVG. Violet.",
+      pt: "Ativação, retenção e adoção: cards de KPI, heatmap de cohort de retenção, barras de adoção de features e funil de ativação. SVG inline. Violeta.",
+    },
+  },
+  {
+    id: "people-deck", category: "people", charts: "chartjs",
+    file: "templates/people-deck.html",
+    title: { en: "People & HR Review (deck)", pt: "Revisão de Pessoas & RH (deck)" },
+    description: {
+      en: "A People/HR review as a slide deck: headcount, hiring funnel, attrition, eNPS, diversity and comp. Interactive Chart.js. Teal.",
+      pt: "Revisão de Pessoas/RH em formato deck: headcount, funil de contratação, turnover, eNPS, diversidade e remuneração. Chart.js interativo. Teal.",
+    },
+  },
+  {
+    id: "service-desk", category: "operations", charts: "embedded",
+    file: "templates/service-desk.html",
+    title: { en: "Service Desk Report", pt: "Relatório de Service Desk" },
+    description: {
+      en: "Support metrics: tickets, first-response SLA, CSAT, backlog and resolution time, with a category breakdown. Inline SVG. Slate.",
+      pt: "Métricas de suporte: tickets, SLA de primeira resposta, CSAT, backlog e tempo de resolução, com quebra por categoria. SVG inline. Slate.",
+    },
+  },
 ];
 
 const CATEGORIES = [
@@ -196,6 +250,9 @@ const CATEGORIES = [
   { key: "review", label: { en: "Annual Review", pt: "Retrospectiva Anual" } },
   { key: "analysis", label: { en: "Analysis / Study", pt: "Análise / Estudo" } },
   { key: "deck", label: { en: "Presentation / Deck", pt: "Apresentação / Deck" } },
+  { key: "okr", label: { en: "Goals / OKRs", pt: "Metas / OKRs" } },
+  { key: "success", label: { en: "Customer Success", pt: "Customer Success" } },
+  { key: "product", label: { en: "Product", pt: "Produto" } },
 ];
 
 /* ---------- UI strings ---------- */

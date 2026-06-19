@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OKR Tracker — [Company Name]</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --indigo: #4f46e5;
+    --indigo-700: #4338ca;
+    --indigo-soft: #eef2ff;
+    --indigo-border: #c7d2fe;
+    --blue: #2563eb;
+
+    --ink: #1e1b2e;
+    --slate-900: #1e293b;
+    --slate-700: #334155;
+    --slate-500: #64748b;
+    --slate-400: #94a3b8;
+    --slate-300: #cbd5e1;
+    --slate-200: #e2e8f0;
+    --slate-100: #f1f5f9;
+    --slate-50:  #f8fafc;
+
+    --bg: #f3f4fb;
+    --card: #ffffff;
+    --border: #e7e9f3;
+
+    --on: #16a34a;
+    --on-soft: #f0fdf4;
+    --on-border: #bbf7d0;
+    --risk: #d97706;
+    --risk-soft: #fffbeb;
+    --risk-border: #fde68a;
+    --off: #dc2626;
+    --off-soft: #fef2f2;
+    --off-border: #fecaca;
+
+    --track: #ebedf6;
+    --shadow-sm: 0 1px 2px rgba(30,27,46,0.05), 0 1px 3px rgba(30,27,46,0.04);
+    --shadow: 0 6px 22px rgba(30,27,46,0.07);
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--slate-900);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .sheet {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 40px 32px 64px;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative;
+    background: linear-gradient(135deg, var(--indigo-700) 0%, var(--indigo) 55%, #6366f1 100%);
+    color: #fff;
+    border-radius: 18px;
+    padding: 30px 32px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    position: absolute; right: -60px; top: -60px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  header::before {
+    content: '';
+    position: absolute; right: 70px; bottom: -90px;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .head-top {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    flex-wrap: wrap; gap: 20px; position: relative; z-index: 1;
+  }
+  .head-left .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
+    text-transform: uppercase; color: rgba(255,255,255,0.75); margin-bottom: 10px;
+  }
+  .head-left h1 {
+    font-size: 30px; font-weight: 800; letter-spacing: -0.8px; line-height: 1.1;
+  }
+  .head-left h1 span { color: rgba(255,255,255,0.7); font-weight: 600; }
+  .head-left .subtitle { font-size: 13.5px; color: rgba(255,255,255,0.78); margin-top: 8px; max-width: 460px; }
+  .head-right { text-align: right; }
+  .head-right .quarter {
+    display: inline-block;
+    font-size: 13px; font-weight: 800; letter-spacing: 0.5px;
+    color: #fff; background: rgba(255,255,255,0.16);
+    border: 1px solid rgba(255,255,255,0.28);
+    padding: 7px 16px; border-radius: 8px;
+  }
+  .head-right .meta-line { display: block; font-size: 12px; color: rgba(255,255,255,0.78); margin-top: 8px; line-height: 1.7; }
+  .head-right .meta-line strong { color: #fff; font-weight: 600; }
+
+  /* ── OVERALL PROGRESS SUMMARY ── */
+  .summary {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 0;
+    margin-top: 26px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.20);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .summary .cell {
+    padding: 16px 20px;
+    border-right: 1px solid rgba(255,255,255,0.16);
+  }
+  .summary .cell:last-child { border-right: none; }
+  .summary .cell .lab {
+    font-size: 10px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 8px;
+  }
+  .summary .cell .val { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; line-height: 1; }
+  .summary .cell .val small { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.7); }
+  .summary .cell .sub { font-size: 11px; color: rgba(255,255,255,0.72); margin-top: 6px; }
+
+  .summary .big-bar {
+    margin-top: 12px; height: 8px; border-radius: 100px;
+    background: rgba(255,255,255,0.22); overflow: hidden;
+  }
+  .summary .big-bar > div { height: 100%; border-radius: 100px; background: #fff; }
+
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .chip {
+    font-size: 10.5px; font-weight: 700; padding: 3px 9px; border-radius: 100px;
+    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.26); color: #fff;
+  }
+  .chip i { font-style: normal; }
+  .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 5px; vertical-align: middle; }
+  .dot.g { background: #4ade80; }
+  .dot.a { background: #fbbf24; }
+  .dot.r { background: #f87171; }
+
+  /* ── SECTION HEAD ── */
+  .sec-head {
+    display: flex; align-items: baseline; gap: 12px;
+    margin: 42px 0 18px;
+  }
+  .sec-head h2 {
+    font-size: 13px; font-weight: 800; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--slate-700);
+  }
+  .sec-head .rule { flex: 1; height: 1px; background: var(--border); }
+  .sec-head .count { font-size: 12px; color: var(--slate-400); font-weight: 600; }
+
+  /* ── OBJECTIVE BLOCK ── */
+  .objective {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+  .obj-head {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 18px; padding: 20px 24px 18px;
+    border-bottom: 1px solid var(--slate-100);
+    border-left: 4px solid var(--indigo);
+  }
+  .objective.is-risk .obj-head { border-left-color: var(--risk); }
+  .objective.is-off  .obj-head { border-left-color: var(--off); }
+
+  .obj-head .o-meta { min-width: 0; }
+  .obj-id {
+    font-size: 11px; font-weight: 800; letter-spacing: 1px;
+    color: var(--indigo); text-transform: uppercase; margin-bottom: 5px;
+  }
+  .obj-title { font-size: 18px; font-weight: 800; letter-spacing: -0.4px; color: var(--slate-900); line-height: 1.25; }
+  .obj-owner { font-size: 12.5px; color: var(--slate-500); margin-top: 7px; }
+  .obj-owner strong { color: var(--slate-700); font-weight: 600; }
+  .obj-owner .sep { color: var(--slate-300); margin: 0 8px; }
+
+  .obj-right { text-align: right; flex-shrink: 0; }
+  .confidence {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 700;
+    padding: 6px 13px; border-radius: 100px;
+    white-space: nowrap;
+  }
+  .confidence.on  { color: var(--on);  background: var(--on-soft);  border: 1px solid var(--on-border); }
+  .confidence.risk{ color: var(--risk);background: var(--risk-soft);border: 1px solid var(--risk-border); }
+  .confidence.off { color: var(--off); background: var(--off-soft); border: 1px solid var(--off-border); }
+  .confidence .cdot { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+  .obj-prog { font-size: 11px; color: var(--slate-400); font-weight: 600; margin-top: 8px; }
+  .obj-prog b { font-size: 17px; color: var(--slate-900); font-weight: 800; }
+
+  /* ── KEY RESULTS ── */
+  .kr-list { padding: 6px 24px 14px; }
+  .kr {
+    display: grid;
+    grid-template-columns: 1fr 150px 64px;
+    align-items: center;
+    gap: 20px;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--slate-100);
+  }
+  .kr:last-child { border-bottom: none; }
+  .kr-main { min-width: 0; }
+  .kr-label { font-size: 13.5px; font-weight: 600; color: var(--slate-700); }
+  .kr-label .krtag {
+    font-size: 9.5px; font-weight: 800; letter-spacing: 0.5px; color: var(--slate-400);
+    border: 1px solid var(--slate-200); border-radius: 4px; padding: 1px 5px; margin-right: 8px;
+    vertical-align: middle; text-transform: uppercase;
+  }
+  .kr-values { font-size: 11.5px; color: var(--slate-400); margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .kr-values b { color: var(--slate-700); font-weight: 700; }
+
+  .kr-bar { }
+  .kr-track {
+    height: 8px; border-radius: 100px; background: var(--track); overflow: hidden;
+  }
+  .kr-fill { height: 100%; border-radius: 100px; background: linear-gradient(90deg, var(--indigo), #6366f1); }
+  .kr-fill.good { background: linear-gradient(90deg, var(--on), #22c55e); }
+  .kr-fill.warn { background: linear-gradient(90deg, var(--risk), #f59e0b); }
+  .kr-fill.bad  { background: linear-gradient(90deg, var(--off), #ef4444); }
+  .kr-status {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+    margin-top: 6px; text-transform: uppercase;
+  }
+  .kr-status.on { color: var(--on); }
+  .kr-status.risk { color: var(--risk); }
+  .kr-status.off { color: var(--off); }
+
+  .kr-pct {
+    text-align: right; font-size: 17px; font-weight: 800;
+    color: var(--slate-900); letter-spacing: -0.5px; font-variant-numeric: tabular-nums;
+  }
+  .kr-pct small { display: block; font-size: 9px; font-weight: 600; color: var(--slate-400); letter-spacing: 0.3px; }
+
+  /* ── FOCUS / RISKS NOTE ── */
+  .note {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    margin-top: 6px;
+  }
+  .note-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 22px; box-shadow: var(--shadow-sm);
+  }
+  .note-card.focus { border-top: 3px solid var(--indigo); }
+  .note-card.risks { border-top: 3px solid var(--risk); }
+  .note-card h3 {
+    font-size: 11px; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase;
+    margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+  }
+  .note-card.focus h3 { color: var(--indigo); }
+  .note-card.risks h3 { color: var(--risk); }
+  .note-card h3 svg { width: 15px; height: 15px; }
+  .note-card ul { list-style: none; }
+  .note-card li {
+    font-size: 13px; color: var(--slate-700); padding: 7px 0 7px 20px; position: relative; line-height: 1.5;
+  }
+  .note-card li::before {
+    content: ''; position: absolute; left: 0; top: 13px;
+    width: 6px; height: 6px; border-radius: 50%;
+  }
+  .note-card.focus li::before { background: var(--indigo); }
+  .note-card.risks li::before { background: var(--risk); }
+  .note-card li strong { color: var(--slate-900); font-weight: 700; }
+
+  /* ── FOOTER ── */
+  footer {
+    margin-top: 44px; padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 12px;
+    font-size: 12px; color: var(--slate-500);
+  }
+  footer strong { color: var(--slate-700); }
+  footer a { color: var(--indigo); text-decoration: none; font-weight: 600; }
+  footer .credit { color: var(--slate-400); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 820px) {
+    .summary { grid-template-columns: 1fr 1fr; }
+    .summary .cell:nth-child(2) { border-right: none; }
+    .summary .cell { border-bottom: 1px solid rgba(255,255,255,0.16); }
+    .note { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .sheet { padding: 26px 16px 48px; }
+    header { padding: 24px 20px; }
+    .head-top { flex-direction: column; }
+    .head-right { text-align: left; }
+    .summary { grid-template-columns: 1fr; }
+    .summary .cell { border-right: none; }
+    .obj-head { flex-direction: column; }
+    .obj-right { text-align: left; }
+    .kr { grid-template-columns: 1fr 56px; gap: 12px; }
+    .kr-bar { grid-column: 1 / -1; order: 3; }
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: #fff; }
+    .sheet { max-width: none; padding: 0; }
+    header { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .objective, .note-card { box-shadow: none; break-inside: avoid; }
+    .sec-head { break-after: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <!-- HEADER -->
+  <header>
+    <div class="head-top">
+      <div class="head-left">
+        <div class="eyebrow">Objectives &amp; Key Results</div>
+        <h1>OKR Tracker <span>— [Company Name]</span></h1>
+        <div class="subtitle">Quarterly goals, owners and progress to target across every objective the team committed to.</div>
+      </div>
+      <div class="head-right">
+        <span class="quarter">[Q3 2026]</span>
+        <span class="meta-line">Cycle owner: <strong>[Your Name]</strong></span>
+        <span class="meta-line">Reviewed: <strong>[Jun 2026]</strong></span>
+      </div>
+    </div>
+
+    <!-- OVERALL PROGRESS SUMMARY -->
+    <div class="summary">
+      <div class="cell">
+        <div class="lab">Overall progress</div>
+        <div class="val">[64]<small>%</small></div>
+        <div class="big-bar"><div style="width:64%"></div></div>
+        <div class="chips">
+          <span class="chip"><i><span class="dot g"></span>[2] on track</i></span>
+          <span class="chip"><i><span class="dot a"></span>[1] at risk</i></span>
+          <span class="chip"><i><span class="dot r"></span>[1] off track</i></span>
+        </div>
+      </div>
+      <div class="cell">
+        <div class="lab">Objectives</div>
+        <div class="val">[4]</div>
+        <div class="sub">[14] key results total</div>
+      </div>
+      <div class="cell">
+        <div class="lab">Avg. confidence</div>
+        <div class="val">[6.8]<small>/10</small></div>
+        <div class="sub">[+0.4] vs. last check-in</div>
+      </div>
+      <div class="cell">
+        <div class="lab">Quarter elapsed</div>
+        <div class="val">[68]<small>%</small></div>
+        <div class="sub">[29] days remaining</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- OBJECTIVES -->
+  <div class="sec-head">
+    <h2>Objectives</h2>
+    <div class="rule"></div>
+    <span class="count">[4] objectives · [14] key results</span>
+  </div>
+
+  <!-- OBJECTIVE 1 — ON TRACK -->
+  <div class="objective">
+    <div class="obj-head">
+      <div class="o-meta">
+        <div class="obj-id">Objective 1</div>
+        <div class="obj-title">[Become the default choice for new mid-market customers]</div>
+        <div class="obj-owner">Owner: <strong>[Owner Name]</strong><span class="sep">·</span>Team: <strong>[Growth]</strong></div>
+      </div>
+      <div class="obj-right">
+        <span class="confidence on"><span class="cdot"></span>On track</span>
+        <div class="obj-prog"><b>[72]%</b> avg. to target</div>
+      </div>
+    </div>
+    <div class="kr-list">
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 1</span>[Grow qualified pipeline from new segment]</div>
+          <div class="kr-values">Current <b>[$3.2M]</b> · Target <b>[$4.0M]</b> · Baseline [$1.8M]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill good" style="width:80%"></div></div>
+          <div class="kr-status on">On track</div>
+        </div>
+        <div class="kr-pct">[80]%<small>TO TARGET</small></div>
+      </div>
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 2</span>[Lift win rate on competitive deals]</div>
+          <div class="kr-values">Current <b>[31%]</b> · Target <b>[40%]</b> · Baseline [24%]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill warn" style="width:66%"></div></div>
+          <div class="kr-status risk">At risk</div>
+        </div>
+        <div class="kr-pct">[66]%<small>TO TARGET</small></div>
+      </div>
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 3</span>[Reduce average sales cycle length]</div>
+          <div class="kr-values">Current <b>[48 days]</b> · Target <b>[40 days]</b> · Baseline [60 days]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill good" style="width:70%"></div></div>
+          <div class="kr-status on">On track</div>
+        </div>
+        <div class="kr-pct">[70]%<small>TO TARGET</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJECTIVE 2 — ON TRACK -->
+  <div class="objective">
+    <div class="obj-head">
+      <div class="o-meta">
+        <div class="obj-id">Objective 2</div>
+        <div class="obj-title">[Deliver a product experience customers love]</div>
+        <div class="obj-owner">Owner: <strong>[Owner Name]</strong><span class="sep">·</span>Team: <strong>[Product]</strong></div>
+      </div>
+      <div class="obj-right">
+        <span class="confidence on"><span class="cdot"></span>On track</span>
+        <div class="obj-prog"><b>[78]%</b> avg. to target</div>
+      </div>
+    </div>
+    <div class="kr-list">
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 1</span>[Raise product NPS]</div>
+          <div class="kr-values">Current <b>[48]</b> · Target <b>[55]</b> · Baseline [40]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill good" style="width:80%"></div></div>
+          <div class="kr-status on">On track</div>
+        </div>
+        <div class="kr-pct">[80]%<small>TO TARGET</small></div>
+      </div>
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 2</span>[Increase weekly active usage of the new module]</div>
+          <div class="kr-values">Current <b>[12.5k]</b> · Target <b>[15.0k]</b> · Baseline [6.0k]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill good" style="width:83%"></div></div>
+          <div class="kr-status on">On track</div>
+        </div>
+        <div class="kr-pct">[83]%<small>TO TARGET</small></div>
+      </div>
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 3</span>[Cut median time-to-first-value]</div>
+          <div class="kr-values">Current <b>[9 min]</b> · Target <b>[7 min]</b> · Baseline [14 min]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill good" style="width:71%"></div></div>
+          <div class="kr-status on">On track</div>
+        </div>
+        <div class="kr-pct">[71]%<small>TO TARGET</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJECTIVE 3 — AT RISK -->
+  <div class="objective is-risk">
+    <div class="obj-head">
+      <div class="o-meta">
+        <div class="obj-id">Objective 3</div>
+        <div class="obj-title">[Build a repeatable, efficient go-to-market engine]</div>
+        <div class="obj-owner">Owner: <strong>[Owner Name]</strong><span class="sep">·</span>Team: <strong>[Marketing]</strong></div>
+      </div>
+      <div class="obj-right">
+        <span class="confidence risk"><span class="cdot"></span>At risk</span>
+        <div class="obj-prog"><b>[54]%</b> avg. to target</div>
+      </div>
+    </div>
+    <div class="kr-list">
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 1</span>[Lower blended cost per qualified lead]</div>
+          <div class="kr-values">Current <b>[$72]</b> · Target <b>[$55]</b> · Baseline [$95]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill warn" style="width:58%"></div></div>
+          <div class="kr-status risk">At risk</div>
+        </div>
+        <div class="kr-pct">[58]%<small>TO TARGET</small></div>
+      </div>
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 2</span>[Grow organic traffic to key landing pages]</div>
+          <div class="kr-values">Current <b>[48k]</b> · Target <b>[80k]</b> · Baseline [30k]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill warn" style="width:50%"></div></div>
+          <div class="kr-status risk">At risk</div>
+        </div>
+        <div class="kr-pct">[50]%<small>TO TARGET</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OBJECTIVE 4 — OFF TRACK -->
+  <div class="objective is-off">
+    <div class="obj-head">
+      <div class="o-meta">
+        <div class="obj-id">Objective 4</div>
+        <div class="obj-title">[Make the platform faster and more reliable at scale]</div>
+        <div class="obj-owner">Owner: <strong>[Owner Name]</strong><span class="sep">·</span>Team: <strong>[Engineering]</strong></div>
+      </div>
+      <div class="obj-right">
+        <span class="confidence off"><span class="cdot"></span>Off track</span>
+        <div class="obj-prog"><b>[38]%</b> avg. to target</div>
+      </div>
+    </div>
+    <div class="kr-list">
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 1</span>[Reach uptime SLA target]</div>
+          <div class="kr-values">Current <b>[99.5%]</b> · Target <b>[99.95%]</b> · Baseline [99.2%]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill warn" style="width:55%"></div></div>
+          <div class="kr-status risk">At risk</div>
+        </div>
+        <div class="kr-pct">[55]%<small>TO TARGET</small></div>
+      </div>
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 2</span>[Cut p95 API response time]</div>
+          <div class="kr-values">Current <b>[480 ms]</b> · Target <b>[250 ms]</b> · Baseline [620 ms]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill bad" style="width:38%"></div></div>
+          <div class="kr-status off">Off track</div>
+        </div>
+        <div class="kr-pct">[38]%<small>TO TARGET</small></div>
+      </div>
+      <div class="kr">
+        <div class="kr-main">
+          <div class="kr-label"><span class="krtag">KR 3</span>[Reduce critical incidents per month]</div>
+          <div class="kr-values">Current <b>[5]</b> · Target <b>[1]</b> · Baseline [7]</div>
+        </div>
+        <div class="kr-bar">
+          <div class="kr-track"><div class="kr-fill bad" style="width:33%"></div></div>
+          <div class="kr-status off">Off track</div>
+        </div>
+        <div class="kr-pct">[33]%<small>TO TARGET</small></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOCUS / RISKS NOTE -->
+  <div class="sec-head">
+    <h2>Focus &amp; Risks</h2>
+    <div class="rule"></div>
+    <span class="count">For the remaining [29] days</span>
+  </div>
+
+  <div class="note">
+    <div class="note-card focus">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg>
+        Where we're focusing
+      </h3>
+      <ul>
+        <li>Double down on <strong>[Objective 2]</strong>—it has the most momentum and the clearest path to landing above target.</li>
+        <li>Protect the win-rate KR on <strong>[Objective 1]</strong> with a tighter competitive playbook and exec sponsorship on top deals.</li>
+        <li>Run a weekly review on <strong>[Objective 4]</strong> until performance KRs stabilize.</li>
+      </ul>
+    </div>
+    <div class="note-card risks">
+      <h3>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v5"/><path d="M12 18h.01"/></svg>
+        Key risks &amp; blockers
+      </h3>
+      <ul>
+        <li><strong>[Objective 4]</strong> is off track: the p95 latency KR needs [an infra change] that is not yet scheduled.</li>
+        <li><strong>[Objective 3]</strong> depends on [paid channel efficiency]; rising costs could push it further behind.</li>
+        <li>Two KRs are blocked on <strong>[a cross-team dependency]</strong>—escalation owner: <strong>[Name]</strong>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <span><strong>[Company Name]</strong> · OKR Tracker · [Q3 2026]</span>
+    <span class="credit">Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe</span>
+  </footer>
+
+</div>
+</body>
+</html>

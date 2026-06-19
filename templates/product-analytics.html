@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Analytics — [Company Name]</title>
+<!--
+  OpenReports template · "Product Analytics report"
+  Engagement, retention & adoption. Colour scheme: Violet / Indigo.
+  Fonts via Google Fonts (graceful system fallback offline).
+  Cohort heatmap, funnel and bars are pure inline SVG / styled HTML —
+  NO chart library. Every [ ... ] placeholder and round example number is
+  sample copy; replace it all. Re-skin entirely from :root.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ---- Violet / Indigo scheme — change these to re-skin ---- */
+    --violet:#7c5cff;        /* primary accent · violet */
+    --violet-2:#9d83ff;
+    --blue:#4f7cff;          /* secondary accent · blue */
+    --indigo:#5b4bd6;
+    --bg:#0f1020;            /* page background · deep indigo-black */
+    --bg-2:#16182e;          /* elevated surface */
+    --card:#1b1e38;          /* cards */
+    --text:#eef0ff;          /* primary text */
+    --text-soft:#9aa0c8;     /* muted text */
+    --line:#2a2e4f;          /* borders */
+    --good:#34d399;          /* positive · green */
+    --warn:#fbbf24;          /* warning · amber */
+    --bad:#f87171;           /* negative · red */
+    /* cohort heat ramp (low → high retention) */
+    --heat-0:#1c2040;
+    --heat-1:#2a2f6b;
+    --heat-2:#3b3aa6;
+    --heat-3:#5b4bd6;
+    --heat-4:#7c5cff;
+    --heat-5:#9d83ff;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 18px 40px rgba(8,6,30,.5);
+    --shadow-sm:0 1px 2px rgba(0,0,0,.35), 0 8px 22px rgba(8,6,30,.45);
+    --radius:18px;
+    --radius-sm:12px;
+    --maxw:1040px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(900px 500px at 88% -8%, rgba(124,92,255,.16), transparent 60%),
+      radial-gradient(700px 500px at 0% 4%, rgba(79,124,255,.12), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--violet);color:#fff}
+
+  h1,h2,h3,h4{font-family:'Sora',system-ui,sans-serif;font-weight:600;letter-spacing:-.01em;line-height:1.15;color:var(--text);margin:0}
+  .mono{font-family:'JetBrains Mono',monospace}
+  a{color:var(--violet-2);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  .wrap{max-width:var(--maxw);margin:34px auto;padding:0 22px}
+
+  /* ---- header ---- */
+  header.head{
+    display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap;
+    padding:24px 26px;margin-bottom:22px;
+    background:linear-gradient(135deg,rgba(124,92,255,.16),rgba(79,124,255,.08));
+    border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);
+  }
+  .brand{display:flex;align-items:center;gap:13px}
+  .mark{
+    width:44px;height:44px;border-radius:13px;flex:none;
+    background:linear-gradient(140deg,var(--violet),var(--blue));
+    display:grid;place-items:center;color:#fff;box-shadow:0 6px 18px rgba(124,92,255,.45);
+  }
+  .mark svg{width:24px;height:24px}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--violet-2);font-weight:600;margin:0 0 6px;
+  }
+  .brand .co{font-family:'Sora',sans-serif;font-weight:600;font-size:1.32rem;line-height:1.1}
+  h1.title{font-size:1.06rem;color:var(--text-soft);font-family:'Inter',sans-serif;font-weight:500;margin-top:2px}
+  .head .meta{text-align:right;font-size:.8rem;color:var(--text-soft);line-height:1.55}
+  .head .meta b{color:var(--text);font-weight:600}
+
+  /* ---- KPI cards ---- */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+  .kpi{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:18px 18px 16px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;
+  }
+  .kpi::after{content:"";position:absolute;inset:0 0 auto 0;height:3px;
+    background:linear-gradient(90deg,var(--violet),var(--blue))}
+  .kpi .lab{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--text-soft);margin-bottom:9px}
+  .kpi .val{font-family:'Sora',sans-serif;font-weight:600;font-size:1.85rem;line-height:1;color:#fff}
+  .kpi .val small{font-size:1rem;color:var(--text-soft);font-weight:500}
+  .kpi .delta{font-size:.74rem;font-weight:600;margin-top:8px;display:inline-flex;gap:5px;align-items:center}
+  .delta.up{color:var(--good)}
+  .delta.down{color:var(--bad)}
+  /* mini sparkline / progress under KPI */
+  .kpi .bar{height:5px;border-radius:5px;background:var(--line);margin-top:11px;overflow:hidden}
+  .kpi .bar > i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--violet),var(--violet-2))}
+
+  /* ---- section frame ---- */
+  .card{
+    background:var(--bg-2);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px 26px;box-shadow:var(--shadow-sm);margin-bottom:22px;
+  }
+  .card > h2{font-family:'Sora',sans-serif;font-size:1.18rem;display:flex;align-items:center;gap:10px}
+  .card > h2 .num{
+    font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--violet-2);
+    background:rgba(124,92,255,.14);border:1px solid rgba(124,92,255,.3);
+    width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  }
+  .card .sub{font-size:.84rem;color:var(--text-soft);margin:6px 0 0 36px}
+
+  .grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:22px}
+
+  /* ---- cohort heatmap ---- */
+  .cohort-scroll{overflow-x:auto;margin-top:18px;padding-bottom:4px}
+  table.cohort{border-collapse:separate;border-spacing:5px;width:100%;min-width:560px}
+  table.cohort th{
+    font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.06em;font-weight:600;
+    color:var(--text-soft);text-transform:uppercase;padding:4px 6px;text-align:center;white-space:nowrap;
+  }
+  table.cohort th.row-h{text-align:left;min-width:96px}
+  table.cohort td{padding:0}
+  .cell{
+    border-radius:8px;height:38px;display:flex;align-items:center;justify-content:center;
+    font-family:'JetBrains Mono',monospace;font-size:.78rem;font-weight:600;color:#fff;
+    border:1px solid rgba(255,255,255,.04);
+  }
+  .cell.empty{background:transparent;border:1px dashed var(--line);color:var(--text-soft);font-weight:400;opacity:.5}
+  .cell.size{background:var(--card);color:var(--text-soft);font-family:'JetBrains Mono',monospace;
+    justify-content:flex-start;padding-left:10px;font-size:.74rem;font-weight:500;border:1px solid var(--line)}
+  .h0{background:var(--heat-0);color:var(--text-soft)}
+  .h1{background:var(--heat-1)}
+  .h2{background:var(--heat-2)}
+  .h3{background:var(--heat-3)}
+  .h4{background:var(--heat-4)}
+  .h5{background:var(--heat-5);color:#1a1330}
+  .legend{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:.74rem;color:var(--text-soft)}
+  .legend .ramp{display:flex;gap:3px}
+  .legend .ramp span{width:22px;height:14px;border-radius:3px;display:block}
+
+  /* ---- feature adoption bars ---- */
+  .feat{display:flex;flex-direction:column;gap:15px;margin-top:18px}
+  .feat .row{display:grid;grid-template-columns:1fr;gap:6px}
+  .feat .top{display:flex;justify-content:space-between;align-items:baseline;font-size:.9rem}
+  .feat .top .name{font-weight:500;color:var(--text)}
+  .feat .top .pct{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--violet-2)}
+  .feat .track{height:11px;border-radius:7px;background:var(--card);overflow:hidden;border:1px solid var(--line)}
+  .feat .track > i{display:block;height:100%;border-radius:7px;
+    background:linear-gradient(90deg,var(--blue),var(--violet))}
+
+  /* ---- funnel ---- */
+  .funnel{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+  .step{position:relative}
+  .step .meta{display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:5px}
+  .step .meta .s-name{color:var(--text);font-weight:500}
+  .step .meta .s-val{font-family:'JetBrains Mono',monospace;color:var(--text-soft)}
+  .step .meta .s-val b{color:#fff}
+  .step .barwrap{height:30px;border-radius:9px;background:var(--card);border:1px solid var(--line);overflow:hidden}
+  .step .fill{height:100%;border-radius:9px;display:flex;align-items:center;justify-content:flex-end;
+    padding-right:11px;font-family:'JetBrains Mono',monospace;font-size:.74rem;font-weight:600;color:#fff;
+    background:linear-gradient(90deg,var(--indigo),var(--violet))}
+  .drop{font-size:.7rem;color:var(--bad);font-family:'JetBrains Mono',monospace;margin-top:3px;text-align:right}
+
+  /* ---- insights ---- */
+  .insights{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+  .insight{display:flex;gap:12px;padding:14px 16px;background:var(--card);border:1px solid var(--line);
+    border-left:3px solid var(--violet);border-radius:var(--radius-sm)}
+  .insight .ic{width:26px;height:26px;flex:none;border-radius:8px;display:grid;place-items:center;
+    background:rgba(124,92,255,.16);color:var(--violet-2);font-family:'JetBrains Mono',monospace;font-weight:600;font-size:.78rem}
+  .insight p{margin:0;font-size:.9rem;line-height:1.55;color:var(--text)}
+  .insight p b{color:#fff;font-weight:600}
+
+  /* ---- footer ---- */
+  footer.foot{
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    padding:16px 4px 8px;font-size:.78rem;color:var(--text-soft);
+  }
+  footer.foot .src{font-family:'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;font-size:.66rem}
+
+  /* ---- responsive ---- */
+  @media (max-width:880px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .grid2{grid-template-columns:1fr}
+  }
+  @media (max-width:480px){
+    .kpis{grid-template-columns:1fr}
+    .head .meta{text-align:left}
+  }
+
+  /* ---- print ---- */
+  @media print{
+    body{background:#fff;color:#15172b}
+    .wrap{margin:0;padding:0}
+    .card,.kpi,header.head{box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="head">
+    <div>
+      <p class="eyebrow">Product Analytics</p>
+      <div class="brand">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l3-4 3 3 4-6"/></svg>
+        </div>
+        <div>
+          <div class="co">[Company Name]</div>
+          <h1 class="title">Product Analytics — [Product / App]</h1>
+        </div>
+      </div>
+    </div>
+    <div class="meta">
+      <div><b>Period</b> [Month YYYY]</div>
+      <div><b>Owner</b> [Product / Growth team]</div>
+      <div><b>Source</b> [Analytics platform]</div>
+      <div class="mono" style="margin-top:6px;color:var(--violet-2)">v[1.0] · [DD Mon YYYY]</div>
+    </div>
+  </header>
+
+  <!-- KPI CARDS -->
+  <section class="kpis" aria-label="Key product metrics">
+    <div class="kpi">
+      <div class="lab">DAU / MAU stickiness</div>
+      <div class="val">[42]<small>%</small></div>
+      <div class="delta up">▲ [+3] pts MoM</div>
+      <div class="bar"><i style="width:42%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="lab">Activation rate</div>
+      <div class="val">[55]<small>%</small></div>
+      <div class="delta up">▲ [+4] pts MoM</div>
+      <div class="bar"><i style="width:55%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="lab">Week-4 retention</div>
+      <div class="val">[28]<small>%</small></div>
+      <div class="delta down">▼ [−1] pt MoM</div>
+      <div class="bar"><i style="width:28%"></i></div>
+    </div>
+    <div class="kpi">
+      <div class="lab">Feature adoption</div>
+      <div class="val">[64]<small>%</small></div>
+      <div class="delta up">▲ [+6] pts MoM</div>
+      <div class="bar"><i style="width:64%"></i></div>
+    </div>
+  </section>
+
+  <!-- COHORT HEATMAP -->
+  <section class="card">
+    <h2><span class="num">01</span>Retention by cohort</h2>
+    <p class="sub">Rows = signup cohort · columns = weeks since signup · colour intensity = % of cohort still active.</p>
+    <div class="cohort-scroll">
+      <table class="cohort">
+        <thead>
+          <tr>
+            <th class="row-h">Cohort</th>
+            <th>Users</th>
+            <th>W0</th><th>W1</th><th>W2</th><th>W3</th><th>W4</th><th>W5</th><th>W6</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th class="row-h">[Jan YYYY]</th>
+            <td><div class="cell size">[1,000]</div></td>
+            <td><div class="cell h5">100%</div></td>
+            <td><div class="cell h4">[52]%</div></td>
+            <td><div class="cell h3">[40]%</div></td>
+            <td><div class="cell h3">[34]%</div></td>
+            <td><div class="cell h2">[30]%</div></td>
+            <td><div class="cell h2">[27]%</div></td>
+            <td><div class="cell h1">[25]%</div></td>
+          </tr>
+          <tr>
+            <th class="row-h">[Feb YYYY]</th>
+            <td><div class="cell size">[1,200]</div></td>
+            <td><div class="cell h5">100%</div></td>
+            <td><div class="cell h4">[55]%</div></td>
+            <td><div class="cell h4">[43]%</div></td>
+            <td><div class="cell h3">[36]%</div></td>
+            <td><div class="cell h2">[31]%</div></td>
+            <td><div class="cell h2">[28]%</div></td>
+            <td><div class="cell empty">—</div></td>
+          </tr>
+          <tr>
+            <th class="row-h">[Mar YYYY]</th>
+            <td><div class="cell size">[1,500]</div></td>
+            <td><div class="cell h5">100%</div></td>
+            <td><div class="cell h4">[58]%</div></td>
+            <td><div class="cell h4">[46]%</div></td>
+            <td><div class="cell h3">[38]%</div></td>
+            <td><div class="cell h3">[33]%</div></td>
+            <td><div class="cell empty">—</div></td>
+            <td><div class="cell empty">—</div></td>
+          </tr>
+          <tr>
+            <th class="row-h">[Apr YYYY]</th>
+            <td><div class="cell size">[1,800]</div></td>
+            <td><div class="cell h5">100%</div></td>
+            <td><div class="cell h5">[61]%</div></td>
+            <td><div class="cell h4">[49]%</div></td>
+            <td><div class="cell h3">[41]%</div></td>
+            <td><div class="cell empty">—</div></td>
+            <td><div class="cell empty">—</div></td>
+            <td><div class="cell empty">—</div></td>
+          </tr>
+          <tr>
+            <th class="row-h">[May YYYY]</th>
+            <td><div class="cell size">[2,100]</div></td>
+            <td><div class="cell h5">100%</div></td>
+            <td><div class="cell h5">[63]%</div></td>
+            <td><div class="cell h4">[51]%</div></td>
+            <td><div class="cell empty">—</div></td>
+            <td><div class="cell empty">—</div></td>
+            <td><div class="cell empty">—</div></td>
+            <td><div class="cell empty">—</div></td>
+          </tr>
+          <tr>
+            <th class="row-h">[Jun YYYY]</th>
+            <td><div class="cell size">[2,400]</div></td>
+            <td><div class="cell h5">100%</div></td>
+            <td><div class="cell h5">[66]%</div></td>
+            <td><div class="cell empty">—</div></td>
+            <td><div class="cell empty">—</div></td>
+            <td><div class="cell empty">—</div></td>
+            <td><div class="cell empty">—</div></td>
+            <td><div class="cell empty">—</div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="legend">
+      <span>Lower retention</span>
+      <span class="ramp">
+        <span style="background:var(--heat-0)"></span>
+        <span style="background:var(--heat-1)"></span>
+        <span style="background:var(--heat-2)"></span>
+        <span style="background:var(--heat-3)"></span>
+        <span style="background:var(--heat-4)"></span>
+        <span style="background:var(--heat-5)"></span>
+      </span>
+      <span>Higher retention</span>
+    </div>
+  </section>
+
+  <!-- TWO-UP: FEATURE ADOPTION + FUNNEL -->
+  <div class="grid2">
+
+    <!-- FEATURE ADOPTION -->
+    <section class="card" style="margin-bottom:0">
+      <h2><span class="num">02</span>Feature adoption</h2>
+      <p class="sub">Share of active accounts using each feature this period.</p>
+      <div class="feat">
+        <div class="row">
+          <div class="top"><span class="name">[Core feature A]</span><span class="pct">[78]%</span></div>
+          <div class="track"><i style="width:78%"></i></div>
+        </div>
+        <div class="row">
+          <div class="top"><span class="name">[Feature B]</span><span class="pct">[64]%</span></div>
+          <div class="track"><i style="width:64%"></i></div>
+        </div>
+        <div class="row">
+          <div class="top"><span class="name">[Feature C]</span><span class="pct">[47]%</span></div>
+          <div class="track"><i style="width:47%"></i></div>
+        </div>
+        <div class="row">
+          <div class="top"><span class="name">[Feature D]</span><span class="pct">[33]%</span></div>
+          <div class="track"><i style="width:33%"></i></div>
+        </div>
+        <div class="row">
+          <div class="top"><span class="name">[New feature E]</span><span class="pct">[18]%</span></div>
+          <div class="track"><i style="width:18%"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACTIVATION FUNNEL -->
+    <section class="card" style="margin-bottom:0">
+      <h2><span class="num">03</span>Activation funnel</h2>
+      <p class="sub">From signup to the activation milestone — [Aha moment].</p>
+      <div class="funnel">
+        <div class="step">
+          <div class="meta"><span class="s-name">Signed up</span><span class="s-val"><b>[10,000]</b> · 100%</span></div>
+          <div class="barwrap"><div class="fill" style="width:100%">100%</div></div>
+        </div>
+        <div class="step">
+          <div class="meta"><span class="s-name">Completed onboarding</span><span class="s-val"><b>[7,200]</b> · 72%</span></div>
+          <div class="barwrap"><div class="fill" style="width:72%">72%</div></div>
+          <div class="drop">▼ [−28]% drop-off</div>
+        </div>
+        <div class="step">
+          <div class="meta"><span class="s-name">Created first [object]</span><span class="s-val"><b>[5,400]</b> · 54%</span></div>
+          <div class="barwrap"><div class="fill" style="width:54%">54%</div></div>
+          <div class="drop">▼ [−18]% drop-off</div>
+        </div>
+        <div class="step">
+          <div class="meta"><span class="s-name">Reached [Aha moment]</span><span class="s-val"><b>[3,800]</b> · 38%</span></div>
+          <div class="barwrap"><div class="fill" style="width:38%">38%</div></div>
+          <div class="drop">▼ [−16]% drop-off</div>
+        </div>
+        <div class="step">
+          <div class="meta"><span class="s-name">Activated (returned in 7d)</span><span class="s-val"><b>[2,800]</b> · 28%</span></div>
+          <div class="barwrap"><div class="fill" style="width:28%">28%</div></div>
+          <div class="drop">▼ [−10]% drop-off</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- INSIGHTS -->
+  <section class="card">
+    <h2><span class="num">04</span>Insights &amp; next steps</h2>
+    <div class="insights">
+      <div class="insight">
+        <div class="ic">↗</div>
+        <p><b>Retention is trending up cohort-over-cohort.</b> [Recent cohorts hold ~[6] pts more at Week-1 than [Jan YYYY], pointing to onboarding changes paying off. Keep iterating on the first-session experience.]</p>
+      </div>
+      <div class="insight">
+        <div class="ic">!</div>
+        <p><b>Biggest funnel leak is onboarding → first [object].</b> [Roughly [18]% drop off here. Investigate friction in the [step] and test a guided template to lift completion.]</p>
+      </div>
+      <div class="insight">
+        <div class="ic">★</div>
+        <p><b>[New feature E] adoption is early but rising.</b> [Only [18]% of accounts have tried it; usage correlates with higher Week-4 retention. Promote it in-product to the [segment] cohort.]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="foot">
+    <span class="src">[Company Name] · [Product] · figures are illustrative placeholders</span>
+    <span>Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe.</span>
+  </footer>
+
+</div>
+</body>
+</html>
