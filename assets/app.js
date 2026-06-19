@@ -290,23 +290,73 @@ const REPORTS = [
       pt: "Matriz de comparação de concorrentes, quadrante 2×2 de posicionamento em SVG, forças/fraquezas por concorrente e resumo. Indigo.",
     },
   },
+  {
+    id: "pitch-deck", category: "deck", charts: "embedded", featured: true,
+    file: "templates/pitch-deck.html",
+    title: { en: "Pitch Deck (slides)", pt: "Pitch Deck (slides)" },
+    description: {
+      en: "A full-screen, navigable investor pitch deck — 12 slides (problem, solution, market, traction, team, the ask) with arrow-key nav, dots and a counter. Self-contained.",
+      pt: "Pitch deck full-screen navegável — 12 slides (problema, solução, mercado, tração, time, o pedido) com navegação por setas, dots e contador. Autossuficiente.",
+    },
+  },
+  {
+    id: "board-deck", category: "strategy", charts: "embedded",
+    file: "templates/board-deck.html",
+    title: { en: "Board Meeting Deck (slides)", pt: "Deck de Reunião de Conselho (slides)" },
+    description: {
+      en: "A full-screen board deck — 10 navigable slides: agenda, exec summary, KPIs vs plan, financials, risks and decisions. Inline SVG charts. Self-contained.",
+      pt: "Deck de conselho full-screen — 10 slides navegáveis: agenda, sumário executivo, KPIs vs plano, financeiro, riscos e decisões. Gráficos em SVG. Autossuficiente.",
+    },
+  },
+  {
+    id: "annual-report", category: "review", charts: "embedded", featured: true,
+    file: "templates/annual-report.html",
+    title: { en: "Annual Report (magazine)", pt: "Relatório Anual (revista)" },
+    description: {
+      en: "An editorial, magazine-style annual report: a striking serif cover, a letter from leadership, a year-in-numbers band, feature stories, a pull-quote and a timeline. Warm & spacious.",
+      pt: "Relatório anual estilo revista/editorial: capa em serifa marcante, carta da liderança, ano em números, matérias, pull-quote e timeline. Quente e espaçoso.",
+    },
+  },
+  {
+    id: "product-roadmap", category: "product", charts: "embedded",
+    file: "templates/product-roadmap.html",
+    title: { en: "Product Roadmap", pt: "Roadmap de Produto" },
+    description: {
+      en: "A Now / Next / Later roadmap as a swimlane grid (teams × horizon) with colour-coded status pills, a legend and strategic themes. Self-contained.",
+      pt: "Roadmap Now / Next / Later em grade de swimlanes (times × horizonte) com pílulas de status coloridas, legenda e temas estratégicos. Autossuficiente.",
+    },
+  },
+  {
+    id: "command-center", category: "kpi", charts: "embedded",
+    file: "templates/command-center.html",
+    title: { en: "Metrics Command Center (dark)", pt: "Centro de Comando de Métricas (dark)" },
+    description: {
+      en: "A dark, control-room metrics dashboard: a live header, KPI tiles with sparklines, trend & bar charts, a gauge and an alerts feed. Inline SVG. Cyan-on-black.",
+      pt: "Dashboard de métricas estilo centro de comando (dark): header ao vivo, tiles de KPI com sparklines, gráficos de tendência e barras, gauge e feed de alertas. SVG inline. Ciano no preto.",
+    },
+  },
 ];
 
 const CATEGORIES = [
   { key: "all", label: { en: "All", pt: "Todos" } },
+  // — go-to-market / revenue —
   { key: "sales", label: { en: "Sales & Revenue", pt: "Vendas & Receita" } },
-  { key: "financial", label: { en: "Financial / P&L", pt: "Financeiro / DRE" } },
-  { key: "kpi", label: { en: "KPI Dashboard", pt: "Painel de KPIs" } },
   { key: "marketing", label: { en: "Marketing / Traffic", pt: "Marketing / Tráfego" } },
-  { key: "people", label: { en: "People / HR", pt: "Pessoas / RH" } },
-  { key: "operations", label: { en: "Operations / Project", pt: "Operações / Projetos" } },
-  { key: "strategy", label: { en: "Strategy / Memo", pt: "Estratégia / Memo" } },
-  { key: "review", label: { en: "Annual Review", pt: "Retrospectiva Anual" } },
-  { key: "analysis", label: { en: "Analysis / Study", pt: "Análise / Estudo" } },
-  { key: "deck", label: { en: "Presentation / Deck", pt: "Apresentação / Deck" } },
-  { key: "okr", label: { en: "Goals / OKRs", pt: "Metas / OKRs" } },
   { key: "success", label: { en: "Customer Success", pt: "Customer Success" } },
   { key: "product", label: { en: "Product", pt: "Produto" } },
+  // — finance & metrics —
+  { key: "financial", label: { en: "Financial / P&L", pt: "Financeiro / DRE" } },
+  { key: "kpi", label: { en: "KPI Dashboard", pt: "Painel de KPIs" } },
+  // — people & ops —
+  { key: "people", label: { en: "People / HR", pt: "Pessoas / RH" } },
+  { key: "operations", label: { en: "Operations / Project", pt: "Operações / Projetos" } },
+  // — planning —
+  { key: "okr", label: { en: "Goals / OKRs", pt: "Metas / OKRs" } },
+  { key: "strategy", label: { en: "Strategy / Memo", pt: "Estratégia / Memo" } },
+  // — formats —
+  { key: "analysis", label: { en: "Analysis / Study", pt: "Análise / Estudo" } },
+  { key: "review", label: { en: "Annual Review", pt: "Retrospectiva Anual" } },
+  { key: "deck", label: { en: "Presentation / Deck", pt: "Apresentação / Deck" } },
 ];
 
 /* ---------- UI strings ---------- */

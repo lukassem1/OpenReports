@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Board Meeting — [Company Name]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0f2540;
+  --navy2:#16314f;
+  --slate:#334155;
+  --slate2:#475569;
+  --bg:#f4f6f9;
+  --surface:#ffffff;
+  --surface2:#f8fafc;
+  --line:#dde3ec;
+  --line2:#e8edf3;
+  --accent:#1e4d8c;
+  --accent-soft:#eaf1fa;
+  --gold:#b08433;
+  --gold-soft:#f7f1e4;
+  --text:#13243a;
+  --text2:#3d4f66;
+  --muted:#6b7c93;
+  --green:#1f7a55;
+  --green-soft:#e8f4ee;
+  --amber:#9a6a16;
+  --amber-soft:#f8f0dd;
+  --red:#a4303a;
+  --red-soft:#f8e9ea;
+}
+html,body{height:100%}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;line-height:1.55;
+  -webkit-font-smoothing:antialiased;overflow:hidden;
+}
+.serif{font-family:'Source Serif 4',Georgia,serif}
+
+/* ── DECK / SLIDES ── */
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden}
+.slide{
+  position:absolute;inset:0;width:100vw;height:100vh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:7vh 8vw;opacity:0;visibility:hidden;
+  transform:translateX(28px);
+  transition:opacity .45s ease,transform .45s ease,visibility .45s;
+  overflow-y:auto;
+}
+.slide.active{opacity:1;visibility:visible;transform:translateX(0);z-index:2}
+.slide.prev{transform:translateX(-28px)}
+
+.kicker{
+  display:flex;align-items:center;gap:12px;align-self:flex-start;
+  font-size:clamp(10px,1vw,12px);font-weight:600;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.kicker::before{content:'';width:30px;height:2px;background:var(--gold)}
+.s-title{font-family:'Source Serif 4',Georgia,serif;font-size:clamp(26px,4.2vw,52px);
+  font-weight:600;line-height:1.08;margin-bottom:10px;color:var(--navy);letter-spacing:-.01em}
+.s-lead{font-size:clamp(14px,1.6vw,19px);color:var(--text2);max-width:64ch;margin-bottom:28px}
+.rule{width:64px;height:3px;background:var(--gold);border-radius:2px;margin:0 0 26px}
+
+/* ── COVER ── */
+#cover{justify-content:center;align-items:flex-start;color:#fff;
+  background:linear-gradient(135deg,#0f2540 0%,#16314f 55%,#1c3d63 100%);}
+#cover::after{content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 39.5h40M39.5 0v40' stroke='%23ffffff' stroke-opacity='0.05'/%3E%3C/svg%3E");pointer-events:none}
+#cover>*{position:relative;z-index:1}
+.cover-org{display:flex;align-items:center;gap:13px;margin-bottom:auto;padding-top:2vh}
+.cover-org .seal{width:40px;height:40px;border-radius:9px;border:1.5px solid var(--gold);
+  display:flex;align-items:center;justify-content:center;font-family:'Source Serif 4';font-weight:700;color:var(--gold);font-size:19px}
+.cover-org b{font-size:16px;letter-spacing:.02em;font-weight:600}
+.cover-block{margin-top:auto;margin-bottom:auto}
+.cover-eyebrow{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#b9cbe3;font-weight:600;margin-bottom:18px}
+.cover-title{font-family:'Source Serif 4',Georgia,serif;font-size:clamp(38px,7vw,86px);font-weight:600;line-height:1.02;color:#fff;margin-bottom:18px}
+.cover-sub{font-size:clamp(15px,2vw,22px);color:#c5d4e6;max-width:36ch}
+.cover-foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;padding-bottom:1vh}
+.cover-foot .meta{font-size:13px;color:#9fb4cf;line-height:1.8}
+.cover-foot .meta b{color:#e6eef8;font-weight:600}
+.cover-credit{font-size:12px;color:#8ba2bf}
+.cover-credit a{color:var(--gold);text-decoration:none;font-weight:600}
+
+/* ── HELPERS ── */
+.grid{display:grid;gap:18px}
+.cols-2{grid-template-columns:1fr 1fr}
+.cols-3{grid-template-columns:repeat(3,1fr)}
+.cols-4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px 22px}
+.card h3{font-family:'Source Serif 4',serif;font-size:clamp(16px,1.7vw,20px);font-weight:600;color:var(--navy);margin-bottom:7px}
+.card p{font-size:clamp(13px,1.3vw,15px);color:var(--text2)}
+.card .tag{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:9px}
+
+/* agenda */
+.agenda{display:flex;flex-direction:column;gap:2px;max-width:740px}
+.agenda-row{display:flex;align-items:baseline;gap:20px;padding:15px 4px;border-bottom:1px solid var(--line2)}
+.agenda-row:last-child{border-bottom:none}
+.agenda-no{font-family:'Source Serif 4';font-size:22px;font-weight:600;color:var(--gold);width:42px;flex-shrink:0}
+.agenda-ttl{font-size:clamp(15px,1.7vw,19px);font-weight:600;color:var(--navy);flex:1}
+.agenda-mins{font-size:13px;color:var(--muted);white-space:nowrap}
+
+/* exec summary list */
+ul.summary{list-style:none;display:flex;flex-direction:column;gap:16px;max-width:70ch}
+ul.summary li{display:flex;gap:15px;font-size:clamp(14px,1.5vw,18px);color:var(--text2)}
+ul.summary li .mk{width:24px;height:24px;border-radius:6px;background:var(--accent-soft);color:var(--accent);
+  font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;font-family:'Source Serif 4'}
+
+/* KPI stat cards */
+.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;border-top:3px solid var(--accent)}
+.stat-card .lbl{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:10px}
+.stat-card .val{font-family:'Source Serif 4';font-size:clamp(26px,3.4vw,40px);font-weight:600;color:var(--navy);line-height:1}
+.stat-card .delta{font-size:12px;font-weight:600;margin-top:8px;display:inline-flex;align-items:center;gap:4px}
+.up{color:var(--green)} .down{color:var(--red)} .flat{color:var(--muted)}
+
+/* table */
+table{width:100%;border-collapse:collapse;font-size:clamp(12px,1.3vw,15px)}
+thead th{text-align:left;padding:12px 14px;color:var(--muted);font-weight:600;font-size:11px;
+  text-transform:uppercase;letter-spacing:.06em;border-bottom:2px solid var(--line);background:var(--surface2)}
+tbody td{padding:13px 14px;border-bottom:1px solid var(--line2);color:var(--text2)}
+tbody tr:last-child td{border-bottom:none}
+td.em{color:var(--navy);font-weight:600}
+.pill{display:inline-flex;align-items:center;padding:3px 11px;border-radius:20px;font-size:11px;font-weight:600}
+.p-green{background:var(--green-soft);color:var(--green)}
+.p-amber{background:var(--amber-soft);color:var(--amber)}
+.p-red{background:var(--red-soft);color:var(--red)}
+.p-blue{background:var(--accent-soft);color:var(--accent)}
+
+/* chart frame */
+.chart-frame{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px}
+.chart-cap{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px}
+.legend{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text2)}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+svg .grid-line{stroke:var(--line);stroke-width:1}
+svg .axis-lbl{fill:var(--muted);font-size:11px;font-family:'Inter'}
+svg .val-lbl{fill:var(--text2);font-size:11px;font-weight:600;font-family:'Inter'}
+
+/* risk / decision rows */
+.risk{display:flex;gap:16px;padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:11px;border-left:4px solid var(--muted)}
+.risk.high{border-left-color:var(--red)} .risk.med{border-left-color:var(--amber)} .risk.low{border-left-color:var(--green)}
+.risk .rlvl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;width:64px;flex-shrink:0;padding-top:2px}
+.risk.high .rlvl{color:var(--red)} .risk.med .rlvl{color:var(--amber)} .risk.low .rlvl{color:var(--green)}
+.risk b{display:block;color:var(--navy);font-size:15px;margin-bottom:4px}
+.risk p{font-size:13px;color:var(--text2)}
+
+/* next steps */
+.steps{display:flex;flex-direction:column;gap:0;max-width:820px}
+.step{display:flex;gap:18px;align-items:flex-start;padding:16px 0;border-bottom:1px solid var(--line2)}
+.step:last-child{border-bottom:none}
+.step .dot{width:13px;height:13px;border-radius:50%;background:var(--accent);margin-top:5px;flex-shrink:0;box-shadow:0 0 0 4px var(--accent-soft)}
+.step .body{flex:1}
+.step b{color:var(--navy);font-size:15px}
+.step .meta{font-size:12px;color:var(--muted);margin-top:3px}
+
+/* ── NAV UI ── */
+.controls{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);
+  display:flex;align-items:center;gap:12px;z-index:50;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  border:1px solid var(--line);border-radius:40px;padding:7px 11px;box-shadow:0 4px 18px rgba(15,37,64,.1)}
+.nav-arrow{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);
+  color:var(--navy);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.nav-arrow:hover{background:var(--navy);border-color:var(--navy);color:#fff}
+.nav-arrow:disabled{opacity:.35;cursor:not-allowed;background:var(--surface);color:var(--navy)}
+.counter{font-size:13px;font-weight:600;color:var(--slate);min-width:52px;text-align:center;letter-spacing:.03em}
+.counter b{color:var(--navy)}
+.dots{position:fixed;left:50%;bottom:72px;transform:translateX(-50%);display:flex;gap:8px;z-index:50}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line);border:none;cursor:pointer;padding:0;transition:all .2s}
+.dot:hover{background:var(--muted)}
+.dot.active{width:24px;border-radius:5px;background:var(--accent)}
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--gold);z-index:60;transition:width .4s ease}
+.kbd-hint{position:fixed;right:18px;bottom:26px;font-size:11px;color:var(--muted);z-index:50}
+.kbd-hint kbd{background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-family:inherit;font-size:11px;margin:0 1px}
+
+@media(max-width:760px){
+  .slide{padding:8vh 7vw;justify-content:flex-start;padding-top:10vh}
+  .cols-2,.cols-3,.cols-4{grid-template-columns:1fr}
+  .cover-foot{flex-direction:column;align-items:flex-start}
+  .kbd-hint{display:none}
+}
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<div class="deck" id="deck">
+
+  <!-- 01 COVER -->
+  <section class="slide active" id="cover">
+    <div class="cover-org"><span class="seal">[A]</span><b>[Company Name]</b></div>
+    <div class="cover-block">
+      <div class="cover-eyebrow">Board of Directors</div>
+      <h1 class="cover-title">Board Meeting<br/>[Q3 2026]</h1>
+      <p class="cover-sub">Quarterly review, performance against plan, and decisions requested.</p>
+    </div>
+    <div class="cover-foot">
+      <div class="meta"><b>Date</b> [Month DD, 2026]<br/><b>Prepared by</b> [Name, Title]<br/><b>Distribution</b> Confidential — Board &amp; Officers</div>
+      <p class="cover-credit">Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe</p>
+    </div>
+  </section>
+
+  <!-- 02 AGENDA -->
+  <section class="slide" id="agenda">
+    <span class="kicker">Agenda</span>
+    <h2 class="s-title">Today's discussion</h2>
+    <div class="rule"></div>
+    <div class="agenda">
+      <div class="agenda-row"><span class="agenda-no">01</span><span class="agenda-ttl">Executive summary</span><span class="agenda-mins">[5 min]</span></div>
+      <div class="agenda-row"><span class="agenda-no">02</span><span class="agenda-ttl">KPIs vs plan</span><span class="agenda-mins">[10 min]</span></div>
+      <div class="agenda-row"><span class="agenda-no">03</span><span class="agenda-ttl">Financial highlights</span><span class="agenda-mins">[10 min]</span></div>
+      <div class="agenda-row"><span class="agenda-no">04</span><span class="agenda-ttl">Growth &amp; pipeline</span><span class="agenda-mins">[10 min]</span></div>
+      <div class="agenda-row"><span class="agenda-no">05</span><span class="agenda-ttl">Risks &amp; mitigations</span><span class="agenda-mins">[10 min]</span></div>
+      <div class="agenda-row"><span class="agenda-no">06</span><span class="agenda-ttl">Strategic initiatives</span><span class="agenda-mins">[10 min]</span></div>
+      <div class="agenda-row"><span class="agenda-no">07</span><span class="agenda-ttl">Decisions &amp; asks</span><span class="agenda-mins">[10 min]</span></div>
+      <div class="agenda-row"><span class="agenda-no">08</span><span class="agenda-ttl">Next steps &amp; close</span><span class="agenda-mins">[5 min]</span></div>
+    </div>
+  </section>
+
+  <!-- 03 EXECUTIVE SUMMARY -->
+  <section class="slide" id="summary">
+    <span class="kicker">Executive Summary</span>
+    <h2 class="s-title">Where we stand this quarter</h2>
+    <div class="rule"></div>
+    <ul class="summary">
+      <li><span class="mk">1</span><div>[Headline takeaway — the single most important thing the board should remember from this meeting.]</div></li>
+      <li><span class="mk">2</span><div>[Performance vs plan — we ended [Q3 2026] at [XX]% of the revenue target, with [the key driver behind it].]</div></li>
+      <li><span class="mk">3</span><div>[What's working — the initiative or segment outperforming, and what it implies for next quarter.]</div></li>
+      <li><span class="mk">4</span><div>[What needs attention — the area off-track and the corrective action underway.]</div></li>
+      <li><span class="mk">5</span><div>[The ask — what the board is being asked to approve or weigh in on today.]</div></li>
+    </ul>
+  </section>
+
+  <!-- 04 KPIs VS PLAN -->
+  <section class="slide" id="kpis">
+    <span class="kicker">Performance</span>
+    <h2 class="s-title">KPIs versus plan</h2>
+    <div class="rule"></div>
+    <div class="grid cols-4" style="margin-bottom:18px">
+      <div class="stat-card"><div class="lbl">[Revenue]</div><div class="val">$X.XM</div><div class="delta up">&#9650; XX% vs plan</div></div>
+      <div class="stat-card"><div class="lbl">[Gross margin]</div><div class="val">XX%</div><div class="delta up">&#9650; X pts QoQ</div></div>
+      <div class="stat-card"><div class="lbl">[Active customers]</div><div class="val">X,XXX</div><div class="delta up">&#9650; XX% QoQ</div></div>
+      <div class="stat-card"><div class="lbl">[Net retention]</div><div class="val">XXX%</div><div class="delta flat">&#9644; on plan</div></div>
+    </div>
+    <div class="chart-frame">
+      <div class="chart-cap">[Actual vs Plan — quarterly revenue, illustrative]</div>
+      <svg viewBox="0 0 760 230" width="100%" height="210" role="img" aria-label="Actual versus plan grouped bars">
+        <line class="grid-line" x1="44" y1="190" x2="748" y2="190"/>
+        <line class="grid-line" x1="44" y1="130" x2="748" y2="130"/>
+        <line class="grid-line" x1="44" y1="70" x2="748" y2="70"/>
+        <text class="axis-lbl" x="14" y="194">$0</text>
+        <text class="axis-lbl" x="8" y="134">$2M</text>
+        <text class="axis-lbl" x="8" y="74">$4M</text>
+        <!-- 4 quarter groups: plan (slate) + actual (accent) -->
+        <g>
+          <rect x="90"  y="118" width="34" height="72" rx="3" fill="#94a3b8"/><rect x="128" y="108" width="34" height="82" rx="3" fill="#1e4d8c"/>
+          <rect x="252" y="104" width="34" height="86" rx="3" fill="#94a3b8"/><rect x="290" y="92"  width="34" height="98" rx="3" fill="#1e4d8c"/>
+          <rect x="414" y="90"  width="34" height="100" rx="3" fill="#94a3b8"/><rect x="452" y="74"  width="34" height="116" rx="3" fill="#1e4d8c"/>
+          <rect x="576" y="78"  width="34" height="112" rx="3" fill="#94a3b8"/><rect x="614" y="56"  width="34" height="134" rx="3" fill="#1e4d8c"/>
+        </g>
+        <text class="axis-lbl" x="126" y="210" text-anchor="middle">[Q4 '25]</text>
+        <text class="axis-lbl" x="288" y="210" text-anchor="middle">[Q1 '26]</text>
+        <text class="axis-lbl" x="450" y="210" text-anchor="middle">[Q2 '26]</text>
+        <text class="axis-lbl" x="612" y="210" text-anchor="middle">[Q3 '26]</text>
+      </svg>
+      <div class="legend"><span><i style="background:#94a3b8"></i>Plan</span><span><i style="background:#1e4d8c"></i>Actual</span></div>
+    </div>
+  </section>
+
+  <!-- 05 FINANCIAL HIGHLIGHTS -->
+  <section class="slide" id="financials">
+    <span class="kicker">Financial Highlights</span>
+    <h2 class="s-title">P&amp;L snapshot</h2>
+    <div class="rule"></div>
+    <table>
+      <thead><tr><th>Line item</th><th>[Q3 2026]</th><th>[Q2 2026]</th><th>Plan</th><th>vs Plan</th></tr></thead>
+      <tbody>
+        <tr><td class="em">[Revenue]</td><td>$X.XM</td><td>$X.XM</td><td>$X.XM</td><td><span class="pill p-green">+XX%</span></td></tr>
+        <tr><td class="em">[Cost of revenue]</td><td>$XXXk</td><td>$XXXk</td><td>$XXXk</td><td><span class="pill p-green">favorable</span></td></tr>
+        <tr><td class="em">[Gross profit]</td><td>$X.XM</td><td>$X.XM</td><td>$X.XM</td><td><span class="pill p-green">+X pts</span></td></tr>
+        <tr><td class="em">[Operating expenses]</td><td>$X.XM</td><td>$X.XM</td><td>$X.XM</td><td><span class="pill p-amber">+X% over</span></td></tr>
+        <tr><td class="em">[EBITDA]</td><td>($XXXk)</td><td>($XXXk)</td><td>($XXXk)</td><td><span class="pill p-green">ahead</span></td></tr>
+        <tr><td class="em">[Cash balance]</td><td>$XX.XM</td><td>$XX.XM</td><td>—</td><td><span class="pill p-blue">[XX] mo runway</span></td></tr>
+      </tbody>
+    </table>
+    <div class="grid cols-3" style="margin-top:20px">
+      <div class="card"><span class="tag">Cash</span><h3>[XX] months runway</h3><p>[One line on burn trajectory and the next funding milestone.]</p></div>
+      <div class="card"><span class="tag">Efficiency</span><h3>[Burn multiple X.Xx]</h3><p>[How efficiently new revenue is being generated against spend.]</p></div>
+      <div class="card"><span class="tag">Outlook</span><h3>[On track to plan]</h3><p>[Brief view on full-year guidance and any revision.]</p></div>
+    </div>
+  </section>
+
+  <!-- 06 GROWTH & PIPELINE -->
+  <section class="slide" id="growth">
+    <span class="kicker">Growth &amp; Pipeline</span>
+    <h2 class="s-title">Momentum into next quarter</h2>
+    <div class="rule"></div>
+    <div class="grid cols-2" style="align-items:start">
+      <div class="chart-frame">
+        <div class="chart-cap">[Revenue trend — last 6 quarters, illustrative]</div>
+        <svg viewBox="0 0 420 220" width="100%" height="210" role="img" aria-label="Revenue trend line">
+          <line class="grid-line" x1="36" y1="180" x2="404" y2="180"/>
+          <line class="grid-line" x1="36" y1="120" x2="404" y2="120"/>
+          <line class="grid-line" x1="36" y1="60"  x2="404" y2="60"/>
+          <polyline points="50,164 120,150 190,132 260,108 330,82 396,52" fill="none" stroke="#1e4d8c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <polygon points="50,164 120,150 190,132 260,108 330,82 396,52 396,180 50,180" fill="#1e4d8c" fill-opacity="0.08"/>
+          <circle cx="50" cy="164" r="4" fill="#1e4d8c"/><circle cx="120" cy="150" r="4" fill="#1e4d8c"/><circle cx="190" cy="132" r="4" fill="#1e4d8c"/>
+          <circle cx="260" cy="108" r="4" fill="#1e4d8c"/><circle cx="330" cy="82" r="4" fill="#1e4d8c"/><circle cx="396" cy="52" r="4.5" fill="#b08433"/>
+          <text class="axis-lbl" x="50" y="200" text-anchor="middle">Q2</text>
+          <text class="axis-lbl" x="190" y="200" text-anchor="middle">Q4</text>
+          <text class="axis-lbl" x="396" y="200" text-anchor="middle">Q3</text>
+        </svg>
+      </div>
+      <div>
+        <table>
+          <thead><tr><th>Pipeline stage</th><th>Count</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td class="em">[Qualified]</td><td>XXX</td><td>$X.XM</td></tr>
+            <tr><td class="em">[Proposal]</td><td>XX</td><td>$X.XM</td></tr>
+            <tr><td class="em">[Negotiation]</td><td>XX</td><td>$XXXk</td></tr>
+            <tr><td class="em">[Verbal commit]</td><td>X</td><td>$XXXk</td></tr>
+            <tr><td class="em">[Weighted pipeline]</td><td>—</td><td>$X.XM</td></tr>
+          </tbody>
+        </table>
+        <div class="card" style="margin-top:16px"><span class="tag">Coverage</span><h3>[X.Xx] of next-quarter target</h3><p>[One line on pipeline health and conversion assumptions.]</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 RISKS & MITIGATIONS -->
+  <section class="slide" id="risks">
+    <span class="kicker">Risks &amp; Mitigations</span>
+    <h2 class="s-title">What could go wrong — and our plan</h2>
+    <div class="rule"></div>
+    <div class="grid" style="gap:14px;max-width:980px">
+      <div class="risk high"><div class="rlvl">High</div><div><b>[Risk one — e.g. concentration in top accounts]</b><p>Mitigation: [the specific action, owner, and timeline to reduce exposure.]</p></div></div>
+      <div class="risk med"><div class="rlvl">Medium</div><div><b>[Risk two — e.g. hiring pace behind plan]</b><p>Mitigation: [what's being done to close the gap and by when.]</p></div></div>
+      <div class="risk med"><div class="rlvl">Medium</div><div><b>[Risk three — e.g. competitive pricing pressure]</b><p>Mitigation: [the response — packaging, positioning, or product move.]</p></div></div>
+      <div class="risk low"><div class="rlvl">Low</div><div><b>[Risk four — e.g. vendor / infra dependency]</b><p>Mitigation: [the contingency or redundancy in place.]</p></div></div>
+    </div>
+  </section>
+
+  <!-- 08 STRATEGIC INITIATIVES -->
+  <section class="slide" id="initiatives">
+    <span class="kicker">Strategic Initiatives</span>
+    <h2 class="s-title">Where we're investing</h2>
+    <div class="rule"></div>
+    <div class="grid cols-3">
+      <div class="card"><span class="tag">Initiative 01</span><h3>[Initiative name]</h3><p>[Objective, owner, and the outcome it drives.]</p><p style="margin-top:10px"><span class="pill p-green">On track</span></p></div>
+      <div class="card"><span class="tag">Initiative 02</span><h3>[Initiative name]</h3><p>[Objective, owner, and the outcome it drives.]</p><p style="margin-top:10px"><span class="pill p-amber">At risk</span></p></div>
+      <div class="card"><span class="tag">Initiative 03</span><h3>[Initiative name]</h3><p>[Objective, owner, and the outcome it drives.]</p><p style="margin-top:10px"><span class="pill p-blue">Launching [Q4]</span></p></div>
+    </div>
+    <p class="s-lead" style="margin-top:22px;margin-bottom:0">[One line tying these initiatives back to the annual strategy and the metric each is meant to move.]</p>
+  </section>
+
+  <!-- 09 DECISIONS / ASKS -->
+  <section class="slide" id="decisions">
+    <span class="kicker">Decisions &amp; Asks</span>
+    <h2 class="s-title">What we need from the board</h2>
+    <div class="rule"></div>
+    <table>
+      <thead><tr><th>#</th><th>Decision requested</th><th>Owner</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="em">1</td><td>[Approve [budget / hire / initiative] for the coming quarter.]</td><td>[Name]</td><td><span class="pill p-blue">Vote today</span></td></tr>
+        <tr><td class="em">2</td><td>[Ratify [policy / plan] as discussed in section [X].]</td><td>[Name]</td><td><span class="pill p-blue">Vote today</span></td></tr>
+        <tr><td class="em">3</td><td>[Guidance on [strategic question] for management to act on.]</td><td>[Name]</td><td><span class="pill p-amber">Discussion</span></td></tr>
+        <tr><td class="em">4</td><td>[Note / FYI — [item requiring awareness, not a vote].]</td><td>[Name]</td><td><span class="pill p-green">For info</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 10 NEXT STEPS -->
+  <section class="slide" id="next">
+    <span class="kicker">Next Steps</span>
+    <h2 class="s-title">Actions &amp; follow-ups</h2>
+    <div class="rule"></div>
+    <div class="steps">
+      <div class="step"><span class="dot"></span><div class="body"><b>[Action item one]</b><div class="meta">Owner: [Name] · Due: [date]</div></div></div>
+      <div class="step"><span class="dot"></span><div class="body"><b>[Action item two]</b><div class="meta">Owner: [Name] · Due: [date]</div></div></div>
+      <div class="step"><span class="dot"></span><div class="body"><b>[Action item three]</b><div class="meta">Owner: [Name] · Due: [date]</div></div></div>
+      <div class="step"><span class="dot"></span><div class="body"><b>Next board meeting</b><div class="meta">[Month DD, 2026] · materials circulated [X] days prior</div></div></div>
+    </div>
+    <p class="cover-credit" style="color:var(--muted);margin-top:30px">[Company Name] · Confidential &nbsp;·&nbsp; Made with <a href="https://arkhen.tech" style="color:var(--gold);text-decoration:none;font-weight:600">OpenReports</a> by Instituto Arkhe</p>
+  </section>
+
+</div>
+
+<!-- ── NAVIGATION UI ── -->
+<div class="dots" id="dots"></div>
+<div class="controls">
+  <button class="nav-arrow" id="prevBtn" aria-label="Previous slide">&#8249;</button>
+  <span class="counter" id="counter"><b>1</b> / 10</span>
+  <button class="nav-arrow" id="nextBtn" aria-label="Next slide">&#8250;</button>
+</div>
+<div class="kbd-hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> <kbd>space</kbd> to navigate</div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length;
+  var current = 0;
+  var dotsWrap = document.getElementById('dots');
+  var counter = document.getElementById('counter');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var progress = document.getElementById('progress');
+
+  slides.forEach(function(s, i){
+    var d = document.createElement('button');
+    d.className = 'dot' + (i===0?' active':'');
+    d.setAttribute('aria-label','Go to slide ' + (i+1));
+    d.addEventListener('click', function(){ goTo(i); });
+    dotsWrap.appendChild(d);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  function render(){
+    slides.forEach(function(s, i){
+      s.classList.remove('active','prev');
+      if(i === current) s.classList.add('active');
+      else if(i < current) s.classList.add('prev');
+    });
+    dots.forEach(function(d, i){ d.classList.toggle('active', i === current); });
+    counter.innerHTML = '<b>' + (current+1) + '</b> / ' + total;
+    progress.style.width = ((current+1)/total*100) + '%';
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total-1;
+    if(history.replaceState) history.replaceState(null,'','#'+slides[current].id);
+  }
+  function goTo(i){ current = Math.max(0, Math.min(total-1, i)); render(); }
+  function next(){ if(current < total-1) goTo(current+1); }
+  function prev(){ if(current > 0) goTo(current-1); }
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight' || e.key === 'PageDown'){ e.preventDefault(); next(); }
+    else if(e.key === 'ArrowLeft' || e.key === 'PageUp'){ e.preventDefault(); prev(); }
+    else if(e.key === ' '){ e.preventDefault(); e.shiftKey ? prev() : next(); }
+    else if(e.key === 'Home'){ e.preventDefault(); goTo(0); }
+    else if(e.key === 'End'){ e.preventDefault(); goTo(total-1); }
+  });
+
+  var x0 = null;
+  document.addEventListener('touchstart', function(e){ x0 = e.changedTouches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if(x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if(Math.abs(dx) > 50){ dx < 0 ? next() : prev(); }
+    x0 = null;
+  }, {passive:true});
+
+  if(location.hash){
+    var idx = slides.findIndex(function(s){ return '#'+s.id === location.hash; });
+    if(idx >= 0) current = idx;
+  }
+  render();
+})();
+</script>
+</body>
+</html>
