@@ -9,6 +9,9 @@ const REPO = "lukassem1/OpenReports";
 const REPO_URL = "https://github.com/" + REPO;
 const ARKHE_URL = "https://arkhen.tech";
 
+// Always open the gallery at the top — never restore a previous mid-page scroll.
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+
 /* ---------- catalog ---------- */
 const REPORTS = [
   {
@@ -646,8 +649,7 @@ function renderPagination(pages) {
       else if (v === "next") state.page = Math.min(pages, state.page + 1);
       else state.page = parseInt(v, 10) || 1;
       render();
-      const g = $("gallery");
-      if (g) window.scrollTo({ top: g.offsetTop - 60, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }));
 }
 
@@ -746,6 +748,7 @@ async function copyText(text, msg) {
 document.addEventListener("DOMContentLoaded", () => {
   // 1) Render the gallery first — nothing should be able to block it.
   try { setLang(lang); } catch (e) { console.error("OpenReports: render failed", e); }
+  if (!location.hash) window.scrollTo(0, 0);
 
   // 2) Wire up interactions (guarded, so a missing element never breaks the page).
   try {
