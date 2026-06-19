@@ -369,7 +369,7 @@ const T = {
     step2h: "Download or copy the prompt", step2p: "Grab the self-contained HTML file and the ready-made prompt with one click.",
     step3h: "Drop it in your AI chat", step3p: "Attach the file, paste your data, and get your own polished report back.",
     fAll: "All charts", fEmbedded: "Self-contained", fInteractive: "Interactive",
-    sortFeatured: "Featured", sortDownloads: "Most downloaded",
+    sortFeatured: "Featured", sortDownloads: "Most downloaded", sortLikes: "Most liked",
     prev: "‹ Prev", next: "Next ›",
     heroBadge: "free, MIT-licensed report templates",
     ctaBrowse: "Browse templates", ctaStar: "Star on GitHub",
@@ -380,7 +380,7 @@ const T = {
     preview: "Preview", download: "Download", copy: "Copy AI prompt",
     badgeEmbedded: "Self-contained", badgeInteractive: "Interactive (Chart.js)",
     live: "Live preview", soon: "Coming soon", roadmap: "On the roadmap",
-    pick: "Author's pick", dl: "downloads", featured: "Featured",
+    pick: "Author's pick", dl: "downloads", featured: "Featured", like: "Like",
     footerLeft: `MIT-licensed · free for commercial use · built by <a href="${ARKHE_URL}" target="_blank" rel="noopener">Instituto Arkhe</a>.`,
     footerRight: "Have a design to share?", contribute: "Contribute on GitHub →",
     viewerBack: "Back to gallery", viewerOpen: "Open in new tab", viewerDownload: "Download",
@@ -395,7 +395,7 @@ const T = {
     step2h: "Baixe ou copie o prompt", step2p: "Pegue o HTML autossuficiente e o prompt pronto com um clique.",
     step3h: "Cole no chat da sua IA", step3p: "Anexe o arquivo, cole seus dados e receba seu relatório pronto.",
     fAll: "Todos", fEmbedded: "Autossuficiente", fInteractive: "Interativo",
-    sortFeatured: "Em destaque", sortDownloads: "Mais baixados",
+    sortFeatured: "Em destaque", sortDownloads: "Mais baixados", sortLikes: "Mais curtidos",
     prev: "‹ Anterior", next: "Próxima ›",
     heroBadge: "modelos de relatório gratuitos, licença MIT",
     ctaBrowse: "Ver modelos", ctaStar: "Estrela no GitHub",
@@ -406,7 +406,7 @@ const T = {
     preview: "Visualizar", download: "Baixar", copy: "Copiar prompt de IA",
     badgeEmbedded: "Autossuficiente", badgeInteractive: "Interativo (Chart.js)",
     live: "Preview ao vivo", soon: "Em breve", roadmap: "No roadmap",
-    pick: "Escolha do autor", dl: "downloads", featured: "Em destaque",
+    pick: "Escolha do autor", dl: "downloads", featured: "Em destaque", like: "Curtir",
     footerLeft: `Licença MIT · livre para uso comercial · feito pelo <a href="${ARKHE_URL}" target="_blank" rel="noopener">Instituto Arkhe</a>.`,
     footerRight: "Tem um design pra compartilhar?", contribute: "Contribua no GitHub →",
     viewerBack: "Voltar à galeria", viewerOpen: "Abrir em nova aba", viewerDownload: "Baixar",
@@ -447,12 +447,15 @@ const I = {
   eye: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>',
   down: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 21h14"/></svg>',
   copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>',
+  heart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>',
 };
 
 /* ---------- download counters (Abacus — free hosted counter, no key) ---------- */
 const COUNTER_NS = "openreports-lukassem1";
 let currentViewer = null;
 const dlCache = {};
+const likeCache = {};
+const likedSet = new Set(JSON.parse(localStorage.getItem("or-liked") || "[]"));
 const counterFmt = (n) => (n == null ? "—" : Number(n).toLocaleString());
 function counterGet(id) {
   return fetch(`https://abacus.jasoncameron.dev/get/${COUNTER_NS}/${id}`)
@@ -471,11 +474,26 @@ function setDl(id, v) {
 }
 function bumpDownload(id) { counterHit(id).then((v) => { if (v != null) { dlCache[id] = v; setDl(id, v); } }); }
 
-/* Pre-load all download counts so the "Most downloaded" sort has data, then re-render. */
+/* ---------- likes (heart) — same hosted counter, key "like-<id>", 1 per browser ---------- */
+function setLike(id, v) {
+  document.querySelectorAll(`[data-like="${id}"] b`).forEach((el) => { el.textContent = counterFmt(v); });
+}
+function toggleLike(id) {
+  if (likedSet.has(id)) return; // one like per browser
+  likedSet.add(id);
+  localStorage.setItem("or-liked", JSON.stringify([...likedSet]));
+  const cur = (typeof likeCache[id] === "number" ? likeCache[id] : 0) + 1;
+  likeCache[id] = cur; setLike(id, cur);
+  document.querySelectorAll(`[data-like-btn="${id}"]`).forEach((el) => el.classList.add("liked"));
+  counterHit("like-" + id).then((v) => { if (v != null) { likeCache[id] = v; setLike(id, v); } });
+}
+
+/* Pre-load all download + like counts so the sorts have data, then re-render. */
 function prefetchCounts() {
-  Promise.all(REPORTS.map((r) => counterGet(r.id).then((v) => { if (v != null) dlCache[r.id] = v; })))
-    .then(() => render())
-    .catch(() => {});
+  Promise.all(REPORTS.flatMap((r) => [
+    counterGet(r.id).then((v) => { if (v != null) dlCache[r.id] = v; }),
+    counterGet("like-" + r.id).then((v) => { likeCache[r.id] = v != null ? v : 0; }),
+  ])).then(() => render()).catch(() => {});
 }
 
 /* GitHub star count, straight from the GitHub API. */
@@ -527,6 +545,7 @@ function cardHTML(r) {
         <span class="badge">${chartBadge(r.charts)}</span>
         ${r.featured ? `<span class="badge feat">✦ ${s.featured}</span>` : ""}
         ${r.pick ? `<span class="badge pick">★ ${s.pick}</span>` : ""}
+        <button class="badge like" data-like-btn="${r.id}" data-like="${r.id}" title="${s.like}" aria-label="${s.like}">${I.heart}<b>—</b></button>
         <span class="badge dl" data-dl="${r.id}" title="${s.dl}">${I.down}<b>—</b></span>
       </div>
       <h3>${title}</h3>
@@ -548,6 +567,8 @@ function render() {
 
   if (state.sort === "downloads") {
     list.sort((a, b) => (dlCache[b.id] ?? -1) - (dlCache[a.id] ?? -1));
+  } else if (state.sort === "likes") {
+    list.sort((a, b) => (likeCache[b.id] ?? -1) - (likeCache[a.id] ?? -1));
   } else {
     // "Featured": curated picks first, everything else keeps catalog order (stable sort)
     list.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
@@ -578,6 +599,15 @@ function render() {
   });
   grid.querySelectorAll("[data-dl-btn]").forEach((a) =>
     a.addEventListener("click", () => bumpDownload(a.getAttribute("data-dl-btn"))));
+
+  // likes: liked state + count + click to like
+  grid.querySelectorAll("[data-like-btn]").forEach((el) => {
+    const id = el.getAttribute("data-like-btn");
+    if (likedSet.has(id)) el.classList.add("liked");
+    if (likeCache[id] != null) setLike(id, likeCache[id]);
+    else counterGet("like-" + id).then((v) => { const n = v != null ? v : 0; likeCache[id] = n; setLike(id, n); });
+    el.addEventListener("click", () => toggleLike(id));
+  });
 }
 const byId = (id) => REPORTS.find((x) => x.id === id);
 
@@ -656,6 +686,7 @@ function applyLang() {
     document.querySelector('.seg [data-charts="chartjs"]').textContent = s.fInteractive;
     document.querySelector('[data-sort="featured"]').textContent = s.sortFeatured;
     document.querySelector('[data-sort="downloads"]').textContent = s.sortDownloads;
+    document.querySelector('[data-sort="likes"]').textContent = s.sortLikes;
     $("search-input").placeholder = s.searchPh;
     $("footer-left").innerHTML = s.footerLeft;
     $("footer-right").childNodes[0].nodeValue = s.footerRight + " ";
