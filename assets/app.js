@@ -458,6 +458,7 @@ const COUNTER_NS = "openreports-lukassem1";
 let currentViewer = null;
 const dlCache = {};
 const likeCache = {};
+let countsReady = false; // all-template counts only fetched when a count-based sort is used
 const likedSet = new Set(JSON.parse(localStorage.getItem("or-liked") || "[]"));
 const counterFmt = (n) => (n == null ? "—" : Number(n).toLocaleString());
 function counterGet(id) {
@@ -493,6 +494,7 @@ function toggleLike(id) {
 
 /* Pre-load all download + like counts so the sorts have data, then re-render. */
 function prefetchCounts() {
+  countsReady = true;
   Promise.all(REPORTS.flatMap((r) => [
     counterGet(r.id).then((v) => { if (v != null) dlCache[r.id] = v; }),
     counterGet("like-" + r.id).then((v) => { likeCache[r.id] = v != null ? v : 0; }),
@@ -762,7 +764,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('#sort-seg button').forEach((b) =>
       b.addEventListener("click", () => {
         document.querySelectorAll('#sort-seg button').forEach((x) => x.classList.remove("active"));
-        b.classList.add("active"); state.sort = b.dataset.sort; state.page = 1; render();
+        b.classList.add("active"); state.sort = b.dataset.sort; state.page = 1;
+        if ((state.sort === "downloads" || state.sort === "likes") && !countsReady) prefetchCounts();
+        else render();
       }));
     let searchT;
     $("search-input").addEventListener("input", (e) => {
@@ -778,7 +782,6 @@ document.addEventListener("DOMContentLoaded", () => {
   } catch (e) { console.error("OpenReports: event wiring failed", e); }
 
   initStar();
-  prefetchCounts();
 
   // 3) Fallback if the official GitHub star widget can't render (e.g. blocked iframe).
   setTimeout(() => {
