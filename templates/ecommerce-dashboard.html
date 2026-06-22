@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-commerce Dashboard — [Company Name]</title>
+<!--
+  OpenReports template · "E-commerce Dashboard"
+  Single-screen store performance dashboard. Colour scheme: Emerald / Teal.
+  Fonts via Google Fonts (graceful system fallback offline).
+  ALL charts & sparklines are pure inline SVG — NO chart library, no internet
+  needed for the visuals. Every [ ... ] placeholder and round example number is
+  sample copy; replace it all with your own data. Re-skin entirely from :root.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* ---- Emerald / Teal scheme — change these to re-skin ---- */
+    --emerald:#10b981;        /* primary accent · emerald */
+    --emerald-2:#34d399;
+    --teal:#0d9488;           /* secondary accent · teal */
+    --teal-2:#2dd4bf;
+    --lime:#84cc16;           /* tertiary accent · lime (for category mix) */
+    --cyan:#06b6d4;
+    --bg:#f3faf7;             /* page background · misty mint */
+    --bg-tint:#e6f5ef;
+    --surface:#ffffff;        /* cards */
+    --surface-2:#f1f8f5;      /* subtle inner fill */
+    --ink:#0f2a24;            /* primary text · deep green-ink */
+    --ink-soft:#3f5a52;       /* secondary text */
+    --muted:#6c8079;          /* muted text */
+    --line:#d6e8e0;           /* borders */
+    --line-strong:#c2ddd2;
+    --good:#0f9d58;           /* positive · green */
+    --bad:#e0533d;            /* negative · warm red */
+    --shadow:0 1px 2px rgba(15,42,36,.05), 0 14px 34px rgba(13,80,66,.07);
+    --shadow-sm:0 1px 2px rgba(15,42,36,.04), 0 6px 18px rgba(13,80,66,.06);
+    --radius:18px;
+    --radius-sm:12px;
+    --maxw:1080px;
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(820px 480px at 90% -10%, rgba(45,212,191,.18), transparent 60%),
+      radial-gradient(680px 460px at -4% 2%, rgba(16,185,129,.12), transparent 58%),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:16px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--emerald);color:#fff}
+
+  h1,h2,h3,h4{font-family:'Sora',system-ui,sans-serif;font-weight:600;letter-spacing:-.01em;line-height:1.15;color:var(--ink);margin:0}
+  .mono{font-family:'JetBrains Mono',monospace}
+  a{color:var(--teal);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  .wrap{max-width:var(--maxw);margin:34px auto;padding:0 22px}
+
+  /* ---- header ---- */
+  header.head{
+    display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap;
+    padding:24px 26px;margin-bottom:22px;
+    background:linear-gradient(135deg,rgba(16,185,129,.15),rgba(13,148,136,.07));
+    border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);
+  }
+  .brand{display:flex;align-items:center;gap:13px}
+  .mark{
+    width:46px;height:46px;border-radius:14px;flex:none;
+    background:linear-gradient(140deg,var(--emerald),var(--teal));
+    display:grid;place-items:center;color:#fff;box-shadow:0 6px 18px rgba(16,185,129,.42);
+  }
+  .mark svg{width:25px;height:25px}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--teal);font-weight:600;margin:0 0 6px;
+  }
+  .brand .co{font-family:'Sora',sans-serif;font-weight:600;font-size:1.34rem;line-height:1.1}
+  h1.title{font-size:1.05rem;color:var(--ink-soft);font-family:'Inter',sans-serif;font-weight:500;margin-top:2px}
+  .head .meta{text-align:right;font-size:.8rem;color:var(--muted);line-height:1.55}
+  .head .meta b{color:var(--ink);font-weight:600}
+  .head .meta .pill{display:inline-block;margin-top:7px;padding:3px 10px;border-radius:999px;
+    background:rgba(16,185,129,.14);border:1px solid rgba(16,185,129,.32);color:var(--teal);
+    font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.06em}
+
+  /* ---- KPI cards ---- */
+  .kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:13px;margin-bottom:22px}
+  .kpi{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+    padding:15px 15px 13px;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;
+  }
+  .kpi::after{content:"";position:absolute;inset:0 0 auto 0;height:3px;
+    background:linear-gradient(90deg,var(--emerald),var(--teal))}
+  .kpi .lab{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:8px;min-height:1.5em}
+  .kpi .val{font-family:'Sora',sans-serif;font-weight:600;font-size:1.5rem;line-height:1;color:var(--ink)}
+  .kpi .val small{font-size:.85rem;color:var(--muted);font-weight:500}
+  .kpi .delta{font-size:.7rem;font-weight:600;margin-top:7px;display:inline-flex;gap:4px;align-items:center}
+  .delta.up{color:var(--good)}
+  .delta.down{color:var(--bad)}
+  .kpi .spark{margin-top:9px;display:block;width:100%;height:30px}
+
+  /* ---- section frame ---- */
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 24px;box-shadow:var(--shadow-sm);margin-bottom:22px;
+  }
+  .card > h2{font-family:'Sora',sans-serif;font-size:1.12rem;display:flex;align-items:center;gap:10px}
+  .card > h2 .num{
+    font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600;color:var(--teal);
+    background:rgba(16,185,129,.13);border:1px solid rgba(16,185,129,.3);
+    width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  }
+  .card .sub{font-size:.83rem;color:var(--muted);margin:6px 0 0 36px}
+
+  .grid2{display:grid;grid-template-columns:1.55fr .9fr;gap:22px}
+  .grid2b{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+
+  /* ---- revenue trend (SVG) ---- */
+  .trend-svg{width:100%;height:280px;margin-top:14px;display:block}
+  .axis-lab{font-family:'JetBrains Mono',monospace;font-size:10px;fill:var(--muted)}
+  .legend2{display:flex;gap:18px;margin-top:6px;font-size:.78rem;color:var(--ink-soft);flex-wrap:wrap}
+  .legend2 span{display:inline-flex;align-items:center;gap:7px}
+  .legend2 i{width:13px;height:13px;border-radius:4px;display:inline-block}
+
+  /* ---- channel bars (SVG) ---- */
+  .bars-svg{width:100%;height:250px;margin-top:14px;display:block}
+
+  /* ---- donut + category legend ---- */
+  .donut-row{display:flex;align-items:center;gap:20px;margin-top:14px;flex-wrap:wrap}
+  .donut-svg{width:178px;height:178px;flex:none}
+  .cat-legend{flex:1;min-width:180px;display:flex;flex-direction:column;gap:9px}
+  .cat-legend .crow{display:flex;align-items:center;gap:10px;font-size:.86rem}
+  .cat-legend .dot{width:12px;height:12px;border-radius:4px;flex:none}
+  .cat-legend .nm{flex:1;color:var(--ink)}
+  .cat-legend .pc{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--ink-soft)}
+
+  /* ---- table ---- */
+  table.tbl{width:100%;border-collapse:collapse;margin-top:14px;font-size:.88rem}
+  table.tbl th{
+    font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);font-weight:600;text-align:left;padding:8px 10px;border-bottom:1.5px solid var(--line-strong);
+  }
+  table.tbl th.r,table.tbl td.r{text-align:right}
+  table.tbl td{padding:11px 10px;border-bottom:1px solid var(--line);color:var(--ink)}
+  table.tbl tbody tr:last-child td{border-bottom:none}
+  table.tbl tbody tr:hover{background:var(--surface-2)}
+  .rank{font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:.78rem;width:24px}
+  .prod{font-weight:500}
+  .num-c{font-family:'JetBrains Mono',monospace;color:var(--ink-soft)}
+  .share-bar{display:inline-flex;align-items:center;gap:8px;justify-content:flex-end;width:100%}
+  .share-bar .track{width:64px;height:7px;border-radius:6px;background:var(--surface-2);
+    border:1px solid var(--line);overflow:hidden}
+  .share-bar .track > i{display:block;height:100%;border-radius:6px;
+    background:linear-gradient(90deg,var(--teal),var(--emerald))}
+  .share-bar .pc{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--ink-soft);min-width:42px;text-align:right}
+
+  /* ---- footer ---- */
+  footer.foot{
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    padding:16px 4px 8px;font-size:.78rem;color:var(--muted);
+  }
+  footer.foot .src{font-family:'JetBrains Mono',monospace;letter-spacing:.05em;text-transform:uppercase;font-size:.65rem}
+
+  /* ---- responsive ---- */
+  @media (max-width:960px){
+    .kpis{grid-template-columns:repeat(3,1fr)}
+    .grid2,.grid2b{grid-template-columns:1fr}
+  }
+  @media (max-width:560px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .head .meta{text-align:left}
+  }
+
+  /* ---- print ---- */
+  @media print{
+    body{background:#fff}
+    .wrap{margin:0;padding:0}
+    .card,.kpi,header.head{box-shadow:none;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .grid2,.grid2b{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header class="head">
+    <div>
+      <p class="eyebrow">E-commerce Dashboard</p>
+      <div class="brand">
+        <div class="mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.6 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>
+        </div>
+        <div>
+          <div class="co">[Company Name]</div>
+          <h1 class="title">Store performance — [Storefront / Region]</h1>
+        </div>
+      </div>
+    </div>
+    <div class="meta">
+      <div><b>Period</b> [Month YYYY]</div>
+      <div><b>Owner</b> [E-commerce / Growth team]</div>
+      <div><b>Source</b> [Store platform]</div>
+      <span class="pill">vs. [previous period]</span>
+    </div>
+  </header>
+
+  <!-- KPI CARDS -->
+  <section class="kpis" aria-label="Key store metrics">
+    <div class="kpi">
+      <div class="lab">Revenue / GMV</div>
+      <div class="val">$[820]<small>K</small></div>
+      <div class="delta up">▲ [+12.4]%</div>
+      <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
+        <polyline fill="none" stroke="var(--emerald)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          points="0,24 14,22 28,23 42,18 56,16 70,12 84,10 100,5"/>
+      </svg>
+    </div>
+    <div class="kpi">
+      <div class="lab">Orders</div>
+      <div class="val">[14,200]</div>
+      <div class="delta up">▲ [+8.1]%</div>
+      <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
+        <polyline fill="none" stroke="var(--emerald)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          points="0,22 14,20 28,21 42,17 56,18 70,13 84,11 100,8"/>
+      </svg>
+    </div>
+    <div class="kpi">
+      <div class="lab">Avg. order value</div>
+      <div class="val">$[57.80]</div>
+      <div class="delta up">▲ [+3.9]%</div>
+      <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
+        <polyline fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          points="0,18 14,19 28,16 42,17 56,14 70,15 84,12 100,11"/>
+      </svg>
+    </div>
+    <div class="kpi">
+      <div class="lab">Conversion rate</div>
+      <div class="val">[2.8]<small>%</small></div>
+      <div class="delta up">▲ [+0.3] pp</div>
+      <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
+        <polyline fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          points="0,20 14,21 28,18 42,19 56,15 70,16 84,13 100,12"/>
+      </svg>
+    </div>
+    <div class="kpi">
+      <div class="lab">Refund rate</div>
+      <div class="val">[3.1]<small>%</small></div>
+      <div class="delta down">▼ [+0.4] pp</div>
+      <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
+        <polyline fill="none" stroke="var(--bad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          points="0,14 14,13 28,15 42,12 56,14 70,11 84,13 100,16"/>
+      </svg>
+    </div>
+    <div class="kpi">
+      <div class="lab">Repeat-purchase rate</div>
+      <div class="val">[34]<small>%</small></div>
+      <div class="delta up">▲ [+2.0] pp</div>
+      <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true">
+        <polyline fill="none" stroke="var(--emerald)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+          points="0,21 14,19 28,20 42,16 56,15 70,13 84,12 100,9"/>
+      </svg>
+    </div>
+  </section>
+
+  <!-- REVENUE TREND + CATEGORY DONUT -->
+  <div class="grid2">
+
+    <!-- REVENUE TREND -->
+    <section class="card" style="margin-bottom:0">
+      <h2><span class="num">01</span>Revenue trend</h2>
+      <p class="sub">Net revenue by month — last 12 months, in $K.</p>
+      <!-- Plot area: x 50→690, y 24→236 (value 0 at y=236, max at y=24) -->
+      <svg class="trend-svg" viewBox="0 0 700 280" preserveAspectRatio="none" role="img" aria-label="Monthly revenue trend">
+        <!-- gridlines + y labels (0, 250, 500, 750, 1000 K) -->
+        <g stroke="var(--line)" stroke-width="1">
+          <line x1="50" y1="236" x2="690" y2="236"/>
+          <line x1="50" y1="183" x2="690" y2="183"/>
+          <line x1="50" y1="130" x2="690" y2="130"/>
+          <line x1="50" y1="77"  x2="690" y2="77"/>
+          <line x1="50" y1="24"  x2="690" y2="24"/>
+        </g>
+        <g class="axis-lab" text-anchor="end">
+          <text x="44" y="240">$0K</text>
+          <text x="44" y="187">$250K</text>
+          <text x="44" y="134">$500K</text>
+          <text x="44" y="81">$750K</text>
+          <text x="44" y="28">$1M</text>
+        </g>
+        <!-- area fill under the line -->
+        <polygon fill="rgba(16,185,129,.12)" stroke="none"
+          points="50,177 108,170 166,162 224,151 282,143 340,138 398,124 456,116 514,108 572,96 630,86 690,70 690,236 50,236"/>
+        <!-- the line -->
+        <polyline fill="none" stroke="var(--emerald)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+          points="50,177 108,170 166,162 224,151 282,143 340,138 398,124 456,116 514,108 572,96 630,86 690,70"/>
+        <!-- points -->
+        <g fill="var(--emerald)">
+          <circle cx="50" cy="177" r="3.2"/><circle cx="108" cy="170" r="3.2"/><circle cx="166" cy="162" r="3.2"/>
+          <circle cx="224" cy="151" r="3.2"/><circle cx="282" cy="143" r="3.2"/><circle cx="340" cy="138" r="3.2"/>
+          <circle cx="398" cy="124" r="3.2"/><circle cx="456" cy="116" r="3.2"/><circle cx="514" cy="108" r="3.2"/>
+          <circle cx="572" cy="96" r="3.2"/><circle cx="630" cy="86" r="3.2"/><circle cx="690" cy="70" r="4" stroke="#fff" stroke-width="1.5"/>
+        </g>
+        <!-- x labels -->
+        <g class="axis-lab" text-anchor="middle">
+          <text x="50" y="254">Jul</text><text x="108" y="254">Aug</text><text x="166" y="254">Sep</text>
+          <text x="224" y="254">Oct</text><text x="282" y="254">Nov</text><text x="340" y="254">Dec</text>
+          <text x="398" y="254">Jan</text><text x="456" y="254">Feb</text><text x="514" y="254">Mar</text>
+          <text x="572" y="254">Apr</text><text x="630" y="254">May</text><text x="690" y="254">Jun</text>
+        </g>
+      </svg>
+      <div class="legend2"><span><i style="background:var(--emerald)"></i>Net revenue ($K)</span></div>
+    </section>
+
+    <!-- SALES BY CATEGORY DONUT -->
+    <section class="card" style="margin-bottom:0">
+      <h2><span class="num">02</span>Sales by category</h2>
+      <p class="sub">Share of revenue this period.</p>
+      <div class="donut-row">
+        <!-- Donut: r=60, circumference ≈ 377. Segments via stroke-dasharray.
+             Shares: 34 / 26 / 19 / 13 / 8 (%). Rotated -90deg to start at top. -->
+        <svg class="donut-svg" viewBox="0 0 140 140" role="img" aria-label="Sales by category donut chart">
+          <g transform="rotate(-90 70 70)" fill="none" stroke-width="22">
+            <!-- [Category A] 34% → 128.2 -->
+            <circle cx="70" cy="70" r="60" stroke="var(--emerald)" stroke-dasharray="128.2 248.8" stroke-dashoffset="0"/>
+            <!-- [Category B] 26% → 98.0 -->
+            <circle cx="70" cy="70" r="60" stroke="var(--teal)" stroke-dasharray="98.0 279.0" stroke-dashoffset="-128.2"/>
+            <!-- [Category C] 19% → 71.6 -->
+            <circle cx="70" cy="70" r="60" stroke="var(--teal-2)" stroke-dasharray="71.6 305.4" stroke-dashoffset="-226.2"/>
+            <!-- [Category D] 13% → 49.0 -->
+            <circle cx="70" cy="70" r="60" stroke="var(--lime)" stroke-dasharray="49.0 328.0" stroke-dashoffset="-297.8"/>
+            <!-- [Category E] 8% → 30.2 -->
+            <circle cx="70" cy="70" r="60" stroke="var(--cyan)" stroke-dasharray="30.2 346.8" stroke-dashoffset="-346.8"/>
+          </g>
+          <text x="70" y="66" text-anchor="middle" font-family="Sora,sans-serif" font-weight="600" font-size="19" fill="var(--ink)">$820K</text>
+          <text x="70" y="82" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8.5" fill="var(--muted)">TOTAL</text>
+        </svg>
+        <div class="cat-legend">
+          <div class="crow"><span class="dot" style="background:var(--emerald)"></span><span class="nm">[Category A]</span><span class="pc">34%</span></div>
+          <div class="crow"><span class="dot" style="background:var(--teal)"></span><span class="nm">[Category B]</span><span class="pc">26%</span></div>
+          <div class="crow"><span class="dot" style="background:var(--teal-2)"></span><span class="nm">[Category C]</span><span class="pc">19%</span></div>
+          <div class="crow"><span class="dot" style="background:var(--lime)"></span><span class="nm">[Category D]</span><span class="pc">13%</span></div>
+          <div class="crow"><span class="dot" style="background:var(--cyan)"></span><span class="nm">[Category E]</span><span class="pc">8%</span></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ORDERS BY CHANNEL + TOP PRODUCTS -->
+  <div class="grid2b">
+
+    <!-- ORDERS BY CHANNEL -->
+    <section class="card" style="margin-bottom:0">
+      <h2><span class="num">03</span>Orders by channel</h2>
+      <p class="sub">Orders attributed to each acquisition channel.</p>
+      <!-- Bars: baseline y=210, max bar height 170 (value scaled to 5,000 max).
+           Values: 4600 / 3400 / 2900 / 1900 / 1400 -->
+      <svg class="bars-svg" viewBox="0 0 560 250" role="img" aria-label="Orders by channel bar chart">
+        <g stroke="var(--line)" stroke-width="1">
+          <line x1="46" y1="210" x2="552" y2="210"/>
+          <line x1="46" y1="167" x2="552" y2="167"/>
+          <line x1="46" y1="124" x2="552" y2="124"/>
+          <line x1="46" y1="81"  x2="552" y2="81"/>
+          <line x1="46" y1="40"  x2="552" y2="40"/>
+        </g>
+        <g class="axis-lab" text-anchor="end">
+          <text x="40" y="214">0</text>
+          <text x="40" y="171">1.5K</text>
+          <text x="40" y="128">3K</text>
+          <text x="40" y="85">4.5K</text>
+        </g>
+        <!-- bars (width 64, gap) -->
+        <g>
+          <rect x="70"  y="54"  width="64" height="156" rx="6" fill="var(--emerald)"/>
+          <rect x="166" y="94"  width="64" height="116" rx="6" fill="var(--teal)"/>
+          <rect x="262" y="111" width="64" height="99"  rx="6" fill="var(--teal-2)"/>
+          <rect x="358" y="145" width="64" height="65"  rx="6" fill="var(--lime)"/>
+          <rect x="454" y="162" width="64" height="48"  rx="6" fill="var(--cyan)"/>
+        </g>
+        <g class="axis-lab" text-anchor="middle" fill="var(--ink-soft)">
+          <text x="102" y="228">Organic</text>
+          <text x="198" y="228">Paid ads</text>
+          <text x="294" y="228">Email</text>
+          <text x="390" y="228">Social</text>
+          <text x="486" y="228">Referral</text>
+        </g>
+        <g text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" font-weight="600" fill="var(--ink)">
+          <text x="102" y="48">[4,600]</text>
+          <text x="198" y="88">[3,400]</text>
+          <text x="294" y="105">[2,900]</text>
+          <text x="390" y="139">[1,900]</text>
+          <text x="486" y="156">[1,400]</text>
+        </g>
+      </svg>
+    </section>
+
+    <!-- TOP PRODUCTS TABLE -->
+    <section class="card" style="margin-bottom:0">
+      <h2><span class="num">04</span>Top products</h2>
+      <p class="sub">Best sellers by revenue this period.</p>
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th colspan="2">Product</th>
+            <th class="r">Units</th>
+            <th class="r">Revenue</th>
+            <th class="r">% share</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rank">1</td><td class="prod">[Product name A]</td>
+            <td class="r num-c">[3,200]</td><td class="r num-c">$[118K]</td>
+            <td class="r"><span class="share-bar"><span class="track"><i style="width:100%"></i></span><span class="pc">14.4%</span></span></td>
+          </tr>
+          <tr>
+            <td class="rank">2</td><td class="prod">[Product name B]</td>
+            <td class="r num-c">[2,750]</td><td class="r num-c">$[96K]</td>
+            <td class="r"><span class="share-bar"><span class="track"><i style="width:81%"></i></span><span class="pc">11.7%</span></span></td>
+          </tr>
+          <tr>
+            <td class="rank">3</td><td class="prod">[Product name C]</td>
+            <td class="r num-c">[2,100]</td><td class="r num-c">$[74K]</td>
+            <td class="r"><span class="share-bar"><span class="track"><i style="width:63%"></i></span><span class="pc">9.0%</span></span></td>
+          </tr>
+          <tr>
+            <td class="rank">4</td><td class="prod">[Product name D]</td>
+            <td class="r num-c">[1,650]</td><td class="r num-c">$[58K]</td>
+            <td class="r"><span class="share-bar"><span class="track"><i style="width:49%"></i></span><span class="pc">7.1%</span></span></td>
+          </tr>
+          <tr>
+            <td class="rank">5</td><td class="prod">[Product name E]</td>
+            <td class="r num-c">[1,300]</td><td class="r num-c">$[45K]</td>
+            <td class="r"><span class="share-bar"><span class="track"><i style="width:38%"></i></span><span class="pc">5.5%</span></span></td>
+          </tr>
+          <tr>
+            <td class="rank">6</td><td class="prod">[Product name F]</td>
+            <td class="r num-c">[980]</td><td class="r num-c">$[34K]</td>
+            <td class="r"><span class="share-bar"><span class="track"><i style="width:29%"></i></span><span class="pc">4.1%</span></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="foot">
+    <span class="src">[Company Name] · [Store] · figures are illustrative placeholders</span>
+    <span>Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe.</span>
+  </footer>
+
+</div>
+</body>
+</html>

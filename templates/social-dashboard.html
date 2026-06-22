@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Social Media Dashboard — [Company Name]</title>
+<!--
+  OpenReports template · "Social Media Dashboard"
+  Single-screen social analytics overview. Self-contained — inline SVG only, no chart library.
+  Replace every [bracketed placeholder] and the round example numbers with your own data.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff7f4;
+  --bg2:#fff1ec;
+  --surface:#ffffff;
+  --surface-2:#fff5f1;
+  --ink:#241a1a;
+  --ink-soft:#5b4a47;
+  --muted:#9b8a86;
+  --faint:#c4b4b0;
+  --line:#f3e2db;
+  --line-2:#ecd4cb;
+
+  --coral:#ff5a5f;
+  --coral-2:#ff8a5b;
+  --coral-3:#ff3d7f;
+  --grape:#7b4bff;
+  --teal:#1fc8b8;
+  --amber:#ffb02e;
+  --sky:#3da5ff;
+
+  --good:#15a06b;
+  --bad:#e23d54;
+
+  --grad:linear-gradient(120deg,#ff3d7f 0%,#ff5a5f 45%,#ff8a5b 100%);
+  --grad-soft:linear-gradient(120deg,rgba(255,61,127,.10),rgba(255,138,91,.10));
+
+  --mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  --radius:16px;
+  --radius-sm:12px;
+  --shadow:0 18px 40px -28px rgba(255,90,95,.55);
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:
+    radial-gradient(820px 460px at 8% -10%,rgba(255,61,127,.12),transparent 60%),
+    radial-gradient(820px 520px at 102% -4%,rgba(255,138,91,.14),transparent 55%),
+    var(--bg);
+  min-height:100vh;
+  padding:22px;
+  -webkit-font-smoothing:antialiased;
+  line-height:1.45;
+}
+.shell{max-width:1240px;margin:0 auto}
+a{color:inherit}
+
+/* ---------- Header ---------- */
+.topbar{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px 22px;
+  box-shadow:var(--shadow);
+}
+.brand{display:flex;align-items:center;gap:14px;min-width:0}
+.logo{
+  width:46px;height:46px;border-radius:13px;flex:none;
+  display:grid;place-items:center;
+  background:var(--grad);
+  box-shadow:0 8px 20px -8px rgba(255,61,127,.7);
+}
+.logo svg{width:24px;height:24px}
+.brand h1{font-size:19px;font-weight:800;letter-spacing:-.3px;white-space:nowrap}
+.brand .sub{font-size:11.5px;color:var(--muted);font-family:var(--mono);letter-spacing:.3px;text-transform:uppercase}
+.topbar .spacer{flex:1 1 auto}
+.meta{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft);
+  background:var(--surface-2);border:1px solid var(--line);
+  padding:8px 13px;border-radius:999px;
+}
+.chip .lbl{color:var(--faint);font-size:10px;letter-spacing:.6px;text-transform:uppercase}
+.range{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12.5px;font-weight:700;letter-spacing:.3px;color:#fff;
+  background:var(--grad);
+  padding:9px 15px;border-radius:999px;
+  box-shadow:0 8px 18px -8px rgba(255,61,127,.7);
+}
+
+/* ---------- Layout ---------- */
+.grid{display:grid;gap:16px;margin-top:16px}
+.kpis{grid-template-columns:repeat(3,1fr)}
+.mid{grid-template-columns:1.45fr 1fr}
+.low{grid-template-columns:1fr 1.6fr}
+
+.panel{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:18px 20px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 14px 36px -30px rgba(120,40,40,.5);
+}
+.phead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.ptitle{font-size:13.5px;font-weight:700;letter-spacing:.2px;color:var(--ink)}
+.ptag{font-family:var(--mono);font-size:10.5px;color:var(--muted);letter-spacing:.3px}
+
+/* ---------- KPI tiles ---------- */
+.kpi{padding:16px 18px 15px}
+.kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--grad)}
+.kpi .top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.kpi .name{font-size:11.5px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
+.kpi .ic{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;background:var(--grad-soft);flex:none}
+.kpi .ic svg{width:16px;height:16px}
+.kpi .num{font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1.05;color:var(--ink)}
+.kpi .num .unit{font-size:15px;color:var(--muted);font-weight:600;margin-left:2px}
+.kpi .foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.delta{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:12.5px;font-weight:500}
+.delta.up{color:var(--good)}
+.delta.down{color:var(--bad)}
+.delta svg{width:11px;height:11px}
+.spark{width:96px;height:32px;flex:none}
+
+/* ---------- Charts ---------- */
+.chartwrap{width:100%}
+.area-chart,.bar-chart{width:100%;height:auto;display:block}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}
+.legend span{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;color:var(--ink-soft);font-family:var(--mono)}
+.swatch{width:11px;height:11px;border-radius:4px;flex:none}
+
+/* ---------- Donut ---------- */
+.donut-card{display:flex;flex-direction:column}
+.donut-body{display:flex;align-items:center;gap:18px;flex-wrap:wrap;justify-content:center}
+.donut-svg{width:172px;height:172px;flex:none}
+.donut-center .v{font-size:24px;font-weight:800;letter-spacing:-.5px;text-anchor:middle}
+.donut-center .l{font-family:var(--mono);font-size:8.5px;letter-spacing:.5px;text-anchor:middle}
+.dlegend{display:flex;flex-direction:column;gap:9px;min-width:140px}
+.dlegend .row{display:flex;align-items:center;gap:9px;font-size:12.5px}
+.dlegend .row b{margin-left:auto;font-family:var(--mono);font-weight:500;color:var(--ink-soft)}
+.dlegend .nm{color:var(--ink-soft)}
+
+/* ---------- Platform summary row ---------- */
+.platrow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.plat{
+  display:flex;align-items:center;gap:14px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);
+  padding:15px 16px;
+  box-shadow:0 12px 30px -28px rgba(120,40,40,.5);
+}
+.plat .badge{width:42px;height:42px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:800;font-size:16px}
+.plat .body{min-width:0;flex:1}
+.plat .nm{font-size:13.5px;font-weight:700}
+.plat .stat{display:flex;gap:14px;margin-top:3px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.plat .stat b{color:var(--ink);font-weight:500}
+
+/* ---------- Top posts table ---------- */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl thead th{
+  text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
+  color:var(--muted);padding:0 12px 11px;border-bottom:1px solid var(--line-2);white-space:nowrap;
+}
+.tbl thead th.r,.tbl tbody td.r{text-align:right}
+.tbl tbody td{padding:13px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.tbl tbody tr:last-child td{border-bottom:0}
+.tbl tbody tr:hover{background:var(--surface-2)}
+.post{display:flex;align-items:center;gap:11px}
+.pdot{width:11px;height:11px;border-radius:50%;flex:none}
+.ptype{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.3px;
+  padding:3px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--line-2);color:var(--ink-soft)}
+.num-cell{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+.eng{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:12.5px;font-weight:500;color:var(--good)}
+
+/* ---------- Footer ---------- */
+.footer{margin-top:24px;text-align:center;font-size:12px;color:var(--muted);padding:8px 0}
+.footer a{color:var(--coral);text-decoration:none;font-weight:700}
+.footer a:hover{text-decoration:underline}
+
+/* ---------- Responsive ---------- */
+@media(max-width:1080px){
+  .kpis{grid-template-columns:repeat(2,1fr)}
+  .mid,.low{grid-template-columns:1fr}
+  .platrow{grid-template-columns:1fr}
+}
+@media(max-width:560px){
+  body{padding:12px}
+  .kpis{grid-template-columns:1fr}
+  .kpi .num{font-size:26px}
+  .brand h1{font-size:17px}
+  .tbl thead th.hide,.tbl tbody td.hide{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ===== Header ===== -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 4h16v12H7l-3 3V4z"/><circle cx="9" cy="10" r="1.2" fill="#fff" stroke="none"/><circle cx="12" cy="10" r="1.2" fill="#fff" stroke="none"/><circle cx="15" cy="10" r="1.2" fill="#fff" stroke="none"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Social Media Dashboard</h1>
+        <div class="sub">[Company Name] · Social Performance</div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="meta">
+      <span class="chip"><span class="lbl">Owner</span>[Your Name]</span>
+      <span class="chip"><span class="lbl">Updated</span>[Mon DD, YYYY]</span>
+      <span class="range">[Last 30 days]</span>
+    </div>
+  </header>
+
+  <!-- ===== KPI Tiles ===== -->
+  <section class="grid kpis">
+
+    <!-- Followers -->
+    <div class="panel kpi">
+      <div class="top">
+        <span class="name">Followers</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      </div>
+      <div class="num">128.4<span class="unit">K</span></div>
+      <div class="foot">
+        <span class="delta up">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+          ▲ 6.2%
+        </span>
+        <svg class="spark" viewBox="0 0 96 32" preserveAspectRatio="none" aria-hidden="true">
+          <polyline fill="none" stroke="var(--good)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+            points="0,26 16,24 32,25 48,18 64,17 80,10 96,6"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Engagement rate -->
+    <div class="panel kpi">
+      <div class="top">
+        <span class="name">Engagement rate</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg></span>
+      </div>
+      <div class="num">4.8<span class="unit">%</span></div>
+      <div class="foot">
+        <span class="delta up">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+          ▲ 0.5 pp
+        </span>
+        <svg class="spark" viewBox="0 0 96 32" preserveAspectRatio="none" aria-hidden="true">
+          <polyline fill="none" stroke="var(--good)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+            points="0,22 16,20 32,24 48,16 64,19 80,12 96,9"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Reach -->
+    <div class="panel kpi">
+      <div class="top">
+        <span class="name">Reach</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/></svg></span>
+      </div>
+      <div class="num">2.1<span class="unit">M</span></div>
+      <div class="foot">
+        <span class="delta up">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+          ▲ 11.0%
+        </span>
+        <svg class="spark" viewBox="0 0 96 32" preserveAspectRatio="none" aria-hidden="true">
+          <polyline fill="none" stroke="var(--good)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+            points="0,24 16,21 32,22 48,15 64,16 80,9 96,5"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Impressions -->
+    <div class="panel kpi">
+      <div class="top">
+        <span class="name">Impressions</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></span>
+      </div>
+      <div class="num">3.6<span class="unit">M</span></div>
+      <div class="foot">
+        <span class="delta up">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+          ▲ 8.4%
+        </span>
+        <svg class="spark" viewBox="0 0 96 32" preserveAspectRatio="none" aria-hidden="true">
+          <polyline fill="none" stroke="var(--good)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+            points="0,25 16,23 32,20 48,21 64,14 80,13 96,7"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Profile visits -->
+    <div class="panel kpi">
+      <div class="top">
+        <span class="name">Profile visits</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      </div>
+      <div class="num">84.0<span class="unit">K</span></div>
+      <div class="foot">
+        <span class="delta down">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          ▼ 2.3%
+        </span>
+        <svg class="spark" viewBox="0 0 96 32" preserveAspectRatio="none" aria-hidden="true">
+          <polyline fill="none" stroke="var(--bad)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+            points="0,10 16,12 32,11 48,16 64,15 80,20 96,22"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Link clicks -->
+    <div class="panel kpi">
+      <div class="top">
+        <span class="name">Link clicks</span>
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg></span>
+      </div>
+      <div class="num">12.5<span class="unit">K</span></div>
+      <div class="foot">
+        <span class="delta up">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 15l6-6 6 6"/></svg>
+          ▲ 4.0%
+        </span>
+        <svg class="spark" viewBox="0 0 96 32" preserveAspectRatio="none" aria-hidden="true">
+          <polyline fill="none" stroke="var(--good)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+            points="0,23 16,22 32,19 48,20 64,15 80,14 96,11"/>
+        </svg>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== Mid: Followers growth + Content-type donut ===== -->
+  <section class="grid mid">
+
+    <!-- Followers growth trend (area / line) -->
+    <div class="panel">
+      <div class="phead">
+        <span class="ptitle">Followers growth</span>
+        <span class="ptag">net followers · last 12 weeks</span>
+      </div>
+      <div class="chartwrap">
+        <svg class="area-chart" viewBox="0 0 640 240" role="img" aria-label="Followers growth trend example">
+          <defs>
+            <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--coral-3)" stop-opacity="0.30"/>
+              <stop offset="100%" stop-color="var(--coral-2)" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="var(--coral-3)"/>
+              <stop offset="100%" stop-color="var(--coral-2)"/>
+            </linearGradient>
+          </defs>
+          <!-- grid -->
+          <g stroke="var(--line)" stroke-width="1">
+            <line x1="0" y1="40" x2="640" y2="40"/>
+            <line x1="0" y1="95" x2="640" y2="95"/>
+            <line x1="0" y1="150" x2="640" y2="150"/>
+            <line x1="0" y1="205" x2="640" y2="205"/>
+          </g>
+          <!-- area -->
+          <path d="M0,180 L58,172 L116,176 L174,150 L232,158 L290,132 L348,140 L406,108 L464,116 L522,82 L580,90 L640,58 L640,205 L0,205 Z" fill="url(#areaFill)"/>
+          <!-- line -->
+          <polyline points="0,180 58,172 116,176 174,150 232,158 290,132 348,140 406,108 464,116 522,82 580,90 640,58"
+            fill="none" stroke="url(#lineGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <g fill="var(--coral-3)">
+            <circle cx="290" cy="132" r="3.4"/><circle cx="464" cy="116" r="3.4"/><circle cx="640" cy="58" r="4"/>
+          </g>
+          <!-- x labels -->
+          <g fill="var(--muted)" font-family="DM Mono, monospace" font-size="10.5" text-anchor="middle">
+            <text x="0" y="228">W1</text>
+            <text x="174" y="228">W4</text>
+            <text x="348" y="228">W7</text>
+            <text x="522" y="228">W10</text>
+            <text x="636" y="228">W12</text>
+          </g>
+        </svg>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--coral-3)"></span>[Net new followers / week]</span>
+      </div>
+    </div>
+
+    <!-- Content-type donut -->
+    <div class="panel donut-card">
+      <div class="phead">
+        <span class="ptitle">Content mix</span>
+        <span class="ptag">share of posts</span>
+      </div>
+      <div class="donut-body">
+        <!-- Donut: 4 segments summing to 100. circumference = 2*pi*54 ≈ 339.29 -->
+        <svg class="donut-svg" viewBox="0 0 120 120" role="img" aria-label="Content type breakdown example">
+          <g transform="rotate(-90 60 60)">
+            <circle cx="60" cy="60" r="54" fill="none" stroke="var(--surface-2)" stroke-width="16"/>
+            <!-- Reels 40% -> 135.72 ; offset 0 -->
+            <circle cx="60" cy="60" r="54" fill="none" stroke="var(--coral)" stroke-width="16"
+              stroke-dasharray="135.72 203.57" stroke-dashoffset="0"/>
+            <!-- Image 30% -> 101.79 ; offset -135.72 -->
+            <circle cx="60" cy="60" r="54" fill="none" stroke="var(--coral-2)" stroke-width="16"
+              stroke-dasharray="101.79 237.50" stroke-dashoffset="-135.72"/>
+            <!-- Carousel 20% -> 67.86 ; offset -237.51 -->
+            <circle cx="60" cy="60" r="54" fill="none" stroke="var(--grape)" stroke-width="16"
+              stroke-dasharray="67.86 271.43" stroke-dashoffset="-237.51"/>
+            <!-- Text 10% -> 33.93 ; offset -305.37 -->
+            <circle cx="60" cy="60" r="54" fill="none" stroke="var(--teal)" stroke-width="16"
+              stroke-dasharray="33.93 305.36" stroke-dashoffset="-305.37"/>
+          </g>
+          <g class="donut-center">
+            <text class="v" x="60" y="58" fill="var(--ink)">100%</text>
+            <text class="l" x="60" y="72" fill="var(--muted)">CONTENT</text>
+          </g>
+        </svg>
+        <div class="dlegend">
+          <div class="row"><span class="swatch" style="background:var(--coral)"></span><span class="nm">Reels</span><b>40%</b></div>
+          <div class="row"><span class="swatch" style="background:var(--coral-2)"></span><span class="nm">Image</span><b>30%</b></div>
+          <div class="row"><span class="swatch" style="background:var(--grape)"></span><span class="nm">Carousel</span><b>20%</b></div>
+          <div class="row"><span class="swatch" style="background:var(--teal)"></span><span class="nm">Text</span><b>10%</b></div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ===== Engagement by platform (bar) ===== -->
+  <section class="grid">
+    <div class="panel">
+      <div class="phead">
+        <span class="ptitle">Engagement by platform</span>
+        <span class="ptag">avg engagement rate · %</span>
+      </div>
+      <div class="chartwrap">
+        <svg class="bar-chart" viewBox="0 0 720 220" role="img" aria-label="Engagement by platform example">
+          <g stroke="var(--line)" stroke-width="1">
+            <line x1="0" y1="40" x2="720" y2="40"/>
+            <line x1="0" y1="90" x2="720" y2="90"/>
+            <line x1="0" y1="140" x2="720" y2="140"/>
+            <line x1="0" y1="180" x2="720" y2="180"/>
+          </g>
+          <defs>
+            <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--coral-3)"/>
+              <stop offset="100%" stop-color="var(--coral-2)"/>
+            </linearGradient>
+          </defs>
+          <!-- 5 bars, baseline y=180 -->
+          <g>
+            <rect x="44"  y="70"  width="80" height="110" rx="7" fill="url(#barGrad)"/>
+            <rect x="184" y="50"  width="80" height="130" rx="7" fill="url(#barGrad)"/>
+            <rect x="324" y="100" width="80" height="80"  rx="7" fill="url(#barGrad)"/>
+            <rect x="464" y="120" width="80" height="60"  rx="7" fill="url(#barGrad)"/>
+            <rect x="604" y="86"  width="80" height="94"  rx="7" fill="url(#barGrad)"/>
+          </g>
+          <!-- value labels -->
+          <g fill="var(--ink)" font-family="DM Mono, monospace" font-size="12" font-weight="500" text-anchor="middle">
+            <text x="84"  y="60">5.5%</text>
+            <text x="224" y="40">6.4%</text>
+            <text x="364" y="90">4.0%</text>
+            <text x="504" y="110">3.0%</text>
+            <text x="644" y="76">4.6%</text>
+          </g>
+          <!-- x labels -->
+          <g fill="var(--muted)" font-family="DM Mono, monospace" font-size="11" text-anchor="middle">
+            <text x="84"  y="204">[Platform A]</text>
+            <text x="224" y="204">[Platform B]</text>
+            <text x="364" y="204">[Platform C]</text>
+            <text x="504" y="204">[Platform D]</text>
+            <text x="644" y="204">[Platform E]</text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== By-platform summary row ===== -->
+  <section class="platrow" style="margin-top:16px">
+    <div class="plat">
+      <div class="badge" style="background:var(--coral)">A</div>
+      <div class="body">
+        <div class="nm">[Platform A]</div>
+        <div class="stat"><span><b>52.0K</b> followers</span><span><b>5.5%</b> eng.</span></div>
+      </div>
+    </div>
+    <div class="plat">
+      <div class="badge" style="background:var(--grape)">B</div>
+      <div class="body">
+        <div class="nm">[Platform B]</div>
+        <div class="stat"><span><b>46.0K</b> followers</span><span><b>6.4%</b> eng.</span></div>
+      </div>
+    </div>
+    <div class="plat">
+      <div class="badge" style="background:var(--teal)">C</div>
+      <div class="body">
+        <div class="nm">[Platform C]</div>
+        <div class="stat"><span><b>30.0K</b> followers</span><span><b>4.0%</b> eng.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Top posts table ===== -->
+  <section class="grid">
+    <div class="panel">
+      <div class="phead">
+        <span class="ptitle">Top posts</span>
+        <span class="ptag">by reach · [Last 30 days]</span>
+      </div>
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th>Post</th>
+            <th class="hide">Platform</th>
+            <th>Type</th>
+            <th class="r">Reach</th>
+            <th class="r">Engagement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="post"><span class="pdot" style="background:var(--coral)"></span>[Post title or caption — one]</div></td>
+            <td class="hide">[Platform A]</td>
+            <td><span class="ptype">Reel</span></td>
+            <td class="r num-cell">320.0K</td>
+            <td class="r"><span class="eng">▲ 18.0K</span></td>
+          </tr>
+          <tr>
+            <td><div class="post"><span class="pdot" style="background:var(--grape)"></span>[Post title or caption — two]</div></td>
+            <td class="hide">[Platform B]</td>
+            <td><span class="ptype">Carousel</span></td>
+            <td class="r num-cell">250.0K</td>
+            <td class="r"><span class="eng">▲ 14.5K</span></td>
+          </tr>
+          <tr>
+            <td><div class="post"><span class="pdot" style="background:var(--teal)"></span>[Post title or caption — three]</div></td>
+            <td class="hide">[Platform C]</td>
+            <td><span class="ptype">Image</span></td>
+            <td class="r num-cell">180.0K</td>
+            <td class="r"><span class="eng">▲ 9.0K</span></td>
+          </tr>
+          <tr>
+            <td><div class="post"><span class="pdot" style="background:var(--coral-2)"></span>[Post title or caption — four]</div></td>
+            <td class="hide">[Platform A]</td>
+            <td><span class="ptype">Reel</span></td>
+            <td class="r num-cell">150.0K</td>
+            <td class="r"><span class="eng">▲ 7.5K</span></td>
+          </tr>
+          <tr>
+            <td><div class="post"><span class="pdot" style="background:var(--grape)"></span>[Post title or caption — five]</div></td>
+            <td class="hide">[Platform B]</td>
+            <td><span class="ptype">Text</span></td>
+            <td class="r num-cell">90.0K</td>
+            <td class="r"><span class="eng">▲ 3.2K</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    Made with <a href="https://arkhen.tech">OpenReports</a> — free report templates by Instituto Arkhe.
+  </footer>
+
+</div>
+</body>
+</html>

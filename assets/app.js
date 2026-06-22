@@ -338,6 +338,51 @@ const REPORTS = [
       pt: "Dashboard de métricas estilo centro de comando (dark): header ao vivo, tiles de KPI com sparklines, gráficos de tendência e barras, gauge e feed de alertas. SVG inline. Ciano no preto.",
     },
   },
+  {
+    id: "saas-dashboard", category: "kpi", charts: "embedded",
+    file: "templates/saas-dashboard.html",
+    title: { en: "SaaS Metrics Dashboard", pt: "Dashboard de Métricas SaaS" },
+    description: {
+      en: "MRR, ARR, net retention, churn and LTV:CAC with sparklines, plus an MRR-growth chart, new-vs-churn bars and a plan breakdown. Inline SVG. Indigo.",
+      pt: "MRR, ARR, retenção líquida, churn e LTV:CAC com sparklines, mais gráfico de crescimento de MRR, barras new-vs-churn e quebra por plano. SVG inline. Indigo.",
+    },
+  },
+  {
+    id: "finance-dashboard", category: "financial", charts: "embedded",
+    file: "templates/finance-dashboard.html",
+    title: { en: "Finance Dashboard", pt: "Dashboard Financeiro" },
+    description: {
+      en: "Revenue, margin, profit, cash, runway and burn with sparklines, plus a revenue-vs-expenses trend, an expense donut and budget vs. actual. Inline SVG. Navy.",
+      pt: "Receita, margem, lucro, caixa, runway e burn com sparklines, mais receita vs. despesas, donut de despesas e orçado vs. realizado. SVG inline. Navy.",
+    },
+  },
+  {
+    id: "ecommerce-dashboard", category: "sales", charts: "embedded",
+    file: "templates/ecommerce-dashboard.html",
+    title: { en: "E-commerce Dashboard", pt: "Dashboard de E-commerce" },
+    description: {
+      en: "GMV, orders, AOV, conversion, refunds and repeat rate with sparklines, plus a revenue trend, orders-by-channel bars and a top-products table. Inline SVG. Emerald.",
+      pt: "GMV, pedidos, AOV, conversão, reembolsos e recompra com sparklines, mais tendência de receita, pedidos por canal e tabela de produtos. SVG inline. Emerald.",
+    },
+  },
+  {
+    id: "web-analytics", category: "marketing", charts: "embedded",
+    file: "templates/web-analytics.html",
+    title: { en: "Web Analytics Dashboard", pt: "Dashboard de Web Analytics" },
+    description: {
+      en: "Sessions, users, bounce, duration and conversions with sparklines, plus a sessions trend, a traffic-sources donut, a device split and top-pages/sources tables. Inline SVG. Blue.",
+      pt: "Sessões, usuários, bounce, duração e conversões com sparklines, mais tendência de sessões, donut de fontes, split por device e tabelas de top páginas/fontes. SVG inline. Azul.",
+    },
+  },
+  {
+    id: "social-dashboard", category: "marketing", charts: "embedded",
+    file: "templates/social-dashboard.html",
+    title: { en: "Social Media Dashboard", pt: "Dashboard de Redes Sociais" },
+    description: {
+      en: "Followers, engagement, reach and clicks with sparklines, plus a followers-growth chart, engagement-by-platform bars, a content-mix donut and a top-posts table. Inline SVG. Coral.",
+      pt: "Seguidores, engajamento, alcance e cliques com sparklines, mais crescimento de seguidores, engajamento por plataforma, donut de mix de conteúdo e top posts. SVG inline. Coral.",
+    },
+  },
 ];
 
 const CATEGORIES = [

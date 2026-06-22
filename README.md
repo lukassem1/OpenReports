@@ -2,10 +2,10 @@
 
 # OpenReports
 
-### Beautiful report templates, ready for AI.
+### Templates for management reports, built with AI.
 
-A free, open library of self-contained HTML report templates for your
-managerial meetings. Pick a design you like, download the file, and hand it to
+A free, open library of **40+ self-contained HTML report templates** for your
+management meetings. Pick a design you like, download the file, and hand it to
 your AI assistant — *“make my report in this exact design.”*
 
 **[🌐 Live gallery → lukassem1.github.io/OpenReports](https://lukassem1.github.io/OpenReports/)**
@@ -40,24 +40,25 @@ You don't need to know how to code. You just need a design you like and your dat
 
 ## What's inside
 
-Six production-ready templates, each covering a common managerial meeting:
+**40+ self-contained templates across 13 categories** — from quick one-pagers and
+dashboards to full slide decks and an editorial annual report. A few highlights:
 
-| Template | Category | Charts |
-|---|---|---|
-| **Sales & Revenue Review** | Sales & Revenue | Inline SVG · self-contained |
-| **Financial Statement (P&L)** | Financial / P&L | Inline SVG · self-contained |
-| **Executive KPI Dashboard** | KPI Dashboard | Chart.js · interactive (CDN) |
-| **Marketing & Traffic Report** | Marketing / Traffic | Inline SVG · self-contained |
-| **People & HR Report** | People / HR | Inline SVG · self-contained |
-| **Operations & Project Status** | Operations / Project | Inline SVG · self-contained |
-| **Strategy Report (long-form)** | Strategy / Memo | Editorial · Google Fonts (Midnight Slate) |
+| Category | Examples |
+|---|---|
+| **Sales & Revenue** | Sales & Revenue Review · Pipeline & Forecast · Sales deck · E-commerce dashboard |
+| **Financial / P&L** | Financial Statement · Budget vs Actual · Finance dashboard · Financial deck |
+| **KPI Dashboard** | Executive KPI Dashboard · KPI Scorecard · SaaS Metrics · Metrics Command Center |
+| **Marketing / Traffic** | Marketing Report · Campaign Retro · Web Analytics · Social Media dashboard |
+| **People / HR** | People & HR Report · Recruiting Funnel · People & HR deck |
+| **Operations / Project** | Operations Status · Project Portfolio · Service Desk · Incident Postmortem |
+| **Strategy / Memo** | Strategy Report · Board Update · Board deck · Competitive Analysis |
+| **Customer Success · Product · OKRs** | NPS report · Product Analytics · Product Roadmap · OKR Tracker |
+| **Presentation · Annual · Analysis** | Pitch Deck · Annual Report (magazine) · Customer/Audience Segmentation |
 
-Two chart styles, filterable in the gallery:
-
-- **Self-contained** — pure inline SVG/CSS, zero dependencies. Works offline and
-  is the easiest for an AI to edit. The best default for sharing.
-- **Interactive** — powered by [Chart.js](https://www.chartjs.org/) via CDN.
-  Nicer hover and animation, but needs an internet connection.
+Two chart styles, filterable in the gallery — **Self-contained** (pure inline
+SVG/CSS, zero dependencies, works offline) and **Interactive** ([Chart.js](https://www.chartjs.org/)
+via CDN). The full catalog lives in the `REPORTS` array in
+[`assets/app.js`](assets/app.js).
 
 ## Features
 
@@ -92,14 +93,12 @@ Two chart styles, filterable in the gallery:
 ├── assets/
 │   ├── style.css         # gallery design system (re-skin via :root variables)
 │   └── app.js            # catalog + filtering + i18n + viewer + Copy prompt
-└── templates/            # the report templates (each is one self-contained file)
+└── templates/            # 40+ self-contained report templates (one .html each)
     ├── sales-revenue.html
-    ├── financial-statement.html
     ├── kpi-dashboard.html
-    ├── marketing-traffic.html
-    ├── people-hr.html
-    ├── operations-project.html
-    └── strategy-report.html
+    ├── saas-dashboard.html
+    ├── pitch-deck.html
+    └── …                 # the full catalog is the REPORTS array in assets/app.js
 ```
 
 ## Run it locally
@@ -144,8 +143,8 @@ Pull requests are welcome — submit a **brand-new template you designed yoursel
 
 ## Roadmap
 
-- More categories (OKRs, Customer Success / NPS, Procurement, Board pack).
-- Static image thumbnails as the catalog grows (lighter than live iframes).
+- ✅ 40+ templates across 13 categories, with download counts, likes and a bilingual gallery.
+- Static image thumbnails as the catalog grows (lighter than the live `<iframe>` previews).
 - A one-click “open in Claude” hand-off.
 
 Have a request? [Open an issue](https://github.com/lukassem1/OpenReports/issues).
